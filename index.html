@@ -6,372 +6,381 @@
   <title>MIZE | Portfolio</title>
   <meta name="description" content="ネイルの長いRailsマニア MIZEのポートフォリオ" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Zen+Kaku+Gothic+New:wght@700;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --pink:    #ff8fab;
-      --purple:  #c96fff;
-      --deep:    #6a0dad;
-      --dark:    #0a0018;
-      --darker:  #060010;
-      --card:    rgba(255,255,255,0.04);
-      --border:  rgba(255,160,200,0.30);
-      --text:    #f0e0ff;
-      --sub:     rgba(240,200,255,0.55);
-      --dot:     'DotGothic16', monospace;
+      --pink:   #ff8fab;
+      --purple: #c96fff;
+      --deep:   #9b4dff;
+      --dark:   #0d0520;
+      --card:   rgba(255,255,255,0.05);
+      --border: rgba(255,160,200,0.20);
+      --text:   #f0e0ff;
+      --sub:    rgba(240,200,255,0.60);
     }
 
     html { scroll-behavior: smooth; }
 
     body {
-      font-family: var(--dot);
+      font-family: 'Zen Kaku Gothic New', sans-serif;
       background: var(--dark);
       color: var(--text);
       min-height: 100vh;
       overflow-x: hidden;
-      image-rendering: pixelated;
     }
 
-    /* ─── スキャンライン背景 ─── */
+    /* ─── 背景 ─── */
     body::before {
       content: '';
-      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      position: fixed; inset: 0; z-index: 0;
       background:
-        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.08) 2px, rgba(0,0,0,0.08) 4px),
-        radial-gradient(ellipse 70% 50% at 20% 20%, rgba(201,111,255,0.15) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 50% at 80% 80%, rgba(255,143,171,0.12) 0%, transparent 55%);
+        radial-gradient(ellipse 80% 60% at 20% 10%, rgba(201,111,255,0.18) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 80% 80%, rgba(255,143,171,0.14) 0%, transparent 55%),
+        radial-gradient(ellipse 40% 40% at 50% 50%, rgba(155,77,255,0.08) 0%, transparent 70%);
+      pointer-events: none;
     }
 
-    /* ─── ピクセルボーダー mixin ─── */
-    .pixel-box {
-      border: 2px solid var(--border);
-      box-shadow:
-        inset 0 0 0 1px rgba(255,160,200,0.08),
-        0 0 20px rgba(201,111,255,0.12),
-        4px 4px 0 rgba(0,0,0,0.4);
-      background: rgba(10,0,24,0.85);
+    /* ─── 浮遊パーティクル ─── */
+    .particles { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+    .particle {
+      position: absolute;
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: var(--pink);
+      opacity: 0;
+      animation: float-up linear infinite;
+    }
+    @keyframes float-up {
+      0%   { transform: translateY(100vh) scale(0); opacity: 0; }
+      10%  { opacity: 0.6; }
+      90%  { opacity: 0.3; }
+      100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
     }
 
     /* ─── ナビ ─── */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
-      padding: 0 40px; height: 52px;
-      background: rgba(6,0,16,0.92);
-      border-bottom: 2px solid var(--border);
-      backdrop-filter: blur(8px);
+      padding: 16px 40px;
+      background: rgba(13,5,32,0.75);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
     }
     .nav-logo {
-      font-size: 18px; letter-spacing: 4px;
-      color: var(--pink);
-      text-shadow: 0 0 10px rgba(255,143,171,0.8);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 20px;
+      background: linear-gradient(135deg, var(--pink), var(--purple));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      letter-spacing: 2px;
     }
-    .nav-links { display: flex; gap: 28px; }
+    .nav-links { display: flex; gap: 32px; }
     .nav-links a {
-      color: var(--sub); font-size: 12px;
-      text-decoration: none; letter-spacing: 2px;
-      transition: color 0.15s;
-      position: relative;
+      color: var(--sub); font-size: 13px; font-weight: 700;
+      text-decoration: none; letter-spacing: 1px;
+      transition: color 0.2s;
     }
-    .nav-links a::before { content: '▶ '; opacity: 0; transition: opacity 0.15s; }
     .nav-links a:hover { color: var(--pink); }
-    .nav-links a:hover::before { opacity: 1; }
 
     /* ─── セクション共通 ─── */
     section { position: relative; z-index: 1; }
-    .section-inner { max-width: 860px; margin: 0 auto; padding: 100px 24px; }
-
-    .section-label {
-      display: inline-block;
-      font-size: 10px; letter-spacing: 3px;
-      color: var(--pink); margin-bottom: 8px;
+    .section-inner {
+      max-width: 900px; margin: 0 auto;
+      padding: 100px 24px;
     }
-    .section-label::before { content: '[ '; }
-    .section-label::after  { content: ' ]'; }
-
+    .section-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 11px; font-weight: 700; letter-spacing: 2px;
+      color: var(--pink); margin-bottom: 16px;
+    }
+    .section-tag::before { content: ''; display: block; width: 24px; height: 1px; background: var(--pink); }
     h2 {
-      font-size: clamp(22px, 4vw, 32px);
-      margin-bottom: 48px; letter-spacing: 2px;
-      color: var(--text);
+      font-size: clamp(28px, 5vw, 42px); font-weight: 900;
+      margin-bottom: 48px; line-height: 1.2;
     }
-    h2 .jp { font-family: 'Zen Kaku Gothic New', sans-serif; font-size: 0.55em; color: var(--sub); margin-left: 12px; letter-spacing: 0; }
 
     /* ─── HERO ─── */
     #hero {
       min-height: 100vh;
       display: flex; align-items: center; justify-content: center;
-      text-align: center; padding: 52px 24px 0;
+      text-align: center; padding: 0 24px;
     }
-    .hero-window {
-      display: inline-block; padding: 48px 56px;
-      border: 2px solid var(--border);
-      box-shadow: 0 0 60px rgba(201,111,255,0.20), 4px 4px 0 rgba(0,0,0,0.5);
-      background: rgba(10,0,24,0.90);
-      position: relative; max-width: 560px; width: 100%;
+    .hero-inner { position: relative; }
+    .hero-badge {
+      display: inline-block;
+      padding: 6px 18px; border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255,143,171,0.08);
+      font-size: 12px; letter-spacing: 2px; color: var(--sub);
+      margin-bottom: 28px;
     }
-    .hero-window-title {
-      position: absolute; top: -13px; left: 24px;
-      background: var(--dark); padding: 0 12px;
-      font-size: 11px; letter-spacing: 2px; color: var(--sub);
-    }
-    .hero-chara { font-size: 48px; margin-bottom: 20px; line-height: 1;
-      animation: bounce 2s ease-in-out infinite; display: block; }
-    @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
-
     .hero-name {
-      font-size: clamp(40px, 10vw, 72px); letter-spacing: 8px;
-      color: var(--text);
-      text-shadow:
-        0 0 10px rgba(255,143,171,0.9),
-        0 0 30px rgba(201,111,255,0.6),
-        0 0 60px rgba(201,111,255,0.3);
-      margin-bottom: 16px;
-      animation: name-glow 3s ease-in-out infinite;
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(56px, 14vw, 120px); font-weight: 900;
+      background: linear-gradient(135deg, #fff 0%, var(--pink) 40%, var(--purple) 80%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      line-height: 1; margin-bottom: 20px;
+      animation: glow-pulse 3s ease-in-out infinite;
     }
-    @keyframes name-glow {
-      0%,100% { text-shadow: 0 0 10px rgba(255,143,171,0.9), 0 0 30px rgba(201,111,255,0.6); }
-      50%      { text-shadow: 0 0 20px rgba(255,143,171,1.0), 0 0 60px rgba(201,111,255,0.9); }
+    @keyframes glow-pulse {
+      0%, 100% { filter: drop-shadow(0 0 20px rgba(255,143,171,0.4)); }
+      50%       { filter: drop-shadow(0 0 40px rgba(201,111,255,0.6)); }
     }
-    .hero-sub {
-      font-size: 13px; letter-spacing: 2px;
-      color: var(--sub); margin-bottom: 36px;
+    .hero-title {
+      font-size: clamp(16px, 3vw, 22px); font-weight: 700;
+      color: var(--sub); margin-bottom: 40px; letter-spacing: 1px;
     }
-    .hero-sub em { color: var(--pink); font-style: normal; }
-
-    .hero-menu { text-align: left; display: inline-flex; flex-direction: column; gap: 4px; }
-    .hero-menu-item {
-      display: block; padding: 8px 16px;
-      font-size: 13px; letter-spacing: 2px;
-      color: var(--sub); text-decoration: none;
-      border: 1px solid transparent;
-      transition: all 0.1s;
+    .hero-title span { color: var(--pink); }
+    .hero-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 13px 28px; border-radius: 999px;
+      font-size: 13px; font-weight: 700; letter-spacing: 1px;
+      text-decoration: none; transition: all 0.2s; cursor: pointer; border: none;
     }
-    .hero-menu-item::before { content: '　'; }
-    .hero-menu-item:hover {
-      color: var(--dark); background: var(--pink);
-      border-color: var(--pink);
+    .btn-primary {
+      background: linear-gradient(135deg, var(--pink), var(--purple));
+      color: #fff;
+      box-shadow: 0 4px 24px rgba(201,111,255,0.4);
     }
-    .hero-menu-item:hover::before { content: '▶ '; }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(201,111,255,0.6); }
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--sub);
+    }
+    .btn-outline:hover { border-color: var(--pink); color: var(--pink); transform: translateY(-2px); }
+    .hero-scroll {
+      position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      color: var(--sub); font-size: 11px; letter-spacing: 2px;
+    }
+    .hero-scroll-line {
+      width: 1px; height: 40px;
+      background: linear-gradient(to bottom, var(--pink), transparent);
+      animation: scroll-line 2s ease-in-out infinite;
+    }
+    @keyframes scroll-line { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
 
     /* ─── ABOUT ─── */
-    .about-window { padding: 0; overflow: hidden; }
-    .window-titlebar {
-      background: var(--border);
-      padding: 8px 16px; font-size: 11px; letter-spacing: 2px;
-      color: var(--dark); display: flex; align-items: center; gap: 8px;
+    #about .about-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: start;
     }
-    .window-body { padding: 32px; }
-    .message-box {
-      border: 2px solid var(--border);
-      padding: 20px 24px; margin-bottom: 24px;
-      background: rgba(255,143,171,0.04);
-      position: relative;
+    .about-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px; padding: 32px;
     }
-    .message-box::before {
-      content: 'MIZE';
-      position: absolute; top: -11px; left: 16px;
-      background: var(--dark); padding: 0 8px;
-      font-size: 10px; color: var(--pink); letter-spacing: 2px;
+    .about-main p {
+      font-size: 15px; line-height: 2; color: var(--sub); margin-bottom: 16px;
     }
-    .message-box p {
-      font-size: 13px; line-height: 2.2; color: var(--sub);
+    .about-main p strong { color: var(--text); }
+    .about-stats { display: grid; gap: 16px; }
+    .stat-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px 18px; border-radius: 12px;
+      background: rgba(255,143,171,0.06);
+      border: 1px solid rgba(255,143,171,0.12);
     }
-    .message-box p em { color: var(--text); font-style: normal; }
-    .status-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .status-item {
-      border: 1px solid rgba(255,160,200,0.15);
-      padding: 12px 16px; background: rgba(255,255,255,0.02);
-    }
-    .status-key { font-size: 10px; color: var(--sub); letter-spacing: 1px; margin-bottom: 4px; }
-    .status-key::before { content: '- '; }
-    .status-val { font-size: 12px; color: var(--text); letter-spacing: 1px; }
+    .stat-icon { font-size: 20px; flex-shrink: 0; }
+    .stat-label { font-size: 11px; color: var(--sub); margin-bottom: 2px; }
+    .stat-value { font-size: 14px; font-weight: 700; color: var(--text); }
 
     /* ─── SKILLS ─── */
-    .skills-table { width: 100%; border-collapse: collapse; }
-    .skills-table th {
-      text-align: left; font-size: 10px; letter-spacing: 2px;
-      color: var(--pink); padding: 8px 16px;
-      border-bottom: 1px solid var(--border);
+    #skills .skills-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px;
     }
-    .skills-table td { padding: 12px 16px; border-bottom: 1px solid rgba(255,160,200,0.08); vertical-align: top; }
-    .skills-table tr:hover td { background: rgba(255,143,171,0.04); }
-    .skill-cat { font-size: 11px; color: var(--sub); letter-spacing: 1px; white-space: nowrap; }
-    .skill-items { display: flex; flex-wrap: wrap; gap: 8px; }
-    .skill-chip {
-      font-size: 11px; padding: 3px 12px;
+    .skill-group {
+      background: var(--card);
       border: 1px solid var(--border);
-      color: var(--text); letter-spacing: 1px;
-      transition: all 0.1s;
+      border-radius: 16px; padding: 24px;
     }
-    .skill-chip:hover { background: var(--pink); color: var(--dark); border-color: var(--pink); }
-    .skill-chip--main { border-color: rgba(255,143,171,0.5); color: var(--pink); }
+    .skill-group-title {
+      font-size: 11px; font-weight: 700; letter-spacing: 2px;
+      color: var(--pink); margin-bottom: 16px;
+    }
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .skill-tag {
+      padding: 5px 14px; border-radius: 999px; font-size: 12px; font-weight: 700;
+      border: 1px solid; transition: all 0.2s;
+    }
+    .skill-tag:hover { transform: translateY(-1px); }
+    .tag-main  { background: rgba(255,143,171,0.12); border-color: rgba(255,143,171,0.35); color: #ffb3cc; }
+    .tag-js    { background: rgba(255,220,80,0.10);  border-color: rgba(255,220,80,0.30);  color: #ffe566; }
+    .tag-db    { background: rgba(80,160,255,0.10);  border-color: rgba(80,160,255,0.30);  color: #80c0ff; }
+    .tag-tool  { background: rgba(200,200,220,0.08); border-color: rgba(200,200,220,0.20); color: rgba(240,200,255,0.70); }
 
     /* ─── WORKS ─── */
-    .quest-list { display: flex; flex-direction: column; gap: 24px; }
-    .quest-card { padding: 0; overflow: hidden; cursor: default; }
-    .quest-header {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 14px 20px;
-      background: rgba(255,143,171,0.08);
-      border-bottom: 1px solid var(--border);
+    #works .work-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 24px; overflow: hidden;
     }
-    .quest-no { font-size: 10px; color: var(--sub); letter-spacing: 2px; }
-    .quest-status {
-      font-size: 10px; padding: 3px 10px;
-      border: 1px solid rgba(100,255,150,0.4);
-      color: #80ffaa; letter-spacing: 1px;
+    .work-header {
+      padding: 40px 40px 0;
+      display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px;
     }
-    .quest-body { padding: 24px; }
-    .quest-title {
-      font-size: clamp(20px, 4vw, 28px); letter-spacing: 3px;
-      color: var(--text); margin-bottom: 8px;
+    .work-label {
+      display: inline-block; padding: 4px 14px; border-radius: 999px;
+      font-size: 11px; font-weight: 700; letter-spacing: 1px;
+      background: rgba(255,143,171,0.15); border: 1px solid rgba(255,143,171,0.30); color: var(--pink);
+      margin-bottom: 12px;
     }
-    .quest-desc { font-size: 12px; color: var(--sub); line-height: 2; margin-bottom: 20px; letter-spacing: 1px; }
-    .quest-features { display: flex; flex-direction: column; gap: 6px; margin-bottom: 20px; }
-    .quest-feature { font-size: 11px; color: var(--sub); letter-spacing: 1px; }
-    .quest-feature::before { content: '  ✦ '; color: var(--pink); }
-    .quest-footer {
-      display: flex; justify-content: space-between; align-items: center;
-      flex-wrap: wrap; gap: 12px;
-      padding-top: 16px; border-top: 1px solid rgba(255,160,200,0.10);
+    .work-title {
+      font-size: clamp(28px, 5vw, 40px); font-weight: 900;
+      background: linear-gradient(135deg, var(--text), var(--pink));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      margin-bottom: 12px;
     }
-    .quest-stack { display: flex; flex-wrap: wrap; gap: 6px; }
-    .quest-badge {
-      font-size: 10px; padding: 2px 10px;
-      border: 1px solid rgba(155,77,255,0.35);
-      color: rgba(200,160,255,0.8); letter-spacing: 1px;
+    .work-sub { font-size: 13px; color: var(--sub); line-height: 1.7; max-width: 480px; }
+    .work-links { display: flex; gap: 12px; flex-shrink: 0; margin-top: 4px; }
+    .work-body { padding: 32px 40px 40px; }
+    .work-features {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px;
+      margin-bottom: 32px;
     }
-    .quest-links { display: flex; gap: 10px; }
-    .btn-pixel {
-      display: inline-block; padding: 8px 18px;
-      font-family: var(--dot); font-size: 12px; letter-spacing: 2px;
-      text-decoration: none; border: 2px solid;
-      transition: all 0.1s; cursor: pointer;
+    .feature-item {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 14px 16px; border-radius: 12px;
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,160,200,0.10);
     }
-    .btn-pixel--primary {
-      background: var(--pink); color: var(--dark); border-color: var(--pink);
-      box-shadow: 3px 3px 0 rgba(0,0,0,0.5);
+    .feature-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+    .feature-text { font-size: 12px; color: var(--sub); line-height: 1.6; }
+    .feature-text strong { color: var(--text); display: block; margin-bottom: 2px; }
+    .work-stack { display: flex; flex-wrap: wrap; gap: 8px; }
+    .stack-badge {
+      padding: 4px 12px; border-radius: 999px; font-size: 11px; font-weight: 700;
+      background: rgba(155,77,255,0.12); border: 1px solid rgba(155,77,255,0.30); color: #c8a0ff;
     }
-    .btn-pixel--primary:hover { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 rgba(0,0,0,0.5); }
-    .btn-pixel--ghost {
-      background: transparent; color: var(--sub); border-color: var(--border);
-    }
-    .btn-pixel--ghost:hover { color: var(--pink); border-color: var(--pink); }
 
     /* ─── CONTACT ─── */
     #contact { text-align: center; }
-    .contact-prompt { font-size: 12px; color: var(--sub); margin-bottom: 48px; letter-spacing: 2px; }
-    .contact-prompt::before { content: '> '; color: var(--pink); }
-    .contact-grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px;
+    #contact h2 { margin-bottom: 16px; }
+    #contact .contact-sub {
+      font-size: 15px; color: var(--sub); margin-bottom: 48px; line-height: 1.8;
     }
-    .contact-item {
-      display: flex; flex-direction: column; align-items: flex-start;
-      padding: 20px; text-decoration: none;
-      border: 1px solid var(--border); background: rgba(255,255,255,0.02);
-      transition: all 0.1s;
+    .contact-links {
+      display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;
     }
-    .contact-item:hover {
-      background: rgba(255,143,171,0.06);
-      border-color: var(--pink);
-      transform: translateY(-2px);
-      box-shadow: 0 4px 0 rgba(255,143,171,0.2);
+    .contact-card {
+      display: flex; align-items: center; gap: 14px;
+      padding: 20px 28px; border-radius: 16px; text-decoration: none;
+      background: var(--card); border: 1px solid var(--border);
+      transition: all 0.2s; min-width: 180px;
     }
-    .contact-icon { font-size: 24px; margin-bottom: 10px; }
-    .contact-service { font-size: 9px; color: var(--sub); letter-spacing: 2px; margin-bottom: 4px; }
-    .contact-value { font-size: 12px; color: var(--text); letter-spacing: 1px; }
+    .contact-card:hover { border-color: var(--pink); transform: translateY(-3px); background: rgba(255,143,171,0.06); }
+    .contact-card-icon { font-size: 26px; }
+    .contact-card-label { font-size: 11px; color: var(--sub); margin-bottom: 2px; }
+    .contact-card-value { font-size: 14px; font-weight: 700; color: var(--text); }
+
+    /* ─── Works 2枚目（サブカード）─── */
+    .work-card--sub { margin-top: 20px; }
+    .work-card--sub .work-title { font-size: clamp(22px, 4vw, 30px); }
+    .work-card--sub .work-header { padding-bottom: 0; }
 
     /* ─── FOOTER ─── */
     footer {
       position: relative; z-index: 1;
-      text-align: center; padding: 28px;
+      text-align: center; padding: 32px 24px;
       border-top: 1px solid var(--border);
-      font-size: 11px; color: var(--sub); letter-spacing: 2px;
+      font-size: 12px; color: var(--sub);
     }
 
-    /* ─── カーソル点滅 ─── */
-    .cursor { animation: blink 1s step-end infinite; }
-    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+    /* ─── 区切り線 ─── */
+    .divider {
+      width: 60px; height: 2px; margin: 0 auto 60px;
+      background: linear-gradient(to right, var(--pink), var(--purple));
+      border-radius: 2px;
+    }
 
     /* ─── フェードイン ─── */
-    .fade-in { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .fade-in { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
     .fade-in.visible { opacity: 1; transform: none; }
 
     /* ─── モバイル ─── */
-    @media (max-width: 600px) {
-      nav { padding: 0 16px; }
-      .nav-links { gap: 16px; }
-      .hero-window { padding: 32px 24px; }
-      .status-grid { grid-template-columns: 1fr; }
-      .quest-footer { flex-direction: column; align-items: flex-start; }
-      .window-body { padding: 20px; }
+    @media (max-width: 640px) {
+      nav { padding: 14px 20px; }
+      .nav-links { gap: 20px; }
+      #about .about-grid { grid-template-columns: 1fr; }
+      .work-header { padding: 24px 24px 0; }
+      .work-body { padding: 24px; }
+      .contact-links { flex-direction: column; align-items: center; }
     }
   </style>
 </head>
 <body>
 
+  <!-- パーティクル -->
+  <div class="particles" id="particles"></div>
+
   <!-- ナビ -->
   <nav>
-    <div class="nav-logo">✦ MIZE</div>
+    <div class="nav-logo">MIZE</div>
     <div class="nav-links">
-      <a href="#about">じこしょうかい</a>
-      <a href="#skills">そうび</a>
-      <a href="#works">せいさくぶつ</a>
-      <a href="#contact">れんらく</a>
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#works">Works</a>
+      <a href="#contact">Contact</a>
     </div>
   </nav>
 
   <!-- HERO -->
   <section id="hero">
-    <div class="hero-window pixel-box">
-      <div class="hero-window-title">PLAYER SELECT</div>
-      <span class="hero-chara">🎀</span>
-      <div class="hero-name">MIZE</div>
-      <div class="hero-sub">ネイルのながい <em>Railsマニア</em></div>
-      <nav class="hero-menu">
-        <a href="#about"  class="hero-menu-item">じこしょうかい</a>
-        <a href="#skills" class="hero-menu-item">そうび・スキル</a>
-        <a href="#works"  class="hero-menu-item">せいさくぶつ</a>
-        <a href="#contact" class="hero-menu-item">れんらく</a>
-      </nav>
+    <div class="hero-inner">
+      <div class="hero-badge">✦ Rails Developer ✦</div>
+      <h1 class="hero-name">MIZE</h1>
+      <p class="hero-title">ネイルの長い <span>Railsマニア</span></p>
+      <div class="hero-btns">
+        <a href="#works" class="btn btn-primary">🎀 作ったもの</a>
+        <a href="#contact" class="btn btn-outline">✉ 連絡する</a>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <div class="hero-scroll-line"></div>
+      SCROLL
     </div>
   </section>
 
   <!-- ABOUT -->
   <section id="about">
     <div class="section-inner">
-      <div class="section-label">PROFILE</div>
-      <h2>じこしょうかい <span class="jp">About</span></h2>
-      <div class="pixel-box about-window fade-in">
-        <div class="window-titlebar">✦ ぼうけんのしょ</div>
-        <div class="window-body">
-          <div class="message-box">
-            <p>
-              はじめまして、<em>MIZE</em> です。<br>
-              ネイルを長く保ったままコードを書くことに<em>謎のこだわり</em>を持つRails開発者。<br><br>
-              ゲームが好きで、「タスク管理が<em>ソシャゲみたいだったら</em>毎日続くのでは？」<br>
-              という発想から RewardMe を開発しました。<br><br>
-              まだまだ成長中ですが、<em>自分の手でモノを作る楽しさ</em>だけは本物です。
-            </p>
+      <div class="section-tag">ABOUT</div>
+      <h2>わたしについて</h2>
+      <div class="about-grid fade-in">
+        <div class="about-card about-main">
+          <p>はじめまして、<strong>MIZE</strong> です。</p>
+          <p>ネイルを長く保ったままコードを書くことに<strong>謎のこだわり</strong>を持つRails開発者。</p>
+          <p>ゲームが好きで、「<strong>タスク管理がソシャゲみたいだったら毎日続くのでは？</strong>」という発想から RewardMe を開発しました。</p>
+          <p>まだまだ成長中ですが、<strong>自分の手でモノを作る楽しさ</strong>だけは本物だと思っています。</p>
+        </div>
+        <div class="about-stats">
+          <div class="stat-item">
+            <span class="stat-icon">💎</span>
+            <div>
+              <div class="stat-label">現在地</div>
+              <div class="stat-value">Rails修行中</div>
+            </div>
           </div>
-          <div class="status-grid">
-            <div class="status-item">
-              <div class="status-key">しょくぎょう</div>
-              <div class="status-val">Rails修行中</div>
+          <div class="stat-item">
+            <span class="stat-icon">💅</span>
+            <div>
+              <div class="stat-label">こだわり</div>
+              <div class="stat-value">ネイルをつけたままコーディング</div>
             </div>
-            <div class="status-item">
-              <div class="status-key">とくぎ</div>
-              <div class="status-val">ネイルつきコーディング</div>
+          </div>
+          <div class="stat-item">
+            <span class="stat-icon">🎀</span>
+            <div>
+              <div class="stat-label">好きなもの</div>
+              <div class="stat-value">ゲーム・キャラクターデザイン</div>
             </div>
-            <div class="status-item">
-              <div class="status-key">すきなもの</div>
-              <div class="status-val">ゲーム・キャラデザ</div>
-            </div>
-            <div class="status-item">
-              <div class="status-key">もちべーしょん</div>
-              <div class="status-val">動くものを作る快感</div>
+          </div>
+          <div class="stat-item">
+            <span class="stat-icon">🔥</span>
+            <div>
+              <div class="stat-label">モチベーション</div>
+              <div class="stat-value">動くものを自分で作る快感</div>
             </div>
           </div>
         </div>
@@ -382,54 +391,44 @@
   <!-- SKILLS -->
   <section id="skills">
     <div class="section-inner">
-      <div class="section-label">EQUIPMENT</div>
-      <h2>そうび <span class="jp">Skills</span></h2>
-      <div class="pixel-box fade-in">
-        <table class="skills-table">
-          <thead>
-            <tr>
-              <th>カテゴリ</th>
-              <th>スキル</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><span class="skill-cat">メインウェポン</span></td>
-              <td><div class="skill-items">
-                <span class="skill-chip skill-chip--main">Ruby</span>
-                <span class="skill-chip skill-chip--main">Ruby on Rails</span>
-                <span class="skill-chip skill-chip--main">Hotwire</span>
-                <span class="skill-chip skill-chip--main">Stimulus</span>
-                <span class="skill-chip skill-chip--main">Turbo</span>
-              </div></td>
-            </tr>
-            <tr>
-              <td><span class="skill-cat">フロントエンド</span></td>
-              <td><div class="skill-items">
-                <span class="skill-chip">JavaScript</span>
-                <span class="skill-chip">HTML</span>
-                <span class="skill-chip">CSS</span>
-                <span class="skill-chip">CSS Animation</span>
-              </div></td>
-            </tr>
-            <tr>
-              <td><span class="skill-cat">データベース</span></td>
-              <td><div class="skill-items">
-                <span class="skill-chip">PostgreSQL</span>
-                <span class="skill-chip">SQLite</span>
-              </div></td>
-            </tr>
-            <tr>
-              <td><span class="skill-cat">ツール・その他</span></td>
-              <td><div class="skill-items">
-                <span class="skill-chip">Git / GitHub</span>
-                <span class="skill-chip">Docker</span>
-                <span class="skill-chip">Render</span>
-                <span class="skill-chip">RSpec</span>
-              </div></td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="section-tag">SKILLS</div>
+      <h2>技術スタック</h2>
+      <div class="skills-grid fade-in">
+        <div class="skill-group">
+          <div class="skill-group-title">MAIN WEAPON</div>
+          <div class="skill-tags">
+            <span class="skill-tag tag-main">Ruby</span>
+            <span class="skill-tag tag-main">Ruby on Rails</span>
+            <span class="skill-tag tag-main">Hotwire</span>
+            <span class="skill-tag tag-main">Stimulus</span>
+            <span class="skill-tag tag-main">Turbo</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <div class="skill-group-title">FRONTEND</div>
+          <div class="skill-tags">
+            <span class="skill-tag tag-js">JavaScript</span>
+            <span class="skill-tag tag-js">HTML</span>
+            <span class="skill-tag tag-js">CSS</span>
+            <span class="skill-tag tag-js">CSS Animation</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <div class="skill-group-title">DATABASE</div>
+          <div class="skill-tags">
+            <span class="skill-tag tag-db">PostgreSQL</span>
+            <span class="skill-tag tag-db">SQLite</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <div class="skill-group-title">TOOLS &amp; OTHER</div>
+          <div class="skill-tags">
+            <span class="skill-tag tag-tool">Git / GitHub</span>
+            <span class="skill-tag tag-tool">Render</span>
+            <span class="skill-tag tag-tool">RSpec</span>
+            <span class="skill-tag tag-tool">Notion</span>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -437,123 +436,182 @@
   <!-- WORKS -->
   <section id="works">
     <div class="section-inner">
-      <div class="section-label">QUEST LOG</div>
-      <h2>せいさくぶつ <span class="jp">Works</span></h2>
-      <div class="quest-list">
-
-        <!-- RewardMe -->
-        <div class="pixel-box quest-card fade-in">
-          <div class="quest-header">
-            <span class="quest-no">QUEST #001</span>
-            <span class="quest-status">✦ CLEARED</span>
+      <div class="section-tag">WORKS</div>
+      <h2>制作物</h2>
+      <div class="work-card fade-in">
+        <div class="work-header">
+          <div>
+            <div class="work-label">✦ Personal Project</div>
+            <div class="work-title">RewardMe</div>
+            <p class="work-sub">キャラクターと一緒に育つタスク管理アプリ。<br>タスクをこなすとキャラが進化し、ガチャ・ミニゲーム・マイルームが解放されるソシャゲ体験型Webアプリ。</p>
           </div>
-          <div class="quest-body">
-            <div class="quest-title">RewardMe</div>
-            <p class="quest-desc">
-              キャラクターと一緒に育つタスク管理アプリ。<br>
-              タスクをこなすとリボンちゃんが進化し、ガチャ・ミニゲーム・マイルームが解放されるソシャゲ体験型Webアプリ。
-            </p>
-            <div class="quest-features">
-              <div class="quest-feature">リボンちゃんが4段階に進化 / オリジナルイラスト</div>
-              <div class="quest-feature">ガチャ・パズル・マッチ等 ミニゲーム4種</div>
-              <div class="quest-feature">BGM・家具・壁紙でカスタマイズできるマイルーム</div>
-              <div class="quest-feature">Deviseを使わず認証を独自実装</div>
-              <div class="quest-feature">進化アニメーション・紙吹雪など没入感重視の演出</div>
-            </div>
-            <div class="quest-footer">
-              <div class="quest-stack">
-                <span class="quest-badge">Rails</span>
-                <span class="quest-badge">Hotwire</span>
-                <span class="quest-badge">Stimulus</span>
-                <span class="quest-badge">JavaScript</span>
-                <span class="quest-badge">PostgreSQL</span>
-                <span class="quest-badge">Render</span>
-              </div>
-              <div class="quest-links">
-                <a href="https://rewardme-qaq3.onrender.com" target="_blank" class="btn-pixel btn-pixel--primary">▶ プレイする</a>
-                <a href="https://github.com/mize1978/rewardme" target="_blank" class="btn-pixel btn-pixel--ghost">GitHub</a>
-              </div>
-            </div>
+          <div class="work-links">
+            <a href="https://rewardme-qaq3.onrender.com" target="_blank" class="btn btn-primary">▶ 試してみる</a>
+            <a href="https://github.com/mize1978/rewardme" target="_blank" class="btn btn-outline">GitHub</a>
           </div>
         </div>
-
-        <!-- Bug Generator -->
-        <div class="pixel-box quest-card fade-in">
-          <div class="quest-header">
-            <span class="quest-no">QUEST #002</span>
-            <span class="quest-status">✦ CLEARED</span>
+        <div class="work-body">
+          <div class="work-features">
+            <div class="feature-item">
+              <span class="feature-icon">🎀</span>
+              <div class="feature-text">
+                <strong>キャラ育成</strong>
+                タスク完了でリボンちゃんが4段階に進化。オリジナルイラスト付き。
+              </div>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">🎲</span>
+              <div class="feature-text">
+                <strong>ガチャ &amp; ミニゲーム</strong>
+                コインでガチャを回し、パズル・マッチゲームなど4種のミニゲームを搭載。
+              </div>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">🏠</span>
+              <div class="feature-text">
+                <strong>マイルーム</strong>
+                BGM・家具・壁紙でカスタマイズできる自分だけの部屋。
+              </div>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">🔐</span>
+              <div class="feature-text">
+                <strong>認証自作</strong>
+                Deviseを使わずセッション管理を独自実装。
+              </div>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">✨</span>
+              <div class="feature-text">
+                <strong>演出こだわり</strong>
+                進化アニメーション・紙吹雪・ログインボーナスなど没入感重視の設計。
+              </div>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">📱</span>
+              <div class="feature-text">
+                <strong>レスポンシブ</strong>
+                PC・スマホ両対応。Hotwireでページ遷移なしのスムーズな操作。
+              </div>
+            </div>
           </div>
-          <div class="quest-body">
-            <div class="quest-title">Bug Generator</div>
-            <p class="quest-desc">
-              人生、バグってない？ — エンジニアあるあるバグをランダム生成してXでシェアできるアプリ。<br>
-              Dockerで開発環境を構築し、カスタムドメインで公開。
-            </p>
-            <div class="quest-features">
-              <div class="quest-feature">エンジニアあるあるバグをランダム生成</div>
-              <div class="quest-feature">X（Twitter）へのワンクリックシェア</div>
-              <div class="quest-feature">Docker で開発環境を構築</div>
-            </div>
-            <div class="quest-footer">
-              <div class="quest-stack">
-                <span class="quest-badge">Rails</span>
-                <span class="quest-badge">Hotwire</span>
-                <span class="quest-badge">Stimulus</span>
-                <span class="quest-badge">Docker</span>
-                <span class="quest-badge">Render</span>
-              </div>
-              <div class="quest-links">
-                <a href="https://bug-generator-zt5t.onrender.com" target="_blank" class="btn-pixel btn-pixel--primary">▶ プレイする</a>
-                <a href="https://github.com/mize1978/bug_generator" target="_blank" class="btn-pixel btn-pixel--ghost">GitHub</a>
-              </div>
-            </div>
+          <div class="work-stack">
+            <span class="stack-badge">Ruby on Rails</span>
+            <span class="stack-badge">Hotwire</span>
+            <span class="stack-badge">Stimulus</span>
+            <span class="stack-badge">JavaScript</span>
+            <span class="stack-badge">CSS Animation</span>
+            <span class="stack-badge">PostgreSQL</span>
+            <span class="stack-badge">Render</span>
           </div>
         </div>
-
       </div>
+
+      <!-- Bug Generator -->
+      <div class="work-card work-card--sub fade-in">
+        <div class="work-header">
+          <div>
+            <div class="work-label">✦ Personal Project</div>
+            <div class="work-title">Bug Generator</div>
+            <p class="work-sub">人生、バグってない？ — エンジニアあるあるバグをランダム生成してXでシェアできるアプリ。Dockerで開発環境を構築し、カスタムドメインで公開。</p>
+          </div>
+          <div class="work-links">
+            <a href="https://bug-generator-zt5t.onrender.com" target="_blank" class="btn btn-primary">▶ 試してみる</a>
+            <a href="https://github.com/mize1978/bug_generator" target="_blank" class="btn btn-outline">GitHub</a>
+          </div>
+        </div>
+        <div class="work-body">
+          <div class="work-stack">
+            <span class="stack-badge">Ruby on Rails</span>
+            <span class="stack-badge">Hotwire</span>
+            <span class="stack-badge">Stimulus</span>
+            <span class="stack-badge">Docker</span>
+            <span class="stack-badge">Render</span>
+            <span class="stack-badge">カスタムドメイン</span>
+          </div>
+        </div>
+      </div>
+
     </div>
   </section>
 
   <!-- CONTACT -->
   <section id="contact">
     <div class="section-inner">
-      <div class="section-label">CONTACT</div>
-      <h2>れんらく <span class="jp">Contact</span></h2>
-      <p class="contact-prompt">お気軽にどうぞ<span class="cursor">_</span></p>
-      <div class="contact-grid fade-in">
-        <a href="https://github.com/mize1978" target="_blank" class="pixel-box contact-item">
-          <span class="contact-icon">🐙</span>
-          <div class="contact-service">GITHUB</div>
-          <div class="contact-value">mize1978</div>
+      <div class="section-tag">CONTACT</div>
+      <h2>連絡先</h2>
+      <p class="contact-sub fade-in">お気軽にどうぞ 🎀</p>
+      <div class="contact-links fade-in">
+        <a href="https://github.com/mize1978" target="_blank" class="contact-card">
+          <span class="contact-card-icon">🐙</span>
+          <div>
+            <div class="contact-card-label">GitHub</div>
+            <div class="contact-card-value">mize1978</div>
+          </div>
         </a>
-        <a href="https://x.com/mizelategm66172" target="_blank" class="pixel-box contact-item">
-          <span class="contact-icon">🐦</span>
-          <div class="contact-service">X / TWITTER</div>
-          <div class="contact-value">@mizelategm66172</div>
+        <a href="https://x.com/mizelategm66172" target="_blank" class="contact-card">
+          <span class="contact-card-icon">🐦</span>
+          <div>
+            <div class="contact-card-label">X (Twitter)</div>
+            <div class="contact-card-value">@mizelategm66172</div>
+          </div>
         </a>
-        <a href="https://zenn.dev/mizel1978" target="_blank" class="pixel-box contact-item">
-          <span class="contact-icon">📝</span>
-          <div class="contact-service">ZENN</div>
-          <div class="contact-value">mizel1978</div>
+        <a href="https://zenn.dev/mizel1978" target="_blank" class="contact-card">
+          <span class="contact-card-icon">📝</span>
+          <div>
+            <div class="contact-card-label">Zenn</div>
+            <div class="contact-card-value">mizel1978</div>
+          </div>
         </a>
-        <a href="https://rewardme-qaq3.onrender.com" target="_blank" class="pixel-box contact-item">
-          <span class="contact-icon">🎀</span>
-          <div class="contact-service">REWARDME</div>
-          <div class="contact-value">試してみる</div>
+        <a href="https://rewardme-qaq3.onrender.com" target="_blank" class="contact-card">
+          <span class="contact-card-icon">🎀</span>
+          <div>
+            <div class="contact-card-label">RewardMe</div>
+            <div class="contact-card-value">試してみる</div>
+          </div>
         </a>
       </div>
     </div>
   </section>
 
   <footer>
-    © 2026 MIZE — made with 💅 &amp; Rails
+    <p>© 2026 MIZE — made with 💅 &amp; Rails</p>
   </footer>
 
   <script>
-    const observer = new IntersectionObserver(
-      entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible') }),
-      { threshold: 0.1 }
-    )
+    // パーティクル生成
+    const container = document.getElementById('particles')
+    const EMOJIS = ['✨','🎀','💫','⭐','🌟','💜','🩷']
+    for (let i = 0; i < 18; i++) {
+      const p = document.createElement('div')
+      p.className = 'particle'
+      const useEmoji = Math.random() > 0.5
+      if (useEmoji) {
+        p.style.cssText = `
+          width: auto; height: auto; background: none; border-radius: 0;
+          font-size: ${10 + Math.random() * 12}px;
+          left: ${Math.random() * 100}%;
+          animation-duration: ${8 + Math.random() * 12}s;
+          animation-delay: ${Math.random() * 10}s;
+        `
+        p.textContent = EMOJIS[Math.floor(Math.random() * EMOJIS.length)]
+      } else {
+        p.style.cssText = `
+          width: ${2 + Math.random() * 4}px;
+          height: ${2 + Math.random() * 4}px;
+          left: ${Math.random() * 100}%;
+          animation-duration: ${6 + Math.random() * 10}s;
+          animation-delay: ${Math.random() * 10}s;
+          background: ${Math.random() > 0.5 ? '#ff8fab' : '#c96fff'};
+        `
+      }
+      container.appendChild(p)
+    }
+
+    // フェードイン
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible') })
+    }, { threshold: 0.15 })
     document.querySelectorAll('.fade-in').forEach(el => observer.observe(el))
   </script>
 </body>
