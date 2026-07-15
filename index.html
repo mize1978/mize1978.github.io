@@ -320,7 +320,19 @@ section {
   background: rgba(255,215,0,0.08); border: 1px solid rgba(255,215,0,0.18);
   color: var(--gold); font-family: 'Orbitron', monospace;
 }
-.work-desc { color: var(--muted); line-height: 1.85; margin-bottom: 28px; }
+.work-desc { color: var(--muted); line-height: 1.85; margin-bottom: 16px; }
+.work-points {
+  list-style: none; display: flex; flex-direction: column; gap: 8px;
+  margin-bottom: 28px;
+}
+.work-points li {
+  display: flex; align-items: flex-start; gap: 10px;
+  font-size: 0.87rem; color: var(--muted); line-height: 1.6;
+}
+.work-points li::before {
+  content: '✦'; color: var(--gold); font-size: 0.6rem;
+  flex-shrink: 0; margin-top: 4px; opacity: 0.75;
+}
 .work-link {
   display: inline-flex; align-items: center; gap: 7px;
   padding: 11px 26px; border-radius: 50px;
@@ -564,6 +576,11 @@ footer {
         タスクをこなしてキャラクターを育てる、ゲーミフィケーションTodoアプリ。
         EXP・コイン・ガチャ・ミニゲームなど、毎日のルーティンが楽しくなる仕掛けが満載。
       </p>
+      <ul class="work-points">
+        <li>Hotwire（Turbo / Stimulus）でゲームのような演出をSPA風に実装</li>
+        <li>completed_count をソース・オブ・トゥルースとして設計し、整合性を担保</li>
+        <li>UI/UXを意識し、毎日継続したくなる体験づくりを重視</li>
+      </ul>
 
       <!-- Feature Slider -->
       <div class="feat-section">
@@ -636,6 +653,11 @@ footer {
       <p class="work-desc">
         悩みをユーモラスな「バグ」として表示し、SNSでシェアできる診断アプリ。Railsで構築されたユニークなコンセプトのサービス。
       </p>
+      <ul class="work-points">
+        <li>SNSシェアを意識したコンテンツ設計で、拡散されやすい体験を追求</li>
+        <li>ユーモアのあるバグ生成ロジックをRailsで実装</li>
+        <li>シンプルなUIで誰でも直感的に使えるUXを重視</li>
+      </ul>
       <a href="https://bug-generator-zt5t.onrender.com" target="_blank" class="work-link">🚀 アプリを見る</a>
     </div>
 
