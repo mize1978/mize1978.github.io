@@ -274,6 +274,11 @@
     .contact-card-label { font-size: 11px; color: var(--sub); margin-bottom: 2px; }
     .contact-card-value { font-size: 14px; font-weight: 700; color: var(--text); }
 
+    /* ─── Works 2枚目（サブカード）─── */
+    .work-card--sub { margin-top: 20px; }
+    .work-card--sub .work-title { font-size: clamp(22px, 4vw, 30px); }
+    .work-card--sub .work-header { padding-bottom: 0; }
+
     /* ─── FOOTER ─── */
     footer {
       position: relative; z-index: 1;
@@ -504,6 +509,33 @@
     </div>
   </section>
 
+  <!-- Bug Generator -->
+      <div class="work-card work-card--sub fade-in">
+        <div class="work-header">
+          <div>
+            <div class="work-label">✦ Personal Project</div>
+            <div class="work-title">Bug Generator</div>
+            <p class="work-sub">人生、バグってない？ — エンジニアあるあるバグをランダム生成してXでシェアできるアプリ。Dockerで開発環境を構築し、カスタムドメインで公開。</p>
+          </div>
+          <div class="work-links">
+            <a href="https://savedata.quest/" target="_blank" class="btn btn-primary">▶ 試してみる</a>
+            <a href="https://github.com/mize1978/bug_generator" target="_blank" class="btn btn-outline">GitHub</a>
+          </div>
+        </div>
+        <div class="work-body">
+          <div class="work-stack">
+            <span class="stack-badge">Ruby on Rails</span>
+            <span class="stack-badge">Hotwire</span>
+            <span class="stack-badge">Stimulus</span>
+            <span class="stack-badge">Docker</span>
+            <span class="stack-badge">Render</span>
+            <span class="stack-badge">カスタムドメイン</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- CONTACT -->
   <section id="contact">
     <div class="section-inner">
@@ -523,6 +555,13 @@
           <div>
             <div class="contact-card-label">X (Twitter)</div>
             <div class="contact-card-value">@mizelategm66172</div>
+          </div>
+        </a>
+        <a href="https://zenn.dev/mizel1978" target="_blank" class="contact-card">
+          <span class="contact-card-icon">📝</span>
+          <div>
+            <div class="contact-card-label">Zenn</div>
+            <div class="contact-card-value">mizel1978</div>
           </div>
         </a>
         <a href="https://rewardme-qaq3.onrender.com" target="_blank" class="contact-card">
