@@ -274,6 +274,53 @@
     .contact-card-label { font-size: 11px; color: var(--sub); margin-bottom: 2px; }
     .contact-card-value { font-size: 14px; font-weight: 700; color: var(--text); }
 
+    /* ─── 機能スライダー ─── */
+    .feat-heading {
+      text-align: center; font-size: 15px; font-weight: 700;
+      color: var(--text); margin-bottom: 24px; letter-spacing: 1px;
+    }
+    .feat-slider {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 20px; position: relative;
+    }
+    .feat-track {
+      display: flex; gap: 12px; overflow: hidden;
+      flex: 1; justify-content: center; align-items: center;
+      height: 140px;
+    }
+    .feat-card {
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+      min-width: 110px; height: 120px; border-radius: 16px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.03);
+      cursor: pointer; transition: all 0.3s ease;
+      flex-shrink: 0; opacity: 0.45; transform: scale(0.88);
+    }
+    .feat-card.active {
+      opacity: 1; transform: scale(1.06);
+      background: rgba(255,143,171,0.10);
+      border-color: var(--pink);
+      box-shadow: 0 0 24px rgba(255,143,171,0.25);
+    }
+    .feat-card.adjacent { opacity: 0.7; transform: scale(0.95); }
+    .feat-icon { font-size: 28px; }
+    .feat-no { font-size: 10px; color: var(--sub); letter-spacing: 1px; }
+    .feat-name { font-size: 12px; font-weight: 700; color: var(--text); text-align: center; padding: 0 8px; }
+    .feat-arrow {
+      background: rgba(255,143,171,0.10); border: 1px solid var(--border);
+      color: var(--pink); width: 36px; height: 36px; border-radius: 50%;
+      cursor: pointer; font-size: 12px; flex-shrink: 0;
+      transition: all 0.2s; display: flex; align-items: center; justify-content: center;
+    }
+    .feat-arrow:hover { background: rgba(255,143,171,0.25); border-color: var(--pink); }
+    .feat-desc {
+      text-align: center; font-size: 13px; color: var(--sub); line-height: 1.8;
+      padding: 16px 24px; border-radius: 12px;
+      background: rgba(255,143,171,0.04); border: 1px solid rgba(255,160,200,0.10);
+      margin-bottom: 28px; min-height: 60px;
+      transition: opacity 0.2s;
+    }
+
     /* ─── Works 2枚目（サブカード）─── */
     .work-card--sub { margin-top: 20px; }
     .work-card--sub .work-title { font-size: clamp(22px, 4vw, 30px); }
@@ -451,49 +498,51 @@
           </div>
         </div>
         <div class="work-body">
-          <div class="work-features">
-            <div class="feature-item">
-              <span class="feature-icon">🎀</span>
-              <div class="feature-text">
-                <strong>キャラ育成</strong>
-                タスク完了でリボンちゃんが4段階に進化。オリジナルイラスト付き。
+          <!-- 機能スライダー -->
+          <p class="feat-heading">このアプリでできること</p>
+          <div class="feat-slider" id="featSlider">
+            <button class="feat-arrow feat-arrow--prev" onclick="slideFeature(-1)">◀</button>
+            <div class="feat-track" id="featTrack">
+              <div class="feat-card" data-idx="0">
+                <span class="feat-icon">📋</span>
+                <span class="feat-no">機能 01</span>
+                <span class="feat-name">タスク管理</span>
+              </div>
+              <div class="feat-card" data-idx="1">
+                <span class="feat-icon">🎀</span>
+                <span class="feat-no">機能 02</span>
+                <span class="feat-name">キャラ育成</span>
+              </div>
+              <div class="feat-card" data-idx="2">
+                <span class="feat-icon">🎲</span>
+                <span class="feat-no">機能 03</span>
+                <span class="feat-name">ガチャ</span>
+              </div>
+              <div class="feat-card" data-idx="3">
+                <span class="feat-icon">🎮</span>
+                <span class="feat-no">機能 04</span>
+                <span class="feat-name">ミニゲーム</span>
+              </div>
+              <div class="feat-card" data-idx="4">
+                <span class="feat-icon">🏠</span>
+                <span class="feat-no">機能 05</span>
+                <span class="feat-name">マイルーム</span>
+              </div>
+              <div class="feat-card" data-idx="5">
+                <span class="feat-icon">🎵</span>
+                <span class="feat-no">機能 06</span>
+                <span class="feat-name">BGM</span>
+              </div>
+              <div class="feat-card" data-idx="6">
+                <span class="feat-icon">🎁</span>
+                <span class="feat-no">機能 07</span>
+                <span class="feat-name">ログインボーナス</span>
               </div>
             </div>
-            <div class="feature-item">
-              <span class="feature-icon">🎲</span>
-              <div class="feature-text">
-                <strong>ガチャ &amp; ミニゲーム</strong>
-                コインでガチャを回し、パズル・マッチゲームなど4種のミニゲームを搭載。
-              </div>
-            </div>
-            <div class="feature-item">
-              <span class="feature-icon">🏠</span>
-              <div class="feature-text">
-                <strong>マイルーム</strong>
-                BGM・家具・壁紙でカスタマイズできる自分だけの部屋。
-              </div>
-            </div>
-            <div class="feature-item">
-              <span class="feature-icon">🔐</span>
-              <div class="feature-text">
-                <strong>認証自作</strong>
-                Deviseを使わずセッション管理を独自実装。
-              </div>
-            </div>
-            <div class="feature-item">
-              <span class="feature-icon">✨</span>
-              <div class="feature-text">
-                <strong>演出こだわり</strong>
-                進化アニメーション・紙吹雪・ログインボーナスなど没入感重視の設計。
-              </div>
-            </div>
-            <div class="feature-item">
-              <span class="feature-icon">📱</span>
-              <div class="feature-text">
-                <strong>レスポンシブ</strong>
-                PC・スマホ両対応。Hotwireでページ遷移なしのスムーズな操作。
-              </div>
-            </div>
+            <button class="feat-arrow feat-arrow--next" onclick="slideFeature(1)">▶</button>
+          </div>
+          <div class="feat-desc" id="featDesc">
+            毎日のタスクを登録・完了するとEXPとコインが手に入る。完了するほどキャラが育ち、アプリ全体が解放されていく。
           </div>
           <div class="work-stack">
             <span class="stack-badge">Ruby on Rails</span>
@@ -609,6 +658,38 @@
     }
 
     // フェードイン
+    // 機能スライダー
+    const FEAT_DESCS = [
+      "毎日のタスクを登録・完了するとEXPとコインが手に入る。完了するほどキャラが育ち、アプリ全体が解放されていく。",
+      "タスクをこなすとリボンちゃんが成長し、たまご→ベビー→リボンちゃん→プリンセスの4段階に進化。オリジナルイラスト付き。",
+      "貯めたコインでガチャを回して限定アイテムをゲット。SSR演出付きのドキドキ体験。",
+      "パズル・マッチ・ポーション錬成・タップの4種類。ミニゲームでもコインが稼げる。",
+      "BGM・家具・壁紙を自分好みにカスタマイズできる。タスクをこなすほど部屋が豪華になっていく。",
+      "部屋のテーマに合わせたBGMが流れる。音量調整・ミュートもワンタッチで操作できる。",
+      "毎日ログインするだけでコインや報酬がもらえる。継続モチベーションを上げる仕掛け。",
+    ]
+    let featIdx = 0
+    function updateFeature() {
+      document.querySelectorAll('.feat-card').forEach((c, i) => {
+        c.classList.remove('active', 'adjacent')
+        const diff = Math.abs(i - featIdx)
+        if (diff === 0) c.classList.add('active')
+        else if (diff === 1) c.classList.add('adjacent')
+      })
+      const desc = document.getElementById('featDesc')
+      desc.style.opacity = '0'
+      setTimeout(() => { desc.textContent = FEAT_DESCS[featIdx]; desc.style.opacity = '1' }, 150)
+    }
+    function slideFeature(dir) {
+      const cards = document.querySelectorAll('.feat-card')
+      featIdx = (featIdx + dir + cards.length) % cards.length
+      updateFeature()
+    }
+    document.querySelectorAll('.feat-card').forEach((c, i) => {
+      c.addEventListener('click', () => { featIdx = i; updateFeature() })
+    })
+    updateFeature()
+
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible') })
     }, { threshold: 0.15 })
