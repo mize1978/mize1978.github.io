@@ -176,7 +176,11 @@ section {
 .hero-tagline {
   font-family: 'Orbitron', monospace;
   font-size: clamp(0.65rem,1.5vw,0.85rem);
-  letter-spacing: 0.25em; color: var(--muted); margin-bottom: 20px; text-transform: uppercase;
+  letter-spacing: 0.25em; color: var(--muted); margin-bottom: 10px; text-transform: uppercase;
+}
+.hero-desc {
+  font-size: clamp(0.85rem,1.8vw,1rem);
+  color: var(--muted); margin-bottom: 20px; letter-spacing: 0.03em;
 }
 .hero-sub {
   font-size: clamp(1.1rem,2.8vw,1.5rem); font-weight: 700;
@@ -260,7 +264,13 @@ section {
 }
 
 /* ── Skills ── */
-.skills-cloud { display: flex; flex-wrap: wrap; gap: 12px; }
+.skills-cloud { display: flex; flex-direction: column; gap: 24px; }
+.skill-group { display: flex; flex-direction: column; gap: 10px; }
+.skill-group-label {
+  font-family: 'Orbitron', monospace; font-size: 0.62rem;
+  letter-spacing: 0.2em; color: rgba(255,215,0,0.5); text-transform: uppercase;
+}
+.skill-group-tags { display: flex; flex-wrap: wrap; gap: 10px; }
 .skill-tag {
   padding: 8px 20px; border-radius: 50px;
   font-family: 'Orbitron', monospace; font-size: 0.72rem; font-weight: 700;
@@ -430,6 +440,7 @@ footer {
 <div id="hero">
   <div>
     <p class="hero-tagline">Ruby on Rails Developer</p>
+    <p class="hero-desc">個人開発を通じて、企画・設計・実装・デプロイまで一貫して取り組んでいます。</p>
     <h1 class="hero-name" id="heroName">
       <span class="letter">M</span><span class="letter">I</span><span class="letter">Z</span><span class="letter">E</span>
     </h1>
@@ -462,7 +473,8 @@ footer {
         Ruby on Railsを中心にWebアプリを開発しています。<br>
         Hotwire / Stimulus でインタラクティブな体験を作るのが好き。<br>
         かわいいデザインとゲームっぽい仕掛けが得意で、<br>
-        自分が使いたいものを作るスタイルで日々開発中。
+        自分が使いたいものを作るスタイルで日々開発中。<br><br>
+        ユーザー目線で課題を考え、使いやすいサービスを作ることを大切にしています。
       </p>
       <div class="about-details reveal rd2">
         <div class="about-detail">
@@ -487,16 +499,44 @@ footer {
   <p class="section-label reveal">Tech Stack</p>
   <h2 class="section-title reveal"><span class="grad-text">Skills</span></h2>
   <div class="skills-cloud" id="skillsCloud">
-    <span class="skill-tag gold">Ruby on Rails</span>
-    <span class="skill-tag gold">Ruby</span>
-    <span class="skill-tag gold">Hotwire</span>
-    <span class="skill-tag gold">Stimulus</span>
-    <span class="skill-tag gold">Turbo</span>
-    <span class="skill-tag pink">HTML / CSS</span>
-    <span class="skill-tag pink">JavaScript</span>
-    <span class="skill-tag pink">PostgreSQL</span>
-    <span class="skill-tag pink">GitHub</span>
-    <span class="skill-tag pink">Render</span>
+    <div class="skill-group">
+      <p class="skill-group-label">Backend</p>
+      <div class="skill-group-tags">
+        <span class="skill-tag gold">Ruby</span>
+        <span class="skill-tag gold">Ruby on Rails</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <p class="skill-group-label">Frontend</p>
+      <div class="skill-group-tags">
+        <span class="skill-tag pink">HTML</span>
+        <span class="skill-tag pink">CSS</span>
+        <span class="skill-tag pink">JavaScript</span>
+        <span class="skill-tag pink">Hotwire</span>
+        <span class="skill-tag pink">Turbo</span>
+        <span class="skill-tag pink">Stimulus</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <p class="skill-group-label">Database</p>
+      <div class="skill-group-tags">
+        <span class="skill-tag gold">PostgreSQL</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <p class="skill-group-label">Infrastructure</p>
+      <div class="skill-group-tags">
+        <span class="skill-tag pink">Render</span>
+        <span class="skill-tag pink">Docker</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <p class="skill-group-label">Tools</p>
+      <div class="skill-group-tags">
+        <span class="skill-tag gold">Git</span>
+        <span class="skill-tag gold">GitHub</span>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -594,7 +634,7 @@ footer {
         </div>
       </div>
       <p class="work-desc">
-        バグを生成するWebアプリ。Railsで構築されたユニークなコンセプトのサービス。
+        悩みをユーモラスな「バグ」として表示し、SNSでシェアできる診断アプリ。Railsで構築されたユニークなコンセプトのサービス。
       </p>
       <a href="https://bug-generator-zt5t.onrender.com" target="_blank" class="work-link">🚀 アプリを見る</a>
     </div>
@@ -608,7 +648,8 @@ footer {
   <h2 class="section-title reveal"><span class="grad-text">Contact</span></h2>
   <div class="contact-inner">
     <p class="contact-lead reveal rd1">
-      お仕事のご依頼・技術的なご質問など、<br>お気軽にどうぞ！
+      お仕事のご依頼・技術的なご質問など、お気軽にどうぞ！<br>
+      GitHubでは日々のコミットを、Zennでは技術記事を発信しています。
     </p>
     <div class="contact-links reveal rd2">
       <a href="https://x.com/mizelategm66172" target="_blank" class="clink clink-x">𝕏 Twitter / X</a>
@@ -732,12 +773,14 @@ document.querySelectorAll('.reveal').forEach(el => revObs.observe(el))
 
 const skillObs = new IntersectionObserver(entries => {
   if (entries[0].isIntersecting) {
-    document.querySelectorAll('.skill-tag').forEach((el, i) => {
-      setTimeout(() => el.classList.add('visible'), i * 55)
+    document.querySelectorAll('.skill-group').forEach((group, gi) => {
+      group.querySelectorAll('.skill-tag').forEach((el, ti) => {
+        setTimeout(() => el.classList.add('visible'), gi * 80 + ti * 50)
+      })
     })
     skillObs.disconnect()
   }
-}, { threshold: 0.2 })
+}, { threshold: 0.1 })
 skillObs.observe(document.getElementById('skillsCloud'))
 
 // ── Feature Slider ──
