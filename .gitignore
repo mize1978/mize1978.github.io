@@ -1,0 +1,5 @@
+# local backups (keep locally, never publish)
+*.bak
+
+# macOS
+.DS_Store

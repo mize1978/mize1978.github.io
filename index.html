@@ -3,21 +3,30 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MIZE | Portfolio</title>
+<title>MIZE — Product Creator</title>
+<meta name="description" content="MIZE — Product Creator. Ruby on Rails・Laravel・Claude API・C++/OpenGL。企画から実装・デプロイまで一貫して、アイデアを体験として憶えられるプロダクトに翻訳します。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="MIZE — Product Creator">
+<meta property="og:description" content="アイデアを、価値あるプロダクトに。Build things people enjoy using.">
+<meta property="og:image" content="creator-desk.jpg">
+<meta property="og:url" content="https://mize1978.github.io/">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;900&family=Zen+Kaku+Gothic+New:wght@300;400;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;900&family=Zen+Kaku+Gothic+New:wght@300;400;500;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --gold:       #ffd700;
-  --gold-light: #ffe44d;
-  --gold-dark:  #b8960c;
-  --pink:       #ff6eb4;
-  --pink-light: #ff9de0;
-  --pink-dark:  #cc3380;
-  --bg:         #0a0a0a;
-  --text:       #f5f0e8;
-  --muted:      rgba(245,240,232,0.55);
+  --gold:       #e8b24d;
+  --gold-light: #f6d68a;
+  --gold-dark:  #a9781f;
+  --amber:      #d99a30;
+  --zenn:       #3ea8ff;
+  --bg:         #0b0a09;
+  --bg-soft:    #14110c;
+  --line:       rgba(232,178,77,0.14);
+  --line-soft:  rgba(255,255,255,0.07);
+  --text:       #f1ebe0;
+  --muted:      rgba(241,235,224,0.56);
 }
 
 *,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -33,7 +42,7 @@ body {
 
 /* ── Custom Cursor ── */
 #cursor {
-  position: fixed; width: 10px; height: 10px;
+  position: fixed; width: 8px; height: 8px;
   background: var(--gold); border-radius: 50%;
   pointer-events: none; z-index: 10000;
   transform: translate(-50%,-50%);
@@ -41,42 +50,33 @@ body {
 }
 #cursor-ring {
   position: fixed; width: 30px; height: 30px;
-  border: 1.5px solid rgba(255,215,0,0.45); border-radius: 50%;
+  border: 1.5px solid rgba(232,178,77,0.4); border-radius: 50%;
   pointer-events: none; z-index: 9999;
   transform: translate(-50%,-50%);
-}
-
-/* ── Sparkles ── */
-.sparkle {
-  position: fixed; pointer-events: none; z-index: 9998; font-size: 10px;
-  animation: sparkle-fly 0.75s ease forwards;
-}
-@keyframes sparkle-fly {
-  0%   { opacity: 1; transform: translate(0,0) scale(1) rotate(0deg); }
-  100% { opacity: 0; transform: translate(var(--tx),var(--ty)) scale(0.2) rotate(180deg); }
+  transition: width .25s, height .25s, border-color .25s;
 }
 
 /* ── Loader ── */
 #loader {
   position: fixed; inset: 0; background: var(--bg); z-index: 99999;
   display: flex; flex-direction: column;
-  align-items: center; justify-content: center; gap: 20px;
+  align-items: center; justify-content: center; gap: 22px;
   transition: opacity 0.9s ease, visibility 0.9s ease;
 }
 #loader.hidden { opacity: 0; visibility: hidden; }
 .loader-ring {
-  width: 52px; height: 52px;
-  border: 3px solid rgba(255,215,0,0.15);
-  border-top-color: var(--gold); border-right-color: var(--pink);
-  border-radius: 50%; animation: spin 0.8s linear infinite;
+  width: 50px; height: 50px;
+  border: 2px solid rgba(232,178,77,0.14);
+  border-top-color: var(--gold);
+  border-radius: 50%; animation: spin 0.85s linear infinite;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 .loader-text {
-  font-family: 'Cinzel', serif; font-size: 2.8rem; font-weight: 900;
-  background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--pink), var(--pink-light));
+  font-family: 'Cinzel', serif; font-size: 2.6rem; font-weight: 900; letter-spacing: .12em;
+  background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--amber));
   background-size: 200% auto;
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-  animation: shimmer 1.5s linear infinite;
+  animation: shimmer 2s linear infinite;
 }
 
 /* ── Canvas ── */
@@ -90,26 +90,25 @@ nav {
   transition: background 0.35s, backdrop-filter 0.35s, border-color 0.35s;
 }
 nav.scrolled {
-  background: rgba(10,10,10,0.82);
+  background: rgba(11,10,9,0.82);
   backdrop-filter: blur(14px);
-  border-bottom: 1px solid rgba(255,215,0,0.1);
+  border-bottom: 1px solid var(--line);
 }
 .nav-logo {
-  font-family: 'Cinzel', serif; font-size: 1.3rem; font-weight: 900;
-  background: linear-gradient(135deg, var(--gold), var(--pink));
+  font-family: 'Cinzel', serif; font-size: 1.3rem; font-weight: 900; letter-spacing: .08em;
+  background: linear-gradient(135deg, var(--gold-light), var(--amber));
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
   text-decoration: none;
 }
 .nav-links { display: flex; gap: 32px; list-style: none; }
 .nav-links a {
   color: var(--muted); text-decoration: none;
-  font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase;
+  font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase;
   transition: color 0.2s; position: relative;
 }
 .nav-links a::after {
-  content: ''; position: absolute; bottom: -3px; left: 0;
-  width: 0; height: 1px;
-  background: linear-gradient(90deg, var(--gold), var(--pink));
+  content: ''; position: absolute; bottom: -4px; left: 0;
+  width: 0; height: 1px; background: var(--gold);
   transition: width 0.3s;
 }
 .nav-links a:hover { color: var(--text); }
@@ -120,135 +119,126 @@ nav.scrolled {
   0%   { background-position: 0% center; }
   100% { background-position: 200% center; }
 }
-
 .reveal {
-  opacity: 0; transform: translateY(28px);
+  opacity: 0; transform: translateY(26px);
   transition: opacity 0.75s ease, transform 0.75s ease;
 }
 .reveal.visible { opacity: 1; transform: translateY(0); }
-.rd1 { transition-delay: 0.1s; }
-.rd2 { transition-delay: 0.2s; }
-.rd3 { transition-delay: 0.3s; }
+.rd1 { transition-delay: 0.08s; }
+.rd2 { transition-delay: 0.16s; }
+.rd3 { transition-delay: 0.24s; }
 
 section {
   position: relative; z-index: 1;
-  padding: 110px 48px;
-  max-width: 1100px; margin: 0 auto;
+  padding: 120px 48px;
+  max-width: 1080px; margin: 0 auto;
 }
 .section-label {
   font-family: 'Orbitron', monospace;
-  font-size: 0.7rem; letter-spacing: 0.3em; color: var(--gold);
-  text-transform: uppercase; margin-bottom: 10px; opacity: 0.75;
+  font-size: 0.68rem; letter-spacing: 0.32em; color: var(--gold);
+  text-transform: uppercase; margin-bottom: 12px; opacity: 0.8;
 }
 .section-title {
   font-family: 'Cinzel', serif;
-  font-size: clamp(2.2rem,5vw,3.8rem); font-weight: 700; margin-bottom: 64px;
+  font-size: clamp(2.1rem,5vw,3.6rem); font-weight: 700; margin-bottom: 60px; letter-spacing: .02em;
 }
 .grad-text {
-  background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--pink));
+  background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--amber));
   background-size: 200% auto;
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-  animation: shimmer 4s linear infinite;
+  animation: shimmer 5s linear infinite;
 }
 
 /* ── Hero ── */
 #hero {
   min-height: 100vh; position: relative;
-  display: flex; align-items: center; justify-content: center;
-  padding: 0 48px; max-width: 1200px; margin: 0 auto; width: 100%;
-  gap: 60px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 120px 24px 96px; max-width: 1000px; margin: 0 auto; width: 100%;
+  gap: 0; text-align: center;
 }
-.hero-left { flex: 1; text-align: left; }
-.hero-right {
-  flex-shrink: 0; width: 420px;
-  display: flex; align-items: center; justify-content: center;
-  position: relative;
-}
-.hero-image {
-  width: 100%; max-width: 420px; border-radius: 50%;
-  box-shadow: 0 0 60px rgba(255,110,180,0.25), 0 0 120px rgba(255,215,0,0.1);
-  animation: hero-float 4s ease-in-out infinite;
-}
-@keyframes hero-float {
-  0%,100% { transform: translateY(0); }
-  50%      { transform: translateY(-12px); }
+.hero-tagline {
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(0.62rem,1.5vw,0.82rem);
+  letter-spacing: 0.28em; color: var(--muted); margin-bottom: 14px; text-transform: uppercase;
 }
 .hero-name {
   font-family: 'Cinzel', serif;
-  font-size: clamp(6rem,20vw,16rem); font-weight: 900; line-height: 1;
-  margin-bottom: 12px; display: inline-block;
+  font-size: clamp(3.5rem,11vw,7.5rem); font-weight: 900; line-height: 1;
+  margin-bottom: 16px; display: inline-block;
 }
 .hero-name .letter {
-  display: inline-block;
-  background: linear-gradient(150deg, var(--gold-light) 0%, var(--gold) 40%, var(--pink) 75%, var(--pink-light) 100%);
+  display: inline-block; letter-spacing: .04em;
+  background: linear-gradient(150deg, #fff2cc 0%, var(--gold-light) 45%, var(--amber) 100%);
   background-size: 200% auto;
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-  opacity: 0; transform: translateY(50px) scale(0.8);
+  opacity: 0; transform: translateY(46px) scale(0.82);
   transition: opacity 0.6s cubic-bezier(0.175,0.885,0.32,1.275),
               transform 0.6s cubic-bezier(0.175,0.885,0.32,1.275);
 }
-.hero-name .letter.in { opacity: 1; transform: translateY(0) scale(1); animation: shimmer 4s linear infinite 0.6s; }
-
-@media (max-width: 900px) {
-  #hero { flex-direction: column; text-align: center; padding: 100px 24px 60px; gap: 40px; }
-  .hero-left { text-align: center; }
-  .hero-right { width: 280px; }
-  .hero-btns { justify-content: center; }
-}
-
-.hero-tagline {
-  font-family: 'Orbitron', monospace;
-  font-size: clamp(0.65rem,1.5vw,0.85rem);
-  letter-spacing: 0.25em; color: var(--muted); margin-bottom: 10px; text-transform: uppercase;
-}
-.hero-desc {
-  font-size: clamp(0.85rem,1.8vw,1rem);
-  color: var(--muted); margin-bottom: 20px; letter-spacing: 0.03em;
-}
+.hero-name .letter.in { opacity: 1; transform: translateY(0) scale(1); animation: shimmer 5s linear infinite 0.6s; }
 .hero-sub {
-  font-size: clamp(1.1rem,2.8vw,1.5rem); font-weight: 700;
-  margin-bottom: 52px; min-height: 2.2em;
+  font-size: clamp(1rem,2.6vw,1.4rem); font-weight: 500;
+  margin-bottom: 6px; min-height: 2.2em; letter-spacing: .02em;
+}
+.hero-jp {
+  font-size: clamp(.82rem,1.9vw,.98rem); color: var(--muted); font-weight: 300;
+  letter-spacing: .05em; margin-bottom: 4px;
 }
 .typewriter-text {
-  background: linear-gradient(90deg, var(--gold), var(--pink));
+  background: linear-gradient(90deg, var(--gold-light), var(--amber));
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }
 .typewriter-cursor {
   display: inline-block; width: 2px; height: 1.1em;
-  background: var(--pink); margin-left: 3px; vertical-align: middle;
+  background: var(--gold); margin-left: 3px; vertical-align: middle;
   animation: blink 0.9s step-end infinite;
 }
 @keyframes blink { 50% { opacity: 0; } }
+
+.hero-banner-link {
+  display: block; width: 100%; max-width: 880px;
+  margin: 30px auto 38px; text-decoration: none;
+}
+.hero-banner {
+  width: 100%; height: auto; display: block; border-radius: 16px;
+  border: 1px solid var(--line);
+  box-shadow: 0 24px 70px rgba(0,0,0,0.5);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+.hero-banner-link:hover .hero-banner {
+  transform: translateY(-4px);
+  box-shadow: 0 32px 84px rgba(0,0,0,0.6);
+}
 
 .hero-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
 .btn {
   display: inline-flex; align-items: center; gap: 8px;
   padding: 14px 34px; border-radius: 50px;
-  font-size: 0.88rem; font-weight: 700; letter-spacing: 0.05em;
+  font-size: 0.86rem; font-weight: 700; letter-spacing: 0.05em;
   text-decoration: none; transition: all 0.3s; cursor: none;
 }
 .btn-gold {
   background: linear-gradient(135deg, var(--gold-dark), var(--gold), var(--gold-light));
-  color: #0a0a0a; box-shadow: 0 0 24px rgba(255,215,0,0.25);
+  color: #17130a; box-shadow: 0 0 24px rgba(232,178,77,0.22);
 }
-.btn-gold:hover { transform: translateY(-3px); box-shadow: 0 0 48px rgba(255,215,0,0.55); }
+.btn-gold:hover { transform: translateY(-3px); box-shadow: 0 0 48px rgba(232,178,77,0.5); }
 .btn-outline {
-  border: 1.5px solid rgba(255,110,180,0.45);
-  color: var(--pink-light); background: rgba(255,110,180,0.05);
+  border: 1.5px solid rgba(232,178,77,0.4);
+  color: var(--gold-light); background: rgba(232,178,77,0.04);
 }
 .btn-outline:hover {
-  border-color: var(--pink); background: rgba(255,110,180,0.12);
-  box-shadow: 0 0 32px rgba(255,110,180,0.3); transform: translateY(-3px);
+  border-color: var(--gold); background: rgba(232,178,77,0.12);
+  box-shadow: 0 0 32px rgba(232,178,77,0.24); transform: translateY(-3px);
 }
 
 .hero-scroll-hint {
   position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
   display: flex; flex-direction: column; align-items: center; gap: 8px;
-  color: rgba(255,215,0,0.4); font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase;
+  color: rgba(232,178,77,0.4); font-size: 0.62rem; letter-spacing: 0.25em; text-transform: uppercase;
   animation: bounce 2s ease-in-out infinite;
 }
 .scroll-chevron {
-  width: 16px; height: 16px;
+  width: 15px; height: 15px;
   border-right: 1.5px solid var(--gold); border-bottom: 1.5px solid var(--gold);
   transform: rotate(45deg); opacity: 0.5;
 }
@@ -258,188 +248,182 @@ section {
 }
 
 /* ── About ── */
-.about-grid { display: grid; grid-template-columns: 180px 1fr; gap: 64px; align-items: start; }
+.about-grid { display: grid; grid-template-columns: 170px 1fr; gap: 60px; align-items: start; }
 .about-avatar-wrap { display: flex; flex-direction: column; align-items: center; gap: 16px; }
 .about-avatar {
   width: 150px; height: 150px; border-radius: 50%;
-  background: linear-gradient(135deg, #1a0a00, #2a0030);
+  background: radial-gradient(circle at 40% 32%, #20160a, #0d0b08);
   display: flex; align-items: center; justify-content: center;
-  font-size: 4.5rem; position: relative;
+  font-family: 'Cinzel', serif; font-size: 4rem; font-weight: 900;
+  color: var(--gold-light); position: relative;
 }
 .about-avatar::before {
-  content: ''; position: absolute; inset: -3px; border-radius: 50%;
-  background: linear-gradient(135deg, var(--gold), var(--pink), var(--gold));
-  background-size: 200% auto; animation: shimmer 2.5s linear infinite; z-index: -1;
+  content: ''; position: absolute; inset: -2px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold), var(--amber), var(--gold-dark));
+  background-size: 200% auto; animation: shimmer 4s linear infinite; z-index: -1;
 }
 .about-name {
-  font-family: 'Cinzel', serif; font-size: 1.3rem; font-weight: 700;
-  background: linear-gradient(135deg, var(--gold), var(--pink));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  font-family: 'Cinzel', serif; font-size: 1.25rem; font-weight: 700; letter-spacing: .06em;
+  color: var(--gold-light);
 }
-.about-body { line-height: 1.85; color: var(--muted); }
-.about-body strong { color: var(--text); }
-.about-details { display: flex; flex-direction: column; gap: 12px; margin-top: 28px; }
-.about-detail { display: flex; align-items: center; gap: 12px; font-size: 0.88rem; color: var(--muted); }
+.about-role { font-family: 'Orbitron', monospace; font-size: .58rem; letter-spacing: .18em; color: var(--muted); text-transform: uppercase; }
+.about-body { line-height: 1.95; color: var(--muted); font-weight: 300; }
+.about-body strong { color: var(--text); font-weight: 500; }
+.about-details { display: flex; flex-wrap: wrap; gap: 12px 26px; margin-top: 30px; }
+.about-detail { display: flex; align-items: center; gap: 11px; font-size: 0.86rem; color: var(--muted); }
 .detail-icon {
   width: 32px; height: 32px; border-radius: 8px;
-  background: rgba(255,215,0,0.08); border: 1px solid rgba(255,215,0,0.18);
-  display: flex; align-items: center; justify-content: center; font-size: 0.85rem; flex-shrink: 0;
+  background: rgba(232,178,77,0.07); border: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: center; font-size: 0.9rem; flex-shrink: 0;
 }
 
 /* ── Skills ── */
-.skills-cloud { display: flex; flex-direction: column; gap: 24px; }
-.skill-group { display: flex; flex-direction: column; gap: 10px; }
-.skill-group-label {
-  font-family: 'Orbitron', monospace; font-size: 0.62rem;
-  letter-spacing: 0.2em; color: rgba(255,215,0,0.5); text-transform: uppercase;
+.skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(262px,1fr)); gap: 14px; }
+.skill-card {
+  background: rgba(255,240,215,0.02);
+  border: 1px solid var(--line); border-radius: 16px; padding: 26px 24px;
+  opacity: 0; transform: translateY(22px);
+  transition: opacity .6s ease, transform .6s ease, border-color .35s, box-shadow .35s;
 }
-.skill-group-tags { display: flex; flex-wrap: wrap; gap: 10px; }
+.skill-card.visible { opacity: 1; transform: translateY(0); }
+.skill-card:hover {
+  border-color: rgba(232,178,77,0.34);
+  box-shadow: 0 16px 44px rgba(0,0,0,0.35), 0 0 30px rgba(232,178,77,0.05);
+}
+.skill-card-head { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+.skill-card-icon {
+  width: 40px; height: 40px; border-radius: 11px; flex-shrink: 0;
+  background: rgba(232,178,77,0.08); border: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: center; font-size: 1.15rem;
+}
+.skill-card-title {
+  font-family: 'Orbitron', monospace; font-size: 0.7rem; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--gold-light);
+}
+.skill-card-tags { display: flex; flex-wrap: wrap; gap: 8px; }
 .skill-tag {
-  padding: 8px 20px; border-radius: 50px;
-  font-family: 'Orbitron', monospace; font-size: 0.72rem; font-weight: 700;
-  letter-spacing: 0.05em; border: 1px solid;
-  opacity: 0; transform: scale(0.75);
-  transition: opacity 0.4s ease, transform 0.4s ease, background 0.3s, box-shadow 0.3s;
+  padding: 7px 16px; border-radius: 50px;
+  font-family: 'Orbitron', monospace; font-size: 0.68rem; font-weight: 400; letter-spacing: 0.04em;
+  border: 1px solid var(--line); color: var(--gold-light); background: rgba(232,178,77,0.04);
+  transition: background 0.3s, box-shadow 0.3s, border-color .3s;
 }
-.skill-tag.visible { opacity: 1; transform: scale(1); }
-.skill-tag.gold { border-color: rgba(255,215,0,0.35); color: var(--gold); background: rgba(255,215,0,0.04); }
-.skill-tag.gold:hover { background: rgba(255,215,0,0.14); box-shadow: 0 0 18px rgba(255,215,0,0.3); }
-.skill-tag.pink { border-color: rgba(255,110,180,0.35); color: var(--pink-light); background: rgba(255,110,180,0.04); }
-.skill-tag.pink:hover { background: rgba(255,110,180,0.14); box-shadow: 0 0 18px rgba(255,110,180,0.3); }
+.skill-tag:hover { background: rgba(232,178,77,0.13); border-color: rgba(232,178,77,0.4); box-shadow: 0 0 14px rgba(232,178,77,0.2); }
+.skill-tag.core { border-color: rgba(232,178,77,0.34); background: rgba(232,178,77,0.08); color: var(--gold); }
 
 /* ── Work Card ── */
-.works-grid { display: flex; flex-direction: column; gap: 56px; }
+.works-grid { display: flex; flex-direction: column; gap: 44px; }
 .work-card {
-  background: linear-gradient(135deg, rgba(255,215,0,0.025), rgba(255,110,180,0.025));
-  border: 1px solid rgba(255,215,0,0.12);
-  border-radius: 20px; padding: 40px; position: relative; overflow: hidden;
-  transition: border-color 0.35s, box-shadow 0.35s;
+  background: rgba(255,240,215,0.02);
+  border: 1px solid var(--line);
+  border-radius: 20px; overflow: hidden; position: relative;
+  transition: border-color 0.35s, box-shadow 0.35s, transform .35s;
 }
-.work-card::after {
-  content: ''; position: absolute; top: 0; left: -110%;
-  width: 60%; height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,215,0,0.06), transparent);
-  transition: left 0.65s ease;
-}
-.work-card:hover::after { left: 160%; }
 .work-card:hover {
-  border-color: rgba(255,215,0,0.38);
-  box-shadow: 0 0 48px rgba(255,215,0,0.08), 0 0 80px rgba(255,110,180,0.05);
+  border-color: rgba(232,178,77,0.34);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 40px rgba(232,178,77,0.05);
+  transform: translateY(-3px);
 }
-.work-header { display: flex; align-items: flex-start; gap: 20px; margin-bottom: 24px; }
-.work-icon {
-  width: 62px; height: 62px; border-radius: 16px; flex-shrink: 0;
-  background: rgba(255,215,0,0.08); border: 1px solid rgba(255,215,0,0.18);
-  display: flex; align-items: center; justify-content: center; font-size: 2.2rem;
+.work-banner-link { display: block; position: relative; overflow: hidden; }
+.work-banner {
+  width: 100%; height: auto; display: block;
+  border-bottom: 1px solid var(--line);
+  transition: transform 0.6s ease;
 }
+.work-banner-link:hover .work-banner { transform: scale(1.02); }
+.work-flag {
+  position: absolute; top: 16px; left: 16px; z-index: 2;
+  font-family: 'Orbitron', monospace; font-size: 0.58rem; letter-spacing: .14em; text-transform: uppercase;
+  padding: 6px 14px; border-radius: 50px;
+  background: rgba(11,10,9,0.72); backdrop-filter: blur(6px);
+  border: 1px solid rgba(232,178,77,0.4); color: var(--gold-light);
+}
+.work-flag.dim { border-color: rgba(255,255,255,0.18); color: var(--muted); }
+.work-body { padding: 32px 36px 34px; }
+.work-head { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; margin-bottom: 12px; }
 .work-title {
-  font-family: 'Cinzel', serif; font-size: 1.6rem; font-weight: 700; margin-bottom: 8px;
-  background: linear-gradient(135deg, var(--gold), var(--pink));
+  font-family: 'Cinzel', serif; font-size: 1.55rem; font-weight: 700; letter-spacing: .02em;
+  background: linear-gradient(135deg, var(--gold-light), var(--amber));
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }
-.work-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+.work-tags { display: flex; flex-wrap: wrap; gap: 6px; }
 .work-tag {
-  font-size: 0.68rem; padding: 3px 10px; border-radius: 50px;
-  background: rgba(255,215,0,0.08); border: 1px solid rgba(255,215,0,0.18);
-  color: var(--gold); font-family: 'Orbitron', monospace;
+  font-size: 0.66rem; padding: 3px 11px; border-radius: 50px;
+  background: rgba(232,178,77,0.06); border: 1px solid var(--line);
+  color: var(--gold-light); font-family: 'Orbitron', monospace; letter-spacing: .03em;
 }
-.work-desc { color: var(--muted); line-height: 1.85; margin-bottom: 16px; }
+.work-desc { color: var(--muted); line-height: 1.9; margin: 16px 0; font-weight: 300; }
+.work-desc strong { color: var(--text); font-weight: 500; }
 .work-points {
-  list-style: none; display: flex; flex-direction: column; gap: 8px;
-  margin-bottom: 28px;
+  list-style: none; display: flex; flex-direction: column; gap: 9px; margin-bottom: 28px;
 }
 .work-points li {
-  display: flex; align-items: flex-start; gap: 10px;
-  font-size: 0.87rem; color: var(--muted); line-height: 1.6;
+  display: flex; align-items: flex-start; gap: 11px;
+  font-size: 0.85rem; color: var(--muted); line-height: 1.6; font-weight: 300;
 }
 .work-points li::before {
   content: '✦'; color: var(--gold); font-size: 0.6rem;
-  flex-shrink: 0; margin-top: 4px; opacity: 0.75;
+  flex-shrink: 0; margin-top: 5px; opacity: 0.7;
 }
+.work-links { display: flex; flex-wrap: wrap; gap: 12px; }
 .work-link {
   display: inline-flex; align-items: center; gap: 7px;
-  padding: 11px 26px; border-radius: 50px;
-  font-size: 0.85rem; font-weight: 700; text-decoration: none;
-  border: 1px solid rgba(255,215,0,0.35);
-  color: var(--gold); background: rgba(255,215,0,0.06);
+  padding: 11px 24px; border-radius: 50px;
+  font-size: 0.82rem; font-weight: 700; text-decoration: none;
+  border: 1px solid rgba(232,178,77,0.36);
+  color: var(--gold); background: rgba(232,178,77,0.06);
   transition: all 0.3s; cursor: none;
 }
 .work-link:hover {
-  background: rgba(255,215,0,0.16);
-  box-shadow: 0 0 24px rgba(255,215,0,0.3); transform: translateY(-2px);
+  background: rgba(232,178,77,0.16);
+  box-shadow: 0 0 24px rgba(232,178,77,0.26); transform: translateY(-2px);
 }
+.work-link.ghost { border-color: var(--line-soft); color: var(--muted); background: transparent; }
+.work-link.ghost:hover { color: var(--text); border-color: rgba(255,255,255,0.24); box-shadow: none; background: rgba(255,255,255,0.04); }
+.work-link.zenn { border-color: rgba(62,168,255,0.34); color: var(--zenn); background: rgba(62,168,255,0.05); }
+.work-link.zenn:hover { background: rgba(62,168,255,0.14); box-shadow: 0 0 22px rgba(62,168,255,0.24); }
 
-/* ── Feature Slider ── */
-.feat-section { margin-top: 32px; border-top: 1px solid rgba(255,215,0,0.1); padding-top: 32px; }
-.feat-section-title {
-  font-family: 'Orbitron', monospace; font-size: 0.68rem;
-  letter-spacing: 0.22em; color: var(--gold); text-transform: uppercase; margin-bottom: 18px;
+/* ── Why ── */
+.why-inner { max-width: 660px; margin: 0 auto; text-align: center; }
+.why-quote {
+  font-family: 'Cinzel', serif; font-size: clamp(1.35rem,3.4vw,2rem); font-weight: 600;
+  line-height: 1.7; color: var(--gold-light); margin-bottom: 30px; letter-spacing: .03em;
 }
-.feat-slider-wrap { display: flex; align-items: center; gap: 10px; }
-.feat-btn {
-  width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0;
-  border: 1px solid rgba(255,215,0,0.28); background: rgba(255,215,0,0.04);
-  color: var(--gold); font-size: 0.9rem; cursor: none;
-  display: flex; align-items: center; justify-content: center; transition: all 0.2s;
-}
-.feat-btn:hover { background: rgba(255,215,0,0.14); box-shadow: 0 0 12px rgba(255,215,0,0.3); }
-.feat-track { flex: 1; overflow: hidden; }
-.feat-cards { display: flex; gap: 8px; }
-.feat-card {
-  flex-shrink: 0; width: 98px; border-radius: 12px; padding: 14px 8px; text-align: center;
-  background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.07);
-  cursor: none; transition: all 0.3s;
-}
-.feat-card:hover { border-color: rgba(255,215,0,0.25); background: rgba(255,215,0,0.04); }
-.feat-card.active {
-  border-color: var(--gold);
-  box-shadow: 0 0 18px rgba(255,215,0,0.28), inset 0 0 20px rgba(255,215,0,0.05);
-  background: rgba(255,215,0,0.07);
-}
-.feat-emoji { font-size: 1.5rem; margin-bottom: 6px; }
-.feat-num { font-family: 'Orbitron', monospace; font-size: 0.55rem; color: var(--gold); opacity: 0.6; }
-.feat-name { font-size: 0.68rem; color: var(--muted); margin-top: 4px; }
-.feat-card.active .feat-name { color: var(--gold); }
-.feat-desc {
-  margin-top: 18px; min-height: 58px;
-  font-size: 0.87rem; color: var(--muted); line-height: 1.72;
-  transition: opacity 0.18s;
-}
+.why-body { color: var(--muted); line-height: 2.05; font-weight: 300; }
+.why-body strong { color: var(--text); font-weight: 500; }
+.why-sign { font-family: 'Cinzel', serif; letter-spacing: .12em; color: var(--gold); margin-top: 30px; font-size: .95rem; }
 
 /* ── Contact ── */
 .contact-inner { text-align: center; max-width: 560px; margin: 0 auto; }
-.contact-lead { color: var(--muted); margin-bottom: 44px; line-height: 1.85; }
+.contact-lead { color: var(--muted); margin-bottom: 42px; line-height: 1.9; font-weight: 300; }
 .contact-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 14px; }
 .clink {
   display: inline-flex; align-items: center; gap: 9px;
   padding: 13px 26px; border-radius: 50px;
-  font-size: 0.88rem; font-weight: 700; text-decoration: none;
-  border: 1px solid; transition: all 0.3s; cursor: none;
+  font-size: 0.86rem; font-weight: 700; text-decoration: none;
+  border: 1px solid var(--line); color: var(--gold-light); background: rgba(232,178,77,0.04);
+  transition: all 0.3s; cursor: none;
 }
-.clink-x    { border-color: rgba(255,215,0,0.3); color: var(--gold); background: rgba(255,215,0,0.04); }
-.clink-gh   { border-color: rgba(255,110,180,0.3); color: var(--pink-light); background: rgba(255,110,180,0.04); }
-.clink-zenn { border-color: rgba(100,180,255,0.3); color: #90c8ff; background: rgba(100,180,255,0.04); }
-.clink-mail { border-color: rgba(255,110,180,0.3); color: var(--pink-light); background: rgba(255,110,180,0.04); }
-.clink-x:hover    { background: rgba(255,215,0,0.14); box-shadow: 0 0 22px rgba(255,215,0,0.3); transform: translateY(-3px); }
-.clink-gh:hover   { background: rgba(255,110,180,0.14); box-shadow: 0 0 22px rgba(255,110,180,0.3); transform: translateY(-3px); }
-.clink-zenn:hover { background: rgba(100,180,255,0.14); box-shadow: 0 0 22px rgba(100,180,255,0.3); transform: translateY(-3px); }
-.clink-mail:hover { background: rgba(255,110,180,0.14); box-shadow: 0 0 22px rgba(255,110,180,0.3); transform: translateY(-3px); }
+.clink:hover { background: rgba(232,178,77,0.13); border-color: rgba(232,178,77,0.4); box-shadow: 0 0 22px rgba(232,178,77,0.24); transform: translateY(-3px); }
+.clink-zenn { border-color: rgba(62,168,255,0.3); color: var(--zenn); background: rgba(62,168,255,0.04); }
+.clink-zenn:hover { background: rgba(62,168,255,0.14); box-shadow: 0 0 22px rgba(62,168,255,0.26); border-color: rgba(62,168,255,0.5); }
 
 /* ── Footer ── */
 footer {
-  text-align: center; padding: 40px 20px;
-  color: rgba(255,215,0,0.25); font-size: 0.78rem;
-  border-top: 1px solid rgba(255,215,0,0.07);
+  text-align: center; padding: 46px 20px;
+  color: rgba(232,178,77,0.34); font-size: 0.76rem; letter-spacing: .04em;
+  border-top: 1px solid rgba(232,178,77,0.08);
   position: relative; z-index: 1;
 }
+footer .foot-tag { font-family: 'Orbitron', monospace; font-size: .62rem; letter-spacing: .2em; opacity: .8; }
 
 /* ── Mobile ── */
 @media (max-width: 768px) {
   nav { padding: 16px 20px; }
   .nav-links { display: none; }
-  section { padding: 80px 20px; }
-  .about-grid { grid-template-columns: 1fr; gap: 32px; }
-  .work-card { padding: 24px 20px; }
+  section { padding: 84px 20px; }
+  .about-grid { grid-template-columns: 1fr; gap: 30px; justify-items: center; text-align: center; }
+  .about-details { justify-content: center; }
+  .work-body { padding: 24px 22px 26px; }
   body { cursor: auto; }
   #cursor, #cursor-ring { display: none; }
 }
@@ -473,22 +457,20 @@ footer {
 
 <!-- Hero -->
 <div id="hero">
-  <div class="hero-left">
-    <p class="hero-tagline">Ruby on Rails Developer</p>
-    <p class="hero-desc">個人開発を通じて、企画・設計・実装・デプロイまで一貫して取り組んでいます。</p>
-    <h1 class="hero-name" id="heroName">
-      <span class="letter">M</span><span class="letter">I</span><span class="letter">Z</span><span class="letter">E</span>
-    </h1>
-    <div class="hero-sub">
-      <span class="typewriter-text" id="twText"></span><span class="typewriter-cursor"></span>
-    </div>
-    <div class="hero-btns">
-      <a href="#works" class="btn btn-gold">制作物を見る</a>
-      <a href="#contact" class="btn btn-outline">お問い合わせ</a>
-    </div>
+  <p class="hero-tagline">Product Creator — Rails · AI · C++ / OpenGL</p>
+  <h1 class="hero-name" id="heroName">
+    <span class="letter">M</span><span class="letter">I</span><span class="letter">Z</span><span class="letter">E</span>
+  </h1>
+  <div class="hero-sub">
+    <span class="typewriter-text" id="twText"></span><span class="typewriter-cursor"></span>
   </div>
-  <div class="hero-right">
-    <img src="hero.png" alt="MIZE" class="hero-image">
+  <p class="hero-jp">体験として記憶に残るプロダクトを、設計・開発しています。</p>
+  <a href="#works" class="hero-banner-link" aria-label="制作物を見る">
+    <img src="creator-desk.jpg" alt="MIZE — アイデアを、価値あるプロダクトに。Build things people enjoy using。CodeLensAI・DebugMe・RewardMe・FrameLens" class="hero-banner">
+  </a>
+  <div class="hero-btns">
+    <a href="#works" class="btn btn-gold">制作物を見る</a>
+    <a href="#contact" class="btn btn-outline">お問い合わせ</a>
   </div>
   <div class="hero-scroll-hint">
     <span>Scroll</span>
@@ -502,31 +484,23 @@ footer {
   <h2 class="section-title reveal"><span class="grad-text">About</span> Me</h2>
   <div class="about-grid">
     <div class="about-avatar-wrap reveal">
-      <div class="about-avatar">💅</div>
+      <div class="about-avatar">M</div>
       <p class="about-name">MIZE</p>
+      <p class="about-role">Product Creator</p>
     </div>
     <div>
       <p class="about-body reveal rd1">
-        <strong>ネイルの長いRailsマニア。</strong><br><br>
-        Ruby on Railsを中心にWebアプリを開発しています。<br>
-        Hotwire / Stimulus でインタラクティブな体験を作るのが好き。<br>
-        かわいいデザインとゲームっぽい仕掛けが得意で、<br>
-        自分が使いたいものを作るスタイルで日々開発中。<br><br>
-        ユーザー目線で課題を考え、使いやすいサービスを作ることを大切にしています。
+        <strong>Web・AI・ネイティブを横断して開発する、プロダクトクリエイターです。</strong><br><br>
+        Ruby on Rails を軸に、Laravel・Claude API・C++/OpenGL まで。
+        企画から実装・デプロイまでを一人で手がけます。<br><br>
+        <strong>ゲームUX と AI UX の設計</strong>が好きで、機能より
+        「体験として憶えられるかたち」に翻訳することを大切にしています。
+        UI から中身まで、最後まで作り切る。
       </p>
       <div class="about-details reveal rd2">
-        <div class="about-detail">
-          <span class="detail-icon">🐦</span>
-          <span>@mizelategm66172</span>
-        </div>
-        <div class="about-detail">
-          <span class="detail-icon">🐙</span>
-          <span>github.com/mize1978</span>
-        </div>
-        <div class="about-detail">
-          <span class="detail-icon">📍</span>
-          <span>Japan</span>
-        </div>
+        <div class="about-detail"><span class="detail-icon">🎓</span><span>RUNTEQ 79期</span></div>
+        <div class="about-detail"><span class="detail-icon">📍</span><span>Nagoya, Japan</span></div>
+        <div class="about-detail"><span class="detail-icon">🐙</span><span>github.com/mize1978</span></div>
       </div>
     </div>
   </div>
@@ -536,43 +510,48 @@ footer {
 <section id="skills">
   <p class="section-label reveal">Tech Stack</p>
   <h2 class="section-title reveal"><span class="grad-text">Skills</span></h2>
-  <div class="skills-cloud" id="skillsCloud">
-    <div class="skill-group">
-      <p class="skill-group-label">Backend</p>
-      <div class="skill-group-tags">
-        <span class="skill-tag gold">Ruby</span>
-        <span class="skill-tag gold">Ruby on Rails</span>
+  <div class="skills-grid" id="skillsCloud">
+    <div class="skill-card">
+      <div class="skill-card-head"><span class="skill-card-icon">💻</span><span class="skill-card-title">Languages</span></div>
+      <div class="skill-card-tags">
+        <span class="skill-tag core">Ruby</span>
+        <span class="skill-tag">PHP</span>
+        <span class="skill-tag">JavaScript</span>
+        <span class="skill-tag">C++</span>
       </div>
     </div>
-    <div class="skill-group">
-      <p class="skill-group-label">Frontend</p>
-      <div class="skill-group-tags">
-        <span class="skill-tag pink">HTML</span>
-        <span class="skill-tag pink">CSS</span>
-        <span class="skill-tag pink">JavaScript</span>
-        <span class="skill-tag pink">Hotwire</span>
-        <span class="skill-tag pink">Turbo</span>
-        <span class="skill-tag pink">Stimulus</span>
+    <div class="skill-card">
+      <div class="skill-card-head"><span class="skill-card-icon">🧩</span><span class="skill-card-title">Frameworks &amp; Libraries</span></div>
+      <div class="skill-card-tags">
+        <span class="skill-tag core">Ruby on Rails</span>
+        <span class="skill-tag">Laravel</span>
+        <span class="skill-tag">Hotwire</span>
+        <span class="skill-tag">Turbo</span>
+        <span class="skill-tag">Stimulus</span>
+        <span class="skill-tag">OpenGL</span>
       </div>
     </div>
-    <div class="skill-group">
-      <p class="skill-group-label">Database</p>
-      <div class="skill-group-tags">
-        <span class="skill-tag gold">PostgreSQL</span>
+    <div class="skill-card">
+      <div class="skill-card-head"><span class="skill-card-icon">🤖</span><span class="skill-card-title">AI</span></div>
+      <div class="skill-card-tags">
+        <span class="skill-tag core">Claude API</span>
       </div>
     </div>
-    <div class="skill-group">
-      <p class="skill-group-label">Infrastructure</p>
-      <div class="skill-group-tags">
-        <span class="skill-tag pink">Render</span>
-        <span class="skill-tag pink">Docker</span>
+    <div class="skill-card">
+      <div class="skill-card-head"><span class="skill-card-icon">🗄️</span><span class="skill-card-title">Database</span></div>
+      <div class="skill-card-tags">
+        <span class="skill-tag">PostgreSQL</span>
+        <span class="skill-tag">MySQL</span>
       </div>
     </div>
-    <div class="skill-group">
-      <p class="skill-group-label">Tools</p>
-      <div class="skill-group-tags">
-        <span class="skill-tag gold">Git</span>
-        <span class="skill-tag gold">GitHub</span>
+    <div class="skill-card">
+      <div class="skill-card-head"><span class="skill-card-icon">🛠️</span><span class="skill-card-title">Infrastructure &amp; Tools</span></div>
+      <div class="skill-card-tags">
+        <span class="skill-tag">Docker</span>
+        <span class="skill-tag">Render</span>
+        <span class="skill-tag">Git</span>
+        <span class="skill-tag">GitHub</span>
+        <span class="skill-tag">GitHub Actions</span>
       </div>
     </div>
   </div>
@@ -580,15 +559,51 @@ footer {
 
 <!-- Works -->
 <section id="works">
-  <p class="section-label reveal">My Works</p>
+  <p class="section-label reveal">Featured Projects</p>
   <h2 class="section-title reveal"><span class="grad-text">Works</span></h2>
   <div class="works-grid">
 
+    <!-- CodeLensAI -->
+    <div class="work-card reveal">
+      <a href="https://codelens-ai-vplg.onrender.com" target="_blank" rel="noopener" class="work-banner-link">
+        <span class="work-flag">Flagship</span>
+        <img src="banner-codelensai.jpg" alt="CodeLensAI" class="work-banner" loading="lazy">
+      </a>
+      <div class="work-body">
+        <div class="work-head">
+          <h3 class="work-title">CodeLensAI</h3>
+          <div class="work-tags">
+            <span class="work-tag">Laravel</span>
+            <span class="work-tag">Claude API</span>
+            <span class="work-tag">PostgreSQL</span>
+            <span class="work-tag">Docker</span>
+          </div>
+        </div>
+        <p class="work-desc">
+          リポジトリの“記憶”を育てる <strong>Repository Intelligence プラットフォーム</strong>。
+          GitHub URL を貼ると、AI が重要ファイルを読み、品質・セキュリティ・保守性を評価し、
+          レビューを一冊の“本”として書架に残す。スコアは結論じゃなく、リポジトリが書き続ける物語の一行。
+        </p>
+        <ul class="work-points">
+          <li>Repository Core / DNA / Archive を設計し、レビューを“記憶”として蓄積</li>
+          <li>同一コミットは同一スコアを返す決定論的評価</li>
+          <li>実リポジトリ RewardMe を5回再レビューし、Overall 49 → 66（+17）を実証</li>
+        </ul>
+        <div class="work-links">
+          <a href="https://codelens-ai-vplg.onrender.com" target="_blank" rel="noopener" class="work-link">🚀 Live Demo</a>
+          <a href="https://github.com/mize1978/codelens-ai" target="_blank" rel="noopener" class="work-link ghost">GitHub</a>
+        </div>
+      </div>
+    </div>
+
     <!-- RewardMe -->
     <div class="work-card reveal">
-      <div class="work-header">
-        <div class="work-icon">🎮</div>
-        <div>
+      <a href="https://rewardme-qaq3.onrender.com" target="_blank" rel="noopener" class="work-banner-link">
+        <span class="work-flag">Production</span>
+        <img src="banner-rewardme.jpg" alt="RewardMe" class="work-banner" loading="lazy">
+      </a>
+      <div class="work-body">
+        <div class="work-head">
           <h3 class="work-title">RewardMe</h3>
           <div class="work-tags">
             <span class="work-tag">Ruby on Rails</span>
@@ -597,96 +612,132 @@ footer {
             <span class="work-tag">PostgreSQL</span>
           </div>
         </div>
+        <p class="work-desc">
+          タスクを“体験”に変えるゲーミフィケーション Todo アプリ。
+          EXP・ガチャ・キャラ育成・ミニゲーム・マイルームで、毎日のルーティンが続けたくなる仕掛けに。
+        </p>
+        <ul class="work-points">
+          <li>Hotwire（Turbo / Stimulus）でゲームのような演出を SPA 風に実装</li>
+          <li>completed_count を単一の真実として設計し、整合性を担保</li>
+          <li>毎日継続したくなる UX を軸に、企画から作り込み</li>
+        </ul>
+        <div class="work-links">
+          <a href="https://rewardme-qaq3.onrender.com" target="_blank" rel="noopener" class="work-link">🚀 Live Demo</a>
+          <a href="https://github.com/mize1978/rewardme" target="_blank" rel="noopener" class="work-link ghost">GitHub</a>
+          <a href="https://zenn.dev/mizel1978/articles/a10a4368b282d3" target="_blank" rel="noopener" class="work-link zenn">📝 Zenn</a>
+        </div>
       </div>
-      <p class="work-desc">
-        タスクをこなしてキャラクターを育てる、ゲーミフィケーションTodoアプリ。
-        EXP・コイン・ガチャ・ミニゲームなど、毎日のルーティンが楽しくなる仕掛けが満載。
-      </p>
-      <ul class="work-points">
-        <li>Hotwire（Turbo / Stimulus）でゲームのような演出をSPA風に実装</li>
-        <li>completed_count をソース・オブ・トゥルースとして設計し、整合性を担保</li>
-        <li>UI/UXを意識し、毎日継続したくなる体験づくりを重視</li>
-      </ul>
+    </div>
 
-      <!-- Feature Slider -->
-      <div class="feat-section">
-        <p class="feat-section-title">このアプリでできること</p>
-        <div class="feat-slider-wrap">
-          <button class="feat-btn" onclick="slideFeature(-1)">◀</button>
-          <div class="feat-track">
-            <div class="feat-cards" id="featCards">
-              <div class="feat-card active" onclick="selectFeat(0)">
-                <div class="feat-emoji">📋</div>
-                <div class="feat-num">機能01</div>
-                <div class="feat-name">タスク管理</div>
-              </div>
-              <div class="feat-card" onclick="selectFeat(1)">
-                <div class="feat-emoji">🌱</div>
-                <div class="feat-num">機能02</div>
-                <div class="feat-name">キャラ育成</div>
-              </div>
-              <div class="feat-card" onclick="selectFeat(2)">
-                <div class="feat-emoji">🎰</div>
-                <div class="feat-num">機能03</div>
-                <div class="feat-name">ガチャ</div>
-              </div>
-              <div class="feat-card" onclick="selectFeat(3)">
-                <div class="feat-emoji">🕹️</div>
-                <div class="feat-num">機能04</div>
-                <div class="feat-name">ミニゲーム</div>
-              </div>
-              <div class="feat-card" onclick="selectFeat(4)">
-                <div class="feat-emoji">🛋️</div>
-                <div class="feat-num">機能05</div>
-                <div class="feat-name">マイルーム</div>
-              </div>
-              <div class="feat-card" onclick="selectFeat(5)">
-                <div class="feat-emoji">🎵</div>
-                <div class="feat-num">機能06</div>
-                <div class="feat-name">BGM</div>
-              </div>
-              <div class="feat-card" onclick="selectFeat(6)">
-                <div class="feat-emoji">🎁</div>
-                <div class="feat-num">機能07</div>
-                <div class="feat-name">ログインボーナス</div>
-              </div>
-            </div>
+    <!-- DebugMe -->
+    <div class="work-card reveal">
+      <a href="https://github.com/mize1978/errorlog-ai" target="_blank" rel="noopener" class="work-banner-link">
+        <span class="work-flag">Production</span>
+        <img src="banner-debugme.jpg" alt="DebugMe" class="work-banner" loading="lazy">
+      </a>
+      <div class="work-body">
+        <div class="work-head">
+          <h3 class="work-title">DebugMe</h3>
+          <div class="work-tags">
+            <span class="work-tag">Ruby on Rails</span>
+            <span class="work-tag">Claude API</span>
+            <span class="work-tag">SSE</span>
+            <span class="work-tag">Hotwire</span>
           </div>
-          <button class="feat-btn" onclick="slideFeature(1)">▶</button>
         </div>
-        <div class="feat-desc" id="featDesc">
-          毎日のタスクを登録・完了するとEXPとコインが手に入る。カテゴリや優先度で整理でき、週間の達成記録も確認できる。
+        <p class="work-desc">
+          思考の“バグ”を整理する AI の相棒。悩みを話すと、AI があなたの言葉を受け止め、整理し、
+          気づきを返す。答えはあなたの中にある——<strong>DebugMe は、先に喋らない。</strong>
+        </p>
+        <ul class="work-points">
+          <li>“DebugMe never speaks first” — 傾聴を核にした AI UX を設計</li>
+          <li>SSE で思考のストリームをリアルタイム表示</li>
+          <li>エラーログ風 UI で、悩みを“デバッグ体験”に翻訳</li>
+        </ul>
+        <div class="work-links">
+          <a href="https://github.com/mize1978/errorlog-ai" target="_blank" rel="noopener" class="work-link ghost">GitHub</a>
         </div>
       </div>
+    </div>
 
-      <div style="margin-top:28px;">
-        <a href="https://rewardme-qaq3.onrender.com" target="_blank" class="work-link">🚀 アプリを見る</a>
+    <!-- FrameLens -->
+    <div class="work-card reveal">
+      <a href="https://github.com/mize1978/FrameLens" target="_blank" rel="noopener" class="work-banner-link">
+        <span class="work-flag dim">Research</span>
+        <img src="banner-framelens.jpg" alt="FrameLens" class="work-banner" loading="lazy">
+      </a>
+      <div class="work-body">
+        <div class="work-head">
+          <h3 class="work-title">FrameLens</h3>
+          <div class="work-tags">
+            <span class="work-tag">C++</span>
+            <span class="work-tag">OpenGL</span>
+            <span class="work-tag">CMake</span>
+            <span class="work-tag">AddressSanitizer</span>
+          </div>
+        </div>
+        <p class="work-desc">
+          C++/OpenGL で実装した <strong>3D フレーム解析ツール</strong>。
+          2×4 フレームの手続き生成・リアルタイム3D可視化・部材ハイライト・寸法表示・拾い出し CSV 出力を実装。
+          アルゴリズムと低レイヤー実装力を見せる作品。
+        </p>
+        <ul class="work-points">
+          <li>OpenGL によるリアルタイム3D描画と Ray Picking</li>
+          <li>Procedural Generation による2×4フレーム自動生成</li>
+          <li>AddressSanitizer でメモリ安全性を担保</li>
+        </ul>
+        <div class="work-links">
+          <a href="https://github.com/mize1978/FrameLens" target="_blank" rel="noopener" class="work-link ghost">GitHub</a>
+        </div>
       </div>
     </div>
 
     <!-- Bug Generator -->
-    <div class="work-card reveal rd1">
-      <div class="work-header">
-        <div class="work-icon">🐛</div>
-        <div>
+    <div class="work-card reveal">
+      <a href="https://bug-generator-zt5t.onrender.com" target="_blank" rel="noopener" class="work-banner-link">
+        <span class="work-flag dim">Experiment</span>
+        <img src="banner-buggenerator.jpg" alt="Bug Generator" class="work-banner" loading="lazy">
+      </a>
+      <div class="work-body">
+        <div class="work-head">
           <h3 class="work-title">Bug Generator</h3>
           <div class="work-tags">
             <span class="work-tag">Ruby on Rails</span>
-            <span class="work-tag">PostgreSQL</span>
+            <span class="work-tag">Hotwire</span>
+            <span class="work-tag">Stimulus</span>
           </div>
         </div>
+        <p class="work-desc">
+          “人生のバグ”をランダム生成して笑える診断ミニアプリ。
+          SNS シェアを意識した、拡散されやすいコンテンツ設計。
+        </p>
+        <ul class="work-points">
+          <li>ターミナル風ダーク UI で世界観を統一</li>
+          <li>ユーモアのあるバグ生成ロジックを Rails で実装</li>
+        </ul>
+        <div class="work-links">
+          <a href="https://bug-generator-zt5t.onrender.com" target="_blank" rel="noopener" class="work-link">🚀 Live Demo</a>
+          <a href="https://github.com/mize1978/bug_generator" target="_blank" rel="noopener" class="work-link ghost">GitHub</a>
+        </div>
       </div>
-      <p class="work-desc">
-        悩みをユーモラスな「バグ」として表示し、SNSでシェアできる診断アプリ。Railsで構築されたユニークなコンセプトのサービス。
-      </p>
-      <ul class="work-points">
-        <li>SNSシェアを意識したコンテンツ設計で、拡散されやすい体験を追求</li>
-        <li>ユーモアのあるバグ生成ロジックをRailsで実装</li>
-        <li>シンプルなUIで誰でも直感的に使えるUXを重視</li>
-      </ul>
-      <a href="https://bug-generator-zt5t.onrender.com" target="_blank" class="work-link">🚀 アプリを見る</a>
     </div>
 
+  </div>
+</section>
+
+<!-- Why I build -->
+<section id="why">
+  <p class="section-label reveal">Why I build</p>
+  <h2 class="section-title reveal"><span class="grad-text">Why</span> I build</h2>
+  <div class="why-inner">
+    <p class="why-quote reveal rd1">つくることが好き。だからこそ、<br>使う人の、笑顔を想像してつくる。</p>
+    <p class="why-body reveal rd2">
+      RewardMe も DebugMe も CodeLensAI も、作りたかったのは“機能”じゃない。
+      続けたくなる達成感、思考が整理される安心感、リポジトリが記憶を持つ感覚——
+      <strong>体験として記憶に残るかたち</strong>を設計したい。<br>
+      エンジニアリングの発想を、人に寄り添う体験へ翻訳すること。それが、自分が作る理由です。
+    </p>
+    <p class="why-sign reveal rd3">— MIZE</p>
   </div>
 </section>
 
@@ -696,19 +747,22 @@ footer {
   <h2 class="section-title reveal"><span class="grad-text">Contact</span></h2>
   <div class="contact-inner">
     <p class="contact-lead reveal rd1">
-      お仕事のご依頼・技術的なご質問など、お気軽にどうぞ！<br>
-      GitHubでは日々のコミットを、Zennでは技術記事を発信しています。
+      制作や技術の話、プロダクトについて、気軽に話しかけてください。<br>
+      GitHub では日々の開発を、Zenn では設計や実装について発信しています。
     </p>
     <div class="contact-links reveal rd2">
-      <a href="https://x.com/mizelategm66172" target="_blank" class="clink clink-x">𝕏 Twitter / X</a>
-      <a href="https://github.com/mize1978" target="_blank" class="clink clink-gh">⌥ GitHub</a>
-      <a href="https://zenn.dev" target="_blank" class="clink clink-zenn">📘 Zenn</a>
-      <a href="mailto:mizelategm66172@gmail.com" class="clink clink-mail">✉ Email</a>
+      <a href="https://x.com/mizelategm66172" target="_blank" rel="noopener" class="clink">𝕏 &nbsp;X</a>
+      <a href="https://github.com/mize1978" target="_blank" rel="noopener" class="clink">⌥ GitHub</a>
+      <a href="https://zenn.dev/mizel1978" target="_blank" rel="noopener" class="clink clink-zenn">📘 Zenn</a>
+      <a href="mailto:mizelate@gmail.com" class="clink">✉ Email</a>
     </div>
   </div>
 </section>
 
-<footer>© 2025 MIZE — Built with 💅 &amp; Rails</footer>
+<footer>
+  © 2026 MIZE<br>
+  <span class="foot-tag">Ideas become experiences.</span>
+</footer>
 
 <script>
 // ── Loader ──
@@ -716,64 +770,52 @@ window.addEventListener('load', () => {
   setTimeout(() => {
     document.getElementById('loader').classList.add('hidden')
     animateName()
-  }, 1100)
+  }, 1000)
 })
 
 // ── Custom Cursor ──
 const cur  = document.getElementById('cursor')
 const ring = document.getElementById('cursor-ring')
-let mx = 0, my = 0, rx = 0, ry = 0, spCount = 0
+let mx = 0, my = 0, rx = 0, ry = 0
 
 document.addEventListener('mousemove', (e) => {
   mx = e.clientX; my = e.clientY
   cur.style.left = mx + 'px'; cur.style.top = my + 'px'
-  if (++spCount % 3 === 0) spawnSparkle(mx, my)
 })
-
 ;(function ringTick() {
-  rx += (mx - rx) * 0.14
-  ry += (my - ry) * 0.14
+  rx += (mx - rx) * 0.16
+  ry += (my - ry) * 0.16
   ring.style.left = rx + 'px'; ring.style.top = ry + 'px'
   requestAnimationFrame(ringTick)
 })()
+// ring grows over interactive elements
+document.querySelectorAll('a, button').forEach(el => {
+  el.addEventListener('mouseenter', () => { ring.style.width = '46px'; ring.style.height = '46px'; ring.style.borderColor = 'rgba(232,178,77,0.7)' })
+  el.addEventListener('mouseleave', () => { ring.style.width = '30px'; ring.style.height = '30px'; ring.style.borderColor = 'rgba(232,178,77,0.4)' })
+})
 
-function spawnSparkle(x, y) {
-  const el = document.createElement('div')
-  el.className = 'sparkle'
-  el.textContent = Math.random() > 0.5 ? '✦' : '✧'
-  el.style.left = x + 'px'; el.style.top = y + 'px'
-  el.style.color = Math.random() > 0.5 ? '#ffd700' : '#ff6eb4'
-  el.style.setProperty('--tx', (Math.random()-0.5)*56 + 'px')
-  el.style.setProperty('--ty', (Math.random()-0.5)*56 + 'px')
-  document.body.appendChild(el)
-  el.addEventListener('animationend', () => el.remove())
-}
-
-// ── Particle Canvas ──
+// ── Particle Canvas (warm dust) ──
 const canvas = document.getElementById('particle-canvas')
 const ctx    = canvas.getContext('2d')
 let W, H
-
 function resize() { W = canvas.width = innerWidth; H = canvas.height = innerHeight }
 window.addEventListener('resize', resize); resize()
 
-const PARTICLES = Array.from({length: 90}, () => ({
+const PARTICLES = Array.from({length: 56}, () => ({
   x: Math.random() * 1920, y: Math.random() * 1080,
-  size: Math.random() * 1.8 + 0.4,
-  vx: (Math.random() - 0.5) * 0.25, vy: -Math.random() * 0.45 - 0.1,
-  alpha: Math.random() * 0.45 + 0.08,
-  color: Math.random() > 0.5 ? '#ffd700' : '#ff6eb4'
+  size: Math.random() * 1.6 + 0.3,
+  vx: (Math.random() - 0.5) * 0.2, vy: -Math.random() * 0.4 - 0.08,
+  alpha: Math.random() * 0.35 + 0.05
 }))
-
 ;(function particleTick() {
   ctx.clearRect(0, 0, W, H)
   for (const p of PARTICLES) {
-    p.x += p.vx; p.y += p.vy; p.alpha -= 0.0008
+    p.x += p.vx; p.y += p.vy; p.alpha -= 0.0007
     if (p.y < -10 || p.alpha <= 0) {
       p.x = Math.random() * W; p.y = H + 10
-      p.alpha = Math.random() * 0.45 + 0.08
+      p.alpha = Math.random() * 0.35 + 0.05
     }
-    ctx.save(); ctx.globalAlpha = p.alpha; ctx.fillStyle = p.color
+    ctx.save(); ctx.globalAlpha = p.alpha; ctx.fillStyle = '#e8b24d'
     ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill(); ctx.restore()
   }
   requestAnimationFrame(particleTick)
@@ -793,9 +835,8 @@ function animateName() {
 }
 
 // ── Typewriter ──
-const PHRASES = ['ネイルの長いRailsマニア', 'Hotwire / Stimulus 好き', 'かわいいもの全部作る']
+const PHRASES = ['Ideas become experiences.', 'Gamification · AI Experience · Repository Intelligence · Native Graphics', 'Designing products people remember.']
 let pi = 0, ci = 0, del = false
-
 function startTypewriter() {
   const el = document.getElementById('twText')
   function tick() {
@@ -803,11 +844,11 @@ function startTypewriter() {
     if (!del) {
       el.textContent = p.slice(0, ++ci)
       if (ci === p.length) { del = true; setTimeout(tick, 1900); return }
-      setTimeout(tick, 65)
+      setTimeout(tick, 62)
     } else {
       el.textContent = p.slice(0, --ci)
       if (ci === 0) { del = false; pi = (pi + 1) % PHRASES.length; setTimeout(tick, 320); return }
-      setTimeout(tick, 32)
+      setTimeout(tick, 30)
     }
   }
   tick()
@@ -821,41 +862,13 @@ document.querySelectorAll('.reveal').forEach(el => revObs.observe(el))
 
 const skillObs = new IntersectionObserver(entries => {
   if (entries[0].isIntersecting) {
-    document.querySelectorAll('.skill-group').forEach((group, gi) => {
-      group.querySelectorAll('.skill-tag').forEach((el, ti) => {
-        setTimeout(() => el.classList.add('visible'), gi * 80 + ti * 50)
-      })
+    document.querySelectorAll('.skill-card').forEach((card, i) => {
+      setTimeout(() => card.classList.add('visible'), i * 90)
     })
     skillObs.disconnect()
   }
 }, { threshold: 0.1 })
 skillObs.observe(document.getElementById('skillsCloud'))
-
-// ── Feature Slider ──
-const FEAT_DESCS = [
-  '毎日のタスクを登録・完了するとEXPとコインが手に入る。カテゴリや優先度で整理でき、週間の達成記録も確認できる。',
-  'タスクをこなすとリボちゃんが成長し、衣装やアイテムでカスタマイズできる。育て方次第で見た目が変わる！',
-  'コインを使ってガチャを回し、キャラのテーマパック（衣装・BGM・壁紙セット）をゲット。限定テーマも登場。',
-  'コインを賭けてミニゲームに挑戦！ポーション錬成パズルなどでさらにコインを増やせる。',
-  '獲得した家具を自分だけの部屋に飾れる。キャラのおうちをおしゃれにカスタマイズ！',
-  'テーマパックにはBGMが収録されており、アプリを開いている間ずっと流れる。作業用BGMにもなる。',
-  '毎日ログインするとボーナスコインがもらえる。連続ログインで報酬がアップ！',
-]
-let featIdx = 0
-
-function updateFeat() {
-  document.querySelectorAll('.feat-card').forEach((c, i) => c.classList.toggle('active', i === featIdx))
-  const d = document.getElementById('featDesc')
-  d.style.opacity = '0'
-  setTimeout(() => { d.textContent = FEAT_DESCS[featIdx]; d.style.opacity = '1' }, 160)
-}
-
-function slideFeature(dir) {
-  featIdx = (featIdx + dir + FEAT_DESCS.length) % FEAT_DESCS.length
-  updateFeat()
-}
-
-function selectFeat(i) { featIdx = i; updateFeat() }
 </script>
 </body>
 </html>
