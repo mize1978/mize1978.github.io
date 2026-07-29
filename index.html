@@ -663,8 +663,8 @@ footer .foot-tag { font-family: 'Orbitron', monospace; font-size: .62rem; letter
 
     <!-- FrameLens -->
     <div class="work-card reveal">
-      <a href="https://github.com/mize1978/FrameLens" target="_blank" rel="noopener" class="work-banner-link">
-        <span class="work-flag dim">Research</span>
+      <a href="https://mize1978.github.io/framelens/" target="_blank" rel="noopener" class="work-banner-link">
+        <span class="work-flag">Live in Browser</span>
         <img src="banner-framelens.jpg" alt="FrameLens" class="work-banner" loading="lazy">
       </a>
       <div class="work-body">
@@ -673,21 +673,23 @@ footer .foot-tag { font-family: 'Orbitron', monospace; font-size: .62rem; letter
           <div class="work-tags">
             <span class="work-tag">C++</span>
             <span class="work-tag">OpenGL</span>
-            <span class="work-tag">CMake</span>
-            <span class="work-tag">AddressSanitizer</span>
+            <span class="work-tag">WebAssembly</span>
+            <span class="work-tag">WebGL2</span>
+            <span class="work-tag">Emscripten</span>
           </div>
         </div>
         <p class="work-desc">
           C++/OpenGL で実装した <strong>3D フレーム解析ツール</strong>。
           2×4 フレームの手続き生成・リアルタイム3D可視化・部材ハイライト・寸法表示・拾い出し CSV 出力を実装。
-          アルゴリズムと低レイヤー実装力を見せる作品。
+          さらに <strong>Emscripten で WebAssembly / WebGL2 に移植</strong>し、ブラウザでそのまま動く。
         </p>
         <ul class="work-points">
           <li>OpenGL によるリアルタイム3D描画と Ray Picking</li>
           <li>Procedural Generation による2×4フレーム自動生成</li>
-          <li>AddressSanitizer でメモリ安全性を担保</li>
+          <li>C++ → WebAssembly → WebGL2 でネイティブアプリをブラウザへ</li>
         </ul>
         <div class="work-links">
+          <a href="https://mize1978.github.io/framelens/" target="_blank" rel="noopener" class="work-link">🚀 Live Demo</a>
           <a href="https://github.com/mize1978/FrameLens" target="_blank" rel="noopener" class="work-link ghost">GitHub</a>
         </div>
       </div>
