@@ -1,0 +1,761 @@
+<!DOCTYPE html><html lang="ja"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mize — A museum of software you can understand</title>
+<meta name="description" content="A Museum of Software — RewardMe・DebugMe・CodeLensAI・FrameLens・Bug Generator。作品ごとに建築が変わる、歩いて鑑賞するポートフォリオ。by Mize / Web Developer.">
+<link rel="canonical" href="https://mize1978.github.io/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Mize — A Museum of Software">
+<meta property="og:title" content="Mize — A Museum of Software">
+<meta property="og:description" content="A collection of software you can walk through. RewardMe · DebugMe · CodeLensAI · FrameLens · Bug Generator — built by Mize.">
+<meta property="og:image" content="https://mize1978.github.io/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://mize1978.github.io/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Mize — A Museum of Software">
+<meta name="twitter:description" content="A collection of software you can walk through — built by Mize.">
+<meta name="twitter:image" content="https://mize1978.github.io/og.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&family=Great+Vibes&family=Inter:wght@400;500;600&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg0:#0a0806; --bg1:#0e0a1e; --bg2:#160b28;
+  --ink:#eae6f7; --soft:rgba(234,230,247,.62); --faint:rgba(234,230,247,.4);
+  --serif:"Fraunces",Georgia,serif; --script:"Great Vibes",cursive;
+  --label:"Inter",system-ui,sans-serif; --jp:"Noto Sans JP",system-ui,sans-serif;
+  --reward:#ff9ec7; --debug:#b982ff; --lens:#54b6ff; --frame:#2fe0c0; --bug:#ff6a5a;
+  --room:#8aa2c4;   /* 館内照明の色。今見ているExhibitの色に追従する */
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{min-height:100%;background:var(--bg0);color:var(--ink);font-family:var(--jp);
+  overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+
+/* ── ambient library：本物の背景画像（天球儀・書架・魔法円の床が全部入り） ── */
+.sky{position:fixed;inset:0;z-index:-3;
+  background:#0c0f14 url('museum-bg.jpg') center bottom/cover no-repeat;}
+/* ガラス壁の規則性を崩す不規則なムラ（一枚だけ光る・一枚だけ曇る）＝"実在の建築"へ */
+.sky::before{content:'';position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 22% 30% at 17% 33%, rgba(184,204,234,.055), transparent 60%),
+    radial-gradient(ellipse 17% 25% at 71% 21%, rgba(18,24,38,.15), transparent 62%),
+    radial-gradient(ellipse 26% 34% at 88% 64%, rgba(184,204,234,.045), transparent 60%),
+    radial-gradient(ellipse 20% 24% at 39% 79%, rgba(18,24,38,.11), transparent 64%);}
+/* hero を読ませるための、上だけ効かせる淡い暗幕（床は活かす） */
+.sky::after{content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg, rgba(8,10,14,.42) 0%, rgba(8,10,14,0) 44%), linear-gradient(180deg, rgba(11,9,6,.6) 0%, rgba(11,9,6,.2) 30%, rgba(11,9,6,0) 52%, rgba(11,9,6,.18) 100%);}
+/* 館内照明：左右の壁から差す光。今見ているExhibitの色へ 1.2s でふわっと移る（＝歩くと照明が変わる） */
+.roomlight{position:fixed;inset:0;z-index:40;pointer-events:none;background-color:var(--room);opacity:.14;
+  mix-blend-mode:screen;transition:background-color 1.2s ease;
+  -webkit-mask-image:radial-gradient(46% 72% at 0% 45%,#000 0%,transparent 70%),radial-gradient(46% 72% at 100% 50%,#000 0%,transparent 72%);
+          mask-image:radial-gradient(46% 72% at 0% 45%,#000 0%,transparent 70%),radial-gradient(46% 72% at 100% 50%,#000 0%,transparent 72%);}
+
+/* ── hero ── */
+.wrap{position:relative;max-width:1320px;margin:0 auto;padding:38px 22px 70px;text-align:center}
+.logo{font-family:var(--script);font-size:clamp(40px,6vw,68px);color:#eef3f9;
+  text-shadow:0 0 22px rgba(150,180,235,.55);line-height:1;}
+.logo .st{font-family:var(--label);font-size:.3em;vertical-align:super;margin-left:.1em;
+  color:#e8c98a;text-shadow:0 0 12px rgba(150,180,235,.7)}
+.headline{font-family:var(--serif);font-weight:300;font-size:clamp(17px,2.5vw,29px);line-height:1.3;letter-spacing:.06em;
+  letter-spacing:.005em;margin:22px auto 0;max-width:16em;color:#f4efe4;}
+.headline .em{font-style:italic;color:#9fbdf0}
+.sub{font-family:var(--label);font-weight:400;font-size:clamp(10px,1.2vw,12px);letter-spacing:.34em;text-transform:uppercase;
+  color:var(--mut,#8fa0bb);margin:15px 0 0}
+
+/* ── the cases ── */
+.gallery{display:flex;flex-wrap:wrap;gap:clamp(7px,1.1vw,14px);justify-content:center;align-items:flex-end;
+  padding:40px 2px 20px;}
+.case{position:relative;flex:0 1 clamp(110px,11.6vw,164px);text-decoration:none;
+  display:block;--c:#fff;
+  opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1)}
+.case.in{opacity:1;transform:none}
+
+/* 画像そのものがケース（ドーム＋台座＋ラベル込み）。焼き込み背景の四角はエッジフェードで館に溶かす。 */
+.artfull{width:100%;height:auto;display:block;position:relative;z-index:1;
+  -webkit-mask-image:radial-gradient(74% 92% at 50% 49%,#000 66%,transparent 93%);
+          mask-image:radial-gradient(74% 92% at 50% 49%,#000 66%,transparent 93%);
+  filter:drop-shadow(0 14px 26px rgba(0,0,0,.30));transition:transform .34s cubic-bezier(.2,.7,.2,1)}
+.case::before{content:'';position:absolute;inset:10% 3% 6%;z-index:0;border-radius:50%/44%;
+  background:radial-gradient(closest-side,var(--c),transparent 72%);opacity:.09;filter:blur(26px);
+  transition:opacity .34s ease;animation:glowbreathe 6s ease-in-out infinite}
+.case::after{content:'';position:absolute;left:50%;bottom:-1%;transform:translateX(-50%);
+  width:64%;height:14px;border-radius:50%;background:radial-gradient(closest-side,var(--c),transparent);
+  opacity:.15;filter:blur(6px)}
+.case:hover .artfull{transform:translateY(-9px) scale(1.03)}
+.case:hover::before{opacity:.28}
+/* ガラスに光が走る（触れると反応する） */
+.case .sheen{position:absolute;inset:6% 4% 24%;z-index:2;pointer-events:none;overflow:hidden;border-radius:16px 16px 6px 6px;opacity:0;transition:opacity .3s}
+.case .sheen::before{content:'';position:absolute;top:-15%;left:-60%;width:32%;height:130%;transform:skewX(-16deg);background:linear-gradient(100deg,transparent,rgba(255,255,255,.42),transparent)}
+.case:hover .sheen{opacity:1}
+.case:hover .sheen::before{animation:sheenmove .85s cubic-bezier(.3,0,.2,1) forwards}
+@keyframes sheenmove{from{left:-60%}to{left:135%}}
+
+.case.reward{--c:var(--reward)} .case.debug{--c:var(--debug)} .case.lens{--c:var(--lens)}
+.case.frame{--c:var(--frame)} .case.bug{--c:var(--bug)}
+/* サイズ階層：CodeLensAI=主役(100%) / RewardMe=副主人公(小+12%) / 他=小(自然) */
+.case.lens{flex:0 1 clamp(196px,21vw,286px);z-index:2;margin-bottom:-14px}   /* 王様＝数px前へ（センター展示） */
+.case.lens::before{opacity:.13;inset:6% 0 4%;filter:blur(32px)}
+.case.lens:hover::before{opacity:.24}
+.case.lens::after{width:70%;height:18px;opacity:.2}
+.case.reward{flex:0 1 clamp(134px,13.4vw,194px);z-index:1}
+.case.reward::before{opacity:.12;filter:blur(28px)}
+.case.reward::after{width:66%;height:15px;opacity:.18}
+/* ゆっくり呼吸する光（accent glow をわずかに伸縮・各ケースで位相をずらす） */
+.case.reward::before{animation-delay:-2s} .case.debug::before{animation-delay:-3.6s}
+.case.frame::before{animation-delay:-1.1s} .case.bug::before{animation-delay:-4.7s}
+@keyframes glowbreathe{0%,100%{transform:scale(1)}50%{transform:scale(1.035)}}
+
+/* ── floor ── */
+.floor{position:relative;height:1px;margin:0 auto;max-width:1100px}
+.floor::before{content:'';position:absolute;left:50%;top:-40px;transform:translateX(-50%);
+  width:96vw;max-width:1300px;height:220px;pointer-events:none;
+  background:repeating-radial-gradient(circle at 50% 0,transparent 0 38px,rgba(165,190,228,.05) 38px 39px);
+  -webkit-mask-image:radial-gradient(70% 100% at 50% 0,#000,transparent 75%);
+          mask-image:radial-gradient(70% 100% at 50% 0,#000,transparent 75%)}
+
+/* ── explore library ── */
+.explore{margin:52px auto 0;display:inline-flex;flex-direction:column;align-items:center;
+  text-decoration:none;color:var(--ink);padding:6px 40px}
+.explore .frame{display:flex;align-items:center;gap:16px;font-family:var(--serif);font-weight:400;
+  font-size:clamp(18px,2vw,24px);letter-spacing:.06em;color:#f3ecdb;
+  text-shadow:0 0 20px rgba(150,180,235,.4)}
+.explore .frame::before,.explore .frame::after{content:'';width:clamp(40px,8vw,120px);height:1px;
+  background:linear-gradient(90deg,transparent,rgba(175,200,238,.5),transparent)}
+.explore .bk{color:#e8c98a;margin-bottom:6px;filter:drop-shadow(0 0 10px rgba(150,180,235,.6))}
+.explore .cap{font-family:var(--label);font-size:11px;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--faint);margin-top:12px}
+.explore:hover .frame{color:#fff}
+.explore .chev{margin-top:16px;color:var(--faint);animation:bob 2.6s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0);opacity:.5}50%{transform:translateY(5px);opacity:.9}}
+
+/* ── footer marks ── */
+.marks{display:flex;justify-content:space-between;align-items:flex-end;
+  max-width:1300px;margin:56px auto 0;padding:0 8px;gap:20px}
+.laurel{font-family:var(--serif);font-style:italic;font-weight:300;font-size:14px;line-height:1.7;
+  color:var(--soft);padding:0 22px;position:relative}
+.laurel::before,.laurel::after{content:'';position:absolute;top:50%;width:14px;height:34px;
+  border:1px solid rgba(200,170,120,.5);border-radius:60%;transform:translateY(-50%)}
+.laurel::before{left:0;border-right:none;border-radius:60% 0 0 60%}
+.laurel::after{right:0;border-left:none;border-radius:0 60% 60% 0}
+.sig{font-family:var(--script);font-size:clamp(22px,3vw,32px);color:#eef3f9;
+  text-shadow:0 0 18px rgba(150,180,235,.5)}
+.sig .st{font-family:var(--label);font-size:.4em;vertical-align:super;color:#e8c98a}
+@media (max-width:640px){.marks{flex-direction:column;align-items:center;gap:22px;text-align:center}}
+
+/* Creator は6作品目＝小ケース・最後（主役ではない）。アクセント色だけ指定 */
+.case.creator{--c:#e8c98a}
+/* 展示台の奥行き：EC商品一覧感を消す微妙な高低差 */
+.case.reward{margin-bottom:16px} .case.debug{margin-bottom:3px} .case.frame{margin-bottom:6px} .case.bug{margin-bottom:14px} .case.creator{margin-bottom:-4px}
+/* "整列しすぎ"から救う：少しずつ表情を変える（傾き・明暗・前後）。ホバーで正面を向く */
+.case.reward .artfull{transform:rotate(-3deg)}
+.case.debug .artfull{filter:brightness(.9) saturate(.95) drop-shadow(0 14px 26px rgba(0,0,0,.30))}
+.case.bug .artfull{transform:scale(1.05)}
+
+/* ── ここから「普通」のプロフィール：世界観→通常へ切替（採用担当が読みやすい流れ） ── */
+.profile{position:relative;margin-top:44px;
+  background:linear-gradient(180deg,rgba(11,9,6,0) 0,rgba(11,9,6,.9) 9%,#07060f 22%)}
+.pf{max-width:780px;margin:0 auto;padding:54px 22px}
+.pf-h{text-align:center;font-family:var(--label);font-size:12px;letter-spacing:.34em;text-transform:uppercase;
+  color:rgba(192,206,230,.72);margin:0 0 26px}
+/* About（テキストのみ・中央・最小限：作品が自己紹介なので語らない） */
+.pf.about{text-align:center}
+.about-en{font-family:var(--serif);font-weight:300;font-size:clamp(20px,2.8vw,28px);line-height:1.42;color:#f2eefc;margin:0 auto;max-width:15em}
+.about-ja{font-family:var(--jp);font-weight:300;font-size:14px;line-height:2;color:var(--soft);margin:22px auto 0;max-width:34em}
+/* Skills（しっかりアピール：カテゴリ別の展示＋"Used In"の証拠。見やすさ・信頼感優先） */
+.skillgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px 30px;max-width:680px;margin:0 auto}
+@media(max-width:620px){.skillgrid{grid-template-columns:1fr;gap:22px}}
+/* 棚＝各カテゴリの上に細い罫（収蔵棚のライン）。ラベルは真鍮プレート調 */
+.skcat{border-top:1px solid rgba(255,255,255,.13);padding-top:10px}
+.skcat-l{display:block;font-family:var(--label);font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:#c2b393;margin-bottom:9px}
+.skitems{display:flex;flex-wrap:wrap;gap:8px 15px;align-items:center}
+/* タグ(pill)ではなく、中点で区切る収蔵ラベルの一行に */
+.skitems span{padding:0;border:none;border-radius:0;background:none;-webkit-backdrop-filter:none;backdrop-filter:none;
+  font-family:var(--label);font-size:12px;letter-spacing:.07em;color:#ddd3c2;display:inline-flex;align-items:center}
+.skitems span:not(:last-child)::after{content:'';width:3px;height:3px;border-radius:50%;background:currentColor;opacity:.36;margin-left:15px}
+/* 5個目(Graphics / Native)は全幅・中央でバランスを取る */
+.skillgrid .skcat.wide{grid-column:1/-1;text-align:center;margin-top:2px}
+.skillgrid .skcat.wide .skitems{justify-content:center}
+.usedin{max-width:640px;margin:46px auto 0}
+.ui-cap{text-align:center;font-family:var(--label);font-size:11px;letter-spacing:.24em;text-transform:uppercase;
+  color:rgba(192,206,230,.6);margin:0 0 8px}
+.ui-row{display:grid;grid-template-columns:132px 1fr;gap:16px;align-items:baseline;
+  padding:13px 4px;border-bottom:1px solid rgba(255,255,255,.07)}
+.ui-row:first-of-type{border-top:1px solid rgba(255,255,255,.07)}
+.ui-skill{font-family:var(--label);font-size:14px;color:#f2eefc;font-weight:500}
+.ui-in{font-family:var(--jp);font-weight:300;font-size:13px;color:var(--soft);line-height:1.7}
+.ui-in b{font-weight:500;font-style:normal}
+.ui-in .reward{color:var(--reward)} .ui-in .debug{color:var(--debug)} .ui-in .lens{color:var(--lens)}
+.ui-in .frame{color:var(--frame)} .ui-in .bug{color:var(--bug)}
+@media(max-width:520px){.ui-row{grid-template-columns:1fr;gap:3px}}
+/* Contact */
+.pf.contact{padding-bottom:14px}
+.contact-lead{font-family:var(--jp);font-weight:300;font-size:13.5px;letter-spacing:.06em;color:var(--soft);margin:0 0 24px}
+.pf.contact .links{display:flex;flex-wrap:wrap;gap:14px;justify-content:center}
+.links a{display:inline-flex;align-items:center;gap:9px;font-family:var(--label);font-size:14px;letter-spacing:.04em;
+  text-decoration:none;color:#eaf5ff;padding:12px 22px;border-radius:26px;
+  border:1px solid rgba(175,200,238,.35);background:rgba(255,255,255,.03);
+  transition:background .2s,border-color .2s,transform .2s,color .2s}
+.links a svg{width:17px;height:17px;flex:none}
+.links a:hover{background:#e8c98a;color:#0a0714;border-color:transparent;transform:translateY(-2px)}
+/* footer */
+.pf-foot{text-align:center;padding:30px 22px 52px}
+.pf-foot .closing{font-family:var(--serif);font-weight:300;font-style:italic;font-size:clamp(15px,1.9vw,21px);
+  line-height:1.75;color:#efe7d6;margin:0 0 14px}
+/* 余韻の一文：静かすぎる終わりに、続きを残す */
+.pf-foot .closing-2{font-family:var(--serif);font-weight:300;font-style:italic;font-size:clamp(13px,1.55vw,17px);
+  line-height:1.7;color:rgba(223,217,239,.6);margin:0 0 26px}
+.pf-foot .closing em{color:#e8c98a;font-style:italic}
+.pf-foot .laurel-in{display:block;font-family:var(--serif);font-style:italic;font-size:13px;color:rgba(234,230,247,.4);margin-bottom:14px}
+.pf-foot .sig{font-family:var(--script);font-size:26px;color:#eef3f9;text-shadow:0 0 16px rgba(150,180,235,.45)}
+.pf-foot .sig .st{font-family:var(--label);font-size:.4em;vertical-align:super;color:#e8c98a}
+
+/* ── 展示品に触れる：全ケース共通。押した瞬間だけ発光→下の解説へ案内 ── */
+.case{cursor:pointer}
+.case:focus-visible{outline:2px solid rgba(230,195,120,.5);outline-offset:8px;border-radius:16px}
+/* クリック時：柔らかいbloomでなく "高度解析" の鋭い光の線（スキャン）＋一瞬シャープに発光 */
+.case.pulse::before{animation:none;opacity:.4;transform:scale(1.06);transition:opacity .16s ease,transform .16s ease}
+.case.pulse .artfull{filter:drop-shadow(0 0 12px var(--c)) drop-shadow(0 12px 30px rgba(0,0,0,.5)) brightness(1.34) contrast(1.06);transition:filter .12s ease}
+.scanline{position:absolute;left:3%;right:3%;top:4%;height:2px;z-index:3;pointer-events:none;border-radius:2px;
+  background:linear-gradient(90deg,transparent,var(--c) 22%,#fff 50%,var(--c) 78%,transparent);
+  box-shadow:0 0 16px var(--c),0 0 6px #fff;animation:scanDown .46s cubic-bezier(.4,0,.3,1) forwards}
+@keyframes scanDown{0%{top:4%;opacity:0}14%{opacity:1}86%{opacity:1}100%{top:94%;opacity:0}}
+/* 到着したExhibitのタイトルがフェードイン（＝展示解説室へ移動した合図） */
+.exhibit.arrived .ex-no{animation:exIn .5s ease .04s both}
+.exhibit.arrived .ex-name{animation:exIn .58s ease .12s both}
+@keyframes exIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+
+/* ── 作品図録（catalog）：ポスター→パンフ。読みやすい暗い面へ移る ── */
+/* 図録(WORKS/Creator)：作品が浮く"展示空間"へ。左右を濃く・中央は薄く・図書館は"感じるくらい"残す */
+/* 「黒い板」ではなく“舞台照明で空気が少し暗い”感じ。中央=図書館が見える／端へ自然に溶ける・広くて薄い。 */
+/* Works帯：ガラス板を一枚挟んだように、少し暗く・少しぼかす（Heroの明るさとの落差でリズムを作る） */
+.catalog{position:relative;overflow-x:clip;
+  -webkit-backdrop-filter:blur(6px) saturate(.9);backdrop-filter:blur(6px) saturate(.9);
+  background:
+  radial-gradient(ellipse 150% 380% at 50% 46%, rgba(10,13,20,.19) 0%, rgba(9,12,18,.30) 60%, rgba(8,10,16,.40) 100%),
+  linear-gradient(180deg, rgba(10,13,20,0) 0, rgba(10,13,20,.10) 5%, rgba(10,13,20,.10) 60%, rgba(10,13,20,.03) 100%);}
+/* blur境界の継ぎ目を上端でぼかす */
+.catalog::before{content:'';position:absolute;left:0;right:0;top:-1px;height:70px;pointer-events:none;
+  background:linear-gradient(180deg, rgba(10,13,20,.30), rgba(10,13,20,0))}
+.works{max-width:min(1180px,94vw);margin:0 auto;padding:44px 0 0}
+/* 各作品＝映画ポスター(半分)×解説(半分)。左右を交互にしてリズムを出す */
+.works .exhibit{scroll-margin-top:22px;max-width:none;margin:0;padding:clamp(48px,6vw,76px) clamp(12px,2vw,24px);
+  border-top:1px solid rgba(255,255,255,.07);display:grid;grid-template-columns:1.02fr .98fr;gap:clamp(24px,4.4vw,60px);align-items:center}
+.works .exhibit:first-child{border-top:none}
+.works .exhibit:nth-of-type(even) .ex-poster{order:2}
+.works .exhibit:nth-of-type(even) .ex-text{order:1}
+/* 可読性：ガラスの反射に文字が溶けないよう、テキストの裏に羽根つきの薄い暗幕＋わずかな影 */
+.ex-text{text-align:left;position:relative;z-index:1;text-shadow:0 1px 12px rgba(4,6,12,.55)}
+.ex-text::before{content:'';position:absolute;inset:-16px -22px;z-index:-1;pointer-events:none;
+  background:radial-gradient(ellipse 92% 86% at 42% 50%, rgba(8,10,16,.5), rgba(8,10,16,0) 72%)}
+.ex-no{font-family:var(--label);font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--c,#c9b8ff);opacity:.9;margin:0}
+.ex-name{font-family:var(--serif);font-weight:400;font-size:clamp(21px,2.8vw,30px);color:#f4efe4;margin:9px 0 2px;letter-spacing:.01em}
+.ex-lead{font-family:var(--serif);font-style:italic;font-weight:300;font-size:clamp(30px,4.6vw,54px);line-height:1;
+  color:var(--c,#fff);margin:4px 0 16px;letter-spacing:.005em;text-shadow:0 2px 34px color-mix(in srgb,var(--c,#fff) 50%,transparent)}
+.ex-tag{font-family:var(--jp);font-weight:400;font-size:14px;letter-spacing:.06em;color:#f1ebde;margin:0 0 7px}
+/* 英語のサブコピー：海外採用/LinkedIn向けに空気を変える一行 */
+.ex-en{font-family:var(--serif);font-style:italic;font-weight:300;font-size:13px;letter-spacing:.015em;color:rgba(206,216,236,.72);margin:0 0 14px}
+.ex-desc{font-family:var(--jp);font-weight:300;font-size:13.5px;line-height:2.05;letter-spacing:.03em;color:rgba(241,238,249,.92);margin:0 0 16px;max-width:40ch}
+/* 作品プレート：役割 · 課題 · 工夫 を1行。詩の世界観はそのままに、採用に効く"中身"を添える */
+.ex-plate{font-family:var(--jp);font-weight:300;font-size:12px;line-height:1.75;letter-spacing:.02em;
+  color:rgba(226,232,246,.82);margin:0 0 18px;padding-left:12px;max-width:42ch;
+  border-left:2px solid color-mix(in srgb,var(--c,#fff) 55%,transparent)}
+/* 収蔵目録（最小ナビ）：没入を壊さないよう静かに */
+.wx-index{display:flex;flex-direction:column;align-items:center;gap:9px;margin:4px auto 26px;max-width:940px;padding:0 16px}
+.wx-who{font-family:var(--label);font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;color:rgba(184,200,228,.5)}
+.wx-jump{display:flex;flex-wrap:wrap;justify-content:center;align-items:center}
+.wx-jump a{font-family:var(--label);font-size:11.5px;letter-spacing:.05em;color:rgba(214,224,244,.6);
+  text-decoration:none;padding:3px 13px;transition:color .2s}
+.wx-jump a:not(:last-child){border-right:1px solid rgba(214,224,244,.16)}
+.wx-jump a:hover{color:#fff}
+/* 作品(本物のUI)を超透明ガラスの板に封じる。作品は2D／展示だけアート化。ガラスケース→ガラスパネル→ガラスUIを一本の思想で繋ぐ */
+.ex-poster{position:relative;display:block;border-radius:16px;padding:clamp(8px,1vw,13px);
+  background:linear-gradient(152deg, rgba(255,255,255,.15), rgba(255,255,255,.03) 42%, rgba(255,255,255,0) 64%),
+             linear-gradient(0deg, rgba(255,255,255,.04), rgba(255,255,255,.015));
+  border:1px solid rgba(255,255,255,.16);
+  -webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px);
+  box-shadow:
+    0 32px 74px -28px var(--c,rgba(150,90,255,.55)),
+    inset 0 1px 0 rgba(255,255,255,.34),
+    inset 0 0 0 1px rgba(255,255,255,.05),
+    inset 0 -20px 44px -22px rgba(0,0,0,.55);
+  -webkit-box-reflect:below 3px linear-gradient(transparent 62%, rgba(255,255,255,.12));
+  transition:transform .4s cubic-bezier(.2,.7,.2,1),box-shadow .4s ease}
+/* 額縁の中を少し沈めて、横のEXHIBIT見出しに主役を譲る */
+.ex-poster img{position:relative;z-index:1;display:block;width:100%;height:auto;border-radius:9px;
+  filter:brightness(.92) contrast(1.03);box-shadow:0 2px 10px rgba(0,0,0,.45)}
+/* ガラス表面の反射（斜めの光）— 常時うっすら */
+.ex-poster::after{content:'';position:absolute;inset:0;z-index:2;pointer-events:none;border-radius:16px;
+  background:linear-gradient(125deg, rgba(255,255,255,.16) 0%, rgba(255,255,255,.05) 16%, transparent 32%);
+  mix-blend-mode:screen}
+/* 触れると光が走る（ガラスが反応する） */
+.ex-poster::before{content:'';position:absolute;top:-8%;left:-45%;width:26%;height:118%;z-index:3;pointer-events:none;
+  transform:skewX(-14deg);background:linear-gradient(100deg,transparent,rgba(255,255,255,.3),transparent);opacity:0}
+.ex-poster:hover::before{opacity:1;animation:sheenmove 1s cubic-bezier(.3,0,.2,1)}
+.ex-poster:hover{transform:translateY(-5px);box-shadow:
+    0 44px 96px -26px var(--c,rgba(150,90,255,.62)),
+    inset 0 1px 0 rgba(255,255,255,.4),
+    inset 0 0 0 1px rgba(255,255,255,.06),
+    inset 0 -20px 44px -22px rgba(0,0,0,.5)}
+.ex-tech{font-family:var(--label);font-size:12px;letter-spacing:.06em;color:rgba(226,220,244,.85);margin:0 0 16px}
+.ex-links{display:flex;gap:14px;flex-wrap:wrap}
+.ex-links a{font-family:var(--label);font-size:13px;letter-spacing:.06em;text-decoration:none;padding:9px 18px;border-radius:22px;
+  border:1px solid var(--c,rgba(255,255,255,.2));color:var(--c,#eaf5ff);transition:background .2s,color .2s}
+.ex-links a:hover{background:var(--c,#fff);color:#07060f}
+/* CTA主従：Open Live（動くデモ）を塗って主役に。面接官が最初に触るのはここ */
+.ex-links a:not(.gh){background:var(--c,#fff);color:#0a0714;border-color:transparent;font-weight:600}
+.ex-links a:not(.gh):hover{filter:brightness(1.1);transform:translateY(-1px)}
+.ex-links a.gh{border-color:rgba(255,255,255,.24);color:var(--soft)}
+.ex-links a.gh:hover{background:rgba(255,255,255,.9);color:#07060f;border-color:transparent}
+.exhibit.reward{--c:var(--reward)} .exhibit.debug{--c:var(--debug)} .exhibit.lens{--c:var(--lens)}
+.exhibit.frame{--c:var(--frame)} .exhibit.bug{--c:var(--bug)}
+/* 展示のリズム：作品ごとに"存在感"を変える（美術館：巨大→デッサン→巨大）。中央寄せで大小差を見せる */
+.works .exhibit{position:relative;margin-left:auto;margin-right:auto}
+.works .exhibit.lens{max-width:100%}
+.works .exhibit.debug{max-width:98%}
+.works .exhibit.bug{max-width:92%}
+.works .exhibit.reward{max-width:90%;grid-template-columns:.9fr 1.1fr}   /* RewardMe：画像を控え、文字を勝たせる */
+.works .exhibit.frame{max-width:74%}
+/* 各作品を"自分の色の照明"の中に置く（ポスター側から差す）。frame(緑)/bug(赤) は強めにして背景との喧嘩を消す */
+.works .exhibit:nth-of-type(odd){--gx:31%}
+.works .exhibit:nth-of-type(even){--gx:69%}
+/* 照明を全幅に：各作品が"その色の部屋"に入った空気になる（ピンクの間→紫の間→青の吹き抜け…） */
+.works .exhibit::before{content:'';position:absolute;left:50%;top:0;bottom:0;transform:translateX(-50%);width:100vw;z-index:0;pointer-events:none;
+  background:radial-gradient(ellipse 42% 82% at var(--gx,32%) 50%, color-mix(in srgb,var(--c,#fff) var(--glow,14%),transparent), transparent 70%);
+  filter:blur(58px)}
+.works .exhibit .ex-poster,.works .exhibit .ex-text{position:relative;z-index:1}
+/* ── 展示室ごとに空気を変える：天井高・照明の強さ・部屋の色。スクロールで"次の部屋"へ ── */
+/* RewardMe = 普通の展示室（基準） */
+/* DebugMe = 少し暗い部屋：光を絞り、部屋全体を沈める */
+.exhibit.debug{--glow:10%}
+.works .exhibit.debug{padding-top:clamp(44px,5.4vw,66px);padding-bottom:clamp(44px,5.4vw,66px)}
+.exhibit.debug::after{content:'';position:absolute;left:50%;top:0;bottom:0;transform:translateX(-50%);width:100vw;z-index:0;pointer-events:none;
+  background:linear-gradient(180deg, rgba(3,4,9,.30), rgba(3,4,9,.42))}
+/* CodeLensAI = 吹き抜けホール（FLAGSHIP）：天井を上げ・光を強め・上から天窓の光 */
+.exhibit.lens{--glow:26%}
+.works .exhibit.lens{padding-top:clamp(94px,11vw,150px);padding-bottom:clamp(94px,11vw,150px)}
+/* アイシーな天窓：白青の光が上から一筋。神殿の冷たさ */
+.exhibit.lens::after{content:'';position:absolute;left:50%;top:0;transform:translateX(-50%);width:74vw;height:64%;z-index:0;pointer-events:none;
+  background:radial-gradient(ellipse 40% 100% at 50% 0%, color-mix(in srgb,#c6ddff 36%,transparent), color-mix(in srgb,var(--lens) 12%,transparent) 42%, transparent 72%);filter:blur(32px)}
+/* FrameLens = 研究室：薄い設計図グリッド（緑・中央だけ） */
+.exhibit.frame{--glow:30%}
+.exhibit.frame::after{content:'';position:absolute;left:50%;top:0;bottom:0;transform:translateX(-50%);width:100vw;z-index:0;pointer-events:none;opacity:.9;
+  background:
+    linear-gradient(rgba(47,224,192,.05) 1px,transparent 1px) 0 0/100% 13px,
+    linear-gradient(90deg,rgba(47,224,192,.05) 1px,transparent 1px) 0 0/13px 100%,
+    linear-gradient(rgba(47,224,192,.09) 1px,transparent 1px) 0 0/100% 66px,
+    linear-gradient(90deg,rgba(47,224,192,.09) 1px,transparent 1px) 0 0/66px 100%,
+    repeating-linear-gradient(45deg, transparent 0 22px, rgba(47,224,192,.04) 22px 23px),
+    radial-gradient(circle at 24% 50%, transparent 84px, rgba(47,224,192,.13) 85px, transparent 89px),
+    radial-gradient(circle at 24% 50%, transparent 136px, rgba(47,224,192,.09) 137px, transparent 141px),
+    radial-gradient(circle at 24% 50%, transparent 12px, rgba(47,224,192,.16) 13px, transparent 15px);
+  -webkit-mask-image:radial-gradient(ellipse 66% 82% at 50% 50%,#000,transparent 82%);mask-image:radial-gradient(ellipse 66% 82% at 50% 50%,#000,transparent 82%)}
+/* Bug Generator = 実験室：赤を強く・端を焦がす */
+.exhibit.bug{--glow:38%}
+.exhibit.bug::after{content:'';position:absolute;left:50%;top:0;bottom:0;transform:translateX(-50%);width:100vw;z-index:0;pointer-events:none;
+  background:radial-gradient(ellipse 78% 100% at 50% 50%, transparent 52%, rgba(38,4,4,.34))}
+/* 実験室：遠くの警告灯がゆっくり点滅＋ほのかな赤い煙 */
+.lab-beacon{position:absolute;z-index:0;pointer-events:none;top:15%;right:7%;width:9px;height:9px;border-radius:50%;
+  background:radial-gradient(circle,#ff6a52,#e8241a);animation:beacon 2.8s ease-in-out infinite}
+.lab-beacon::after{content:'';position:absolute;left:50%;bottom:2px;width:120px;height:200px;transform:translateX(-50%);
+  background:radial-gradient(ellipse 46% 60% at 50% 82%, rgba(255,64,44,.12), transparent 70%);filter:blur(16px);
+  animation:labsmoke 7.5s ease-in-out infinite}
+@keyframes beacon{0%,100%{opacity:.32;box-shadow:0 0 8px 2px rgba(255,64,44,.22),0 0 26px 7px rgba(255,50,30,.10)}
+  50%{opacity:1;box-shadow:0 0 14px 4px rgba(255,80,58,.6),0 0 58px 20px rgba(255,50,30,.20)}}
+@keyframes labsmoke{0%,100%{opacity:.26;transform:translateX(-50%) translateY(8px) scale(1)}
+  50%{opacity:.58;transform:translateX(-50%) translateY(-10px) scale(1.12)}}
+
+/* ── 部屋ごとの"建築"ディテール：光だけでなく構造も変える（本当に歩いている感覚へ） ── */
+/* RewardMe = 楽しい展示室：ケース周りにほんの少しの紙吹雪と星 */
+.fx-confetti{position:absolute;z-index:0;pointer-events:none;left:50%;top:0;bottom:0;transform:translateX(-50%);width:100vw;opacity:.75;
+  background:
+    radial-gradient(circle at 13% 24%, rgba(255,158,199,.9) 0 2px, transparent 3px),
+    radial-gradient(circle at 21% 66%, rgba(255,214,150,.85) 0 2.5px, transparent 3.5px),
+    radial-gradient(circle at 83% 30%, rgba(255,255,255,.8) 0 2px, transparent 3px),
+    radial-gradient(circle at 89% 60%, rgba(255,158,199,.8) 0 2px, transparent 3px),
+    radial-gradient(circle at 73% 80%, rgba(255,214,150,.7) 0 2px, transparent 3px),
+    radial-gradient(circle at 33% 42%, rgba(255,255,255,.6) 0 1.5px, transparent 2.5px),
+    radial-gradient(circle at 64% 16%, rgba(255,158,199,.7) 0 2px, transparent 3px),
+    radial-gradient(circle at 46% 74%, rgba(255,214,150,.6) 0 1.5px, transparent 2.5px);
+  -webkit-mask-image:radial-gradient(ellipse 72% 92% at 50% 50%,#000,transparent 90%);mask-image:radial-gradient(ellipse 72% 92% at 50% 50%,#000,transparent 90%);
+  animation:confetti 9s ease-in-out infinite}
+@keyframes confetti{0%,100%{transform:translateX(-50%) translateY(3px)}50%{transform:translateX(-50%) translateY(-9px)}}
+/* FrameLens = 建築研究室：壁の奥に大きな設計図（ワイヤーフレーム＋寸法線＋対角線） */
+.fx-blueprint{position:absolute;z-index:0;pointer-events:none;top:14%;bottom:16%;left:6%;width:38%;opacity:.68;
+  border:1px solid rgba(47,224,192,.18);
+  background:
+    linear-gradient(90deg, rgba(47,224,192,.09) 1px, transparent 1px) 0 0/33.33% 100%,
+    linear-gradient(rgba(47,224,192,.09) 1px, transparent 1px) 0 0/100% 25%}
+.fx-blueprint::before{content:'';position:absolute;left:0;right:0;top:-16px;height:11px;
+  border-left:1px solid rgba(47,224,192,.42);border-right:1px solid rgba(47,224,192,.42);
+  background:linear-gradient(90deg,transparent 0,rgba(47,224,192,.4) 50%,transparent 100%) center/100% 1px no-repeat}
+.fx-blueprint::after{content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg, transparent 47%, rgba(47,224,192,.13) 49%, rgba(47,224,192,.13) 50%, transparent 52%)}
+/* Bug Generator = 実験施設：配管と、床の赤い反射 */
+.fx-pipes{position:absolute;z-index:0;pointer-events:none;left:50%;top:0;bottom:0;transform:translateX(-50%);width:100vw;opacity:.55;
+  background:
+    linear-gradient(90deg, transparent 2.6%, rgba(255,96,74,.10) 2.9%, rgba(120,22,16,.20) 3.6%, rgba(255,96,74,.10) 4.3%, transparent 4.6%),
+    linear-gradient(90deg, transparent 95.4%, rgba(255,96,74,.10) 95.7%, rgba(120,22,16,.20) 96.4%, rgba(255,96,74,.10) 97.1%, transparent 97.4%),
+    linear-gradient(0deg, transparent 85%, rgba(255,96,74,.08) 85.4%, rgba(120,22,16,.16) 86.2%, rgba(255,96,74,.08) 87%, transparent 87.4%)}
+.fx-pipes::after{content:'';position:absolute;left:0;right:0;bottom:0;height:32%;
+  background:linear-gradient(0deg, rgba(230,42,26,.18), transparent);mix-blend-mode:screen}
+
+/* ── CodeLensAI = FLAGSHIP を"事件"に：交互の列から外して中央配置＋大聖堂ホールの建築 ── */
+.works .exhibit.lens{display:block;text-align:center;max-width:min(1080px,94vw);--gx:50%;
+  padding-top:clamp(140px,16vw,224px);padding-bottom:clamp(140px,16vw,224px)}
+.exhibit.lens .ex-poster{max-width:min(920px,100%);margin:0 auto}
+.exhibit.lens .ex-text{text-align:center;max-width:660px;margin:34px auto 0}
+.exhibit.lens .ex-text::before{inset:-14px -34px}
+.exhibit.lens .ex-lead{font-size:clamp(38px,5.4vw,64px);margin-top:2px}
+.exhibit.lens .ex-desc{margin-left:auto;margin-right:auto}
+.exhibit.lens .ex-plate{border-left:none;padding-left:0;max-width:none;display:inline-block;margin-left:auto;margin-right:auto}
+.exhibit.lens .ex-links{justify-content:center}
+/* 建築：左右の石柱・天井梁・反射する床 */
+.fx-hall{position:absolute;z-index:0;pointer-events:none;left:50%;top:0;bottom:0;transform:translateX(-50%);width:100vw;
+  background:
+   radial-gradient(ellipse 72% 82% at 50% 42%, rgba(150,180,225,.04), transparent 44%, rgba(5,9,18,.55) 100%),   /* 神殿：周囲を沈めて静けさ・圧を作る冷たいヴィネット */
+   linear-gradient(180deg, rgba(120,150,210,.06), rgba(120,150,210,0) 32%),                                       /* 空気を一段冷たく */
+   linear-gradient(90deg, transparent 4.5%, rgba(160,190,232,.05) 6%, rgba(180,205,242,.14) 8%, rgba(120,150,200,.05) 10.5%, transparent 12.5%),
+   linear-gradient(90deg, transparent 87.5%, rgba(120,150,200,.05) 89.5%, rgba(180,205,242,.14) 92%, rgba(160,190,232,.05) 94%, transparent 95.5%),
+   linear-gradient(0deg, transparent 89%, rgba(165,195,235,.09) 89.6%, transparent 90.6%, transparent 92.4%, rgba(165,195,235,.07) 93%, transparent 94%),
+   linear-gradient(0deg, rgba(140,170,222,.15) 0%, rgba(140,170,222,.045) 5%, transparent 11%)}
+@media (max-width:760px){
+  .works .exhibit{grid-template-columns:1fr;gap:20px}
+  .works .exhibit .ex-poster,.works .exhibit .ex-text{order:0 !important}
+  .ex-desc{max-width:none}
+  /* FLAGSHIPの余白を実機サイズへ（PCの神殿ほどは要らない） */
+  .works .exhibit.lens{padding-top:clamp(60px,13vw,120px);padding-bottom:clamp(60px,13vw,120px)}
+  .exhibit.lens .ex-poster{max-width:100%}
+  /* ボタンを押しやすく */
+  .ex-links{gap:10px}
+  .ex-links a{padding:12px 20px}
+  /* Heroの棚を1行に収める（小さくしすぎない） */
+  .gallery{gap:6px}
+  .case{flex-basis:clamp(46px,14vw,120px)}
+  .case.lens{flex-basis:clamp(80px,23vw,200px)}
+  .case.reward{flex-basis:clamp(56px,16.5vw,140px)}
+}
+
+/* ── Exhibit 06 = Creator（作者展示）：About/Skills/Contact を"中身"に ── */
+/* Creator帯：ここだけ"作者の書斎"へ。ほんの少し暖色を混ぜ、木の机が"急に"でなく"自然に"入るように。暖色は上に集め、フッターへ向けて静かなガラスに戻す */
+.creator-exhibit{--c:#e8c98a;text-align:center;max-width:none;margin:0;border-top:1px solid rgba(255,255,255,.12);padding:clamp(56px,7vw,88px) clamp(12px,2vw,24px) 0;
+  background:
+    radial-gradient(ellipse 40% 56% at 21% 44%, rgba(214,150,86,.11), transparent 62%),   /* 机の光が左へ漏れる（左右を繋ぐ） */
+    repeating-linear-gradient(90deg, rgba(122,84,48,.055) 0 1px, transparent 1px 94px),   /* アトリエ：木の壁の板目 */
+    radial-gradient(ellipse 42% 40% at 50% 93%, rgba(150,180,235,.06), transparent 60%),
+    linear-gradient(180deg, rgba(96,120,164,.06) 0%, rgba(96,120,164,0) 30%),   /* Heroの青を2%だけ引き継ぐ */
+    linear-gradient(180deg, rgba(70,58,44,.15) 0%, rgba(52,46,40,.10) 20%, rgba(28,26,24,.05) 40%, rgba(10,13,20,0) 55%, rgba(8,10,15,.44) 84%, rgba(3,5,9,.85) 100%)}
+/* Creatorも作品と同じ"横並び・同じ大きさ"に。ラベル(左)＋ガラスの机(右) */
+/* Creator = アトリエ：締めの主役。机を約1.4倍に（ラベルは細く、机を大きく） */
+.cx-lead{display:grid;grid-template-columns:.72fr 1.28fr;gap:clamp(24px,4vw,54px);align-items:center;
+  max-width:min(1320px,96vw);margin:0 auto;text-align:left}
+.cx-lead .creator-banner{max-width:none;margin:0}
+@media (max-width:760px){.cx-lead{grid-template-columns:1fr;gap:20px}}
+.creator-exhibit .ex-no{letter-spacing:.36em}
+.cx-lead .ex-name{margin:10px 0 2px}
+.creator-exhibit .ex-name .cs{font-family:var(--label);font-size:.4em;vertical-align:super;color:var(--c);margin-left:.14em}
+/* Creator Desk も作品と同じガラス封入に（様式を統一）。後光はCreatorの金 */
+.creator-banner{position:relative;max-width:min(1280px,95vw);margin:8px auto 0;border-radius:16px;padding:clamp(8px,1vw,13px);
+  background:linear-gradient(152deg, rgba(255,255,255,.13), rgba(255,255,255,.03) 42%, rgba(255,255,255,0) 64%),
+             linear-gradient(0deg, rgba(255,255,255,.035), rgba(255,255,255,.012));
+  border:1px solid rgba(255,255,255,.15);
+  -webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px);
+  box-shadow:
+    0 32px 74px -28px rgba(210,190,150,.42),
+    inset 0 1px 0 rgba(255,255,255,.32),
+    inset 0 0 0 1px rgba(255,255,255,.05),
+    inset 0 -20px 44px -22px rgba(0,0,0,.55);
+  -webkit-box-reflect:below 3px linear-gradient(transparent 64%, rgba(255,255,255,.10))}
+.creator-banner img{position:relative;z-index:1;width:100%;height:auto;display:block;border-radius:9px;
+  filter:saturate(.8) brightness(.95) contrast(1.03);box-shadow:0 2px 10px rgba(0,0,0,.45)}
+/* 机を数%冷やす（Heroの近未来と地続きに） */
+.creator-banner::before{content:'';position:absolute;inset:0;z-index:2;pointer-events:none;border-radius:16px;
+  background:linear-gradient(180deg, rgba(96,124,172,.14), rgba(96,124,172,.05));mix-blend-mode:soft-light}
+/* ガラス表面の反射（斜めの光） */
+.creator-banner::after{content:'';position:absolute;inset:0;z-index:3;pointer-events:none;border-radius:16px;
+  background:linear-gradient(125deg, rgba(255,255,255,.14) 0%, rgba(255,255,255,.05) 16%, transparent 32%);mix-blend-mode:screen}
+/* エピローグの一呼吸：作品(机)を見終えてから Skills へ。塊にせず余韻を挟む */
+.cx-body{max-width:780px;margin:clamp(50px,6vw,78px) auto 0}
+/* Skills/Contact は Exhibit 06 の"中身"として一続きに（詰める） */
+.creator-exhibit .pf{padding:20px 22px}
+/* Skills/Contact は主役じゃない＝見出しを弱く（小さく・薄く・余白多め）。作品の余韻を壊さない */
+.creator-exhibit .pf-h{font-size:10.5px;letter-spacing:.32em;color:rgba(192,206,230,.46);margin-bottom:26px}
+
+/* ── 余韻：暗転のあと、星ひとつ。見終えた翌日に残る"一枚" ── */
+.afterglow{min-height:min(62vh,560px);display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(ellipse 60% 52% at 50% 44%, rgba(12,16,24,.55), #05070b 72%)}
+.star-final{display:inline-flex;flex-direction:column;align-items:center;gap:18px;text-decoration:none;
+  color:#dfe9fb;animation:starbreathe 5.2s ease-in-out infinite}
+.star-final .sf-star{font-family:var(--label);font-size:clamp(30px,4.4vw,52px);line-height:1;
+  text-shadow:0 0 24px rgba(150,180,235,.55),0 0 62px rgba(120,150,220,.28)}
+.star-final .sf-hint{font-family:var(--label);font-size:10px;letter-spacing:.36em;text-transform:uppercase;
+  color:rgba(223,233,251,.30);opacity:0;transform:translateY(5px);transition:opacity .55s ease,transform .55s ease}
+.star-final:hover{color:#fff}
+.star-final:hover .sf-star{text-shadow:0 0 32px rgba(160,190,245,.72),0 0 88px rgba(130,160,230,.4)}
+.star-final:hover .sf-hint{opacity:1;transform:none}
+@keyframes starbreathe{0%,100%{opacity:.6;transform:scale(1)}50%{opacity:1;transform:scale(1.055)}}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .case{opacity:1;transform:none;transition:none}
+  .case::before{animation:none}
+  .chev,.explore .chev{animation:none}
+  .star-final{animation:none;opacity:.85}
+  .lab-beacon,.lab-beacon::after{animation:none}
+  .fx-confetti{animation:none}
+}
+</style></head>
+<body>
+<div class="sky"></div>
+<div class="roomlight" aria-hidden="true"></div>
+
+<main class="wrap" id="top">
+  <div class="logo">Mize<span class="st">✳</span></div>
+  <h1 class="headline">A Museum of <span class="em">Software</span></h1>
+  <p class="sub">Portfolio Collection · 2026</p>
+
+  <section class="gallery" id="gallery" aria-label="Products" data-room="default">
+
+    <a class="case reward in" href="#ex-reward" aria-label="RewardMe の展示解説へ">
+      <img class="artfull" src="cases/rewardme.png" alt="RewardMe — タスクを、ごほうびに変える" loading="lazy"><i class="sheen" aria-hidden="true"></i></a>
+
+    <a class="case debug in" href="#ex-debug" aria-label="DebugMe の展示解説へ">
+      <img class="artfull" src="cases/debugme.png" alt="DebugMe — 悩みを、ログに変換する" loading="lazy"><i class="sheen" aria-hidden="true"></i></a>
+
+    <a class="case lens in" href="#ex-lens" aria-label="CodeLensAI の展示解説へ">
+      <img class="artfull" src="cases/codelensai.png" alt="CodeLensAI — コードレビューを、知性に変える" loading="lazy"><i class="sheen" aria-hidden="true"></i></a>
+
+    <a class="case frame in" href="#ex-frame" aria-label="FrameLens の展示解説へ">
+      <img class="artfull" src="cases/framelens.png" alt="FrameLens — 見えない構造を、見える化する" loading="lazy"><i class="sheen" aria-hidden="true"></i></a>
+
+    <a class="case bug in" href="#ex-bug" aria-label="Bug Generator の展示解説へ">
+      <img class="artfull" src="cases/buggenerator.png" alt="Bug Generator — バグを、遊びに変える" loading="lazy"><i class="sheen" aria-hidden="true"></i></a>
+
+  </section>
+  <div class="floor"></div>
+
+  <!-- 収蔵目録：時間のない人向けの最小ナビ＋Mizeが何者かの一言 -->
+  <nav class="wx-index" aria-label="作品目録">
+    <span class="wx-who">Mize — Engineer &amp; Designer · Human-first software</span>
+    <span class="wx-jump">
+      <a href="#ex-reward">RewardMe</a><a href="#ex-debug">DebugMe</a><a href="#ex-lens">CodeLensAI</a><a href="#ex-frame">FrameLens</a><a href="#ex-bug">Bug Generator</a><a href="#ex-creator">Creator</a>
+    </span>
+  </nav>
+
+  <a class="explore" href="https://mize1978.github.io/codelens-lp/enter.html" aria-label="Enter the Library">
+    <svg class="bk" viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 6c-2.5-1.6-6-1-7 0v12c1-1 4.5-1.4 7 0 2.5-1.4 6-1 7 0V6c-1-1-4.5-1.6-7 0z"/><path d="M12 6v12"/></svg>
+    <span class="frame">Enter the Collection</span>
+    <span class="cap">Scroll · Swipe · Enter</span>
+    <span class="chev">▾</span>
+  </a>
+
+  <!-- 作品図録：ショーケース(ポスター)→ここが解説(パンフ)。世界観を切らず "Exhibit NN" で受ける -->
+  <div class="catalog">
+    <section class="works">
+
+      <article class="exhibit reward" id="ex-reward" data-room="reward">
+        <i class="fx-confetti" aria-hidden="true"></i>
+        <a class="ex-poster" href="https://rewardme-qaq3.onrender.com" target="_blank" rel="noopener"><img src="banner-rewardme.jpg" alt="RewardMe" loading="lazy"></a>
+        <div class="ex-text">
+          <p class="ex-no">Exhibit 01 · Playful</p>
+          <h2 class="ex-name">RewardMe</h2>
+          <p class="ex-lead">Joy.</p>
+          <p class="ex-tag">タスクを、ごほうびに変える</p>
+          <p class="ex-en">Turn everyday tasks into lasting motivation.</p>
+          <p class="ex-desc">こなすほど、ごほうびが増える。続けたくなるタスク管理。</p>
+          <p class="ex-plate">個人開発 · 「続かない」を"ごほうび"で解決 · Hotwireで非同期にごほうび付与</p>
+          <p class="ex-tech">Ruby on Rails · Hotwire · Stimulus · PostgreSQL</p>
+          <div class="ex-links">
+            <a href="https://rewardme-qaq3.onrender.com" target="_blank" rel="noopener">Open Live →</a>
+            <a class="gh" href="https://github.com/mize1978/rewardme" target="_blank" rel="noopener">GitHub →</a></div>
+        </div>
+      </article>
+
+      <article class="exhibit debug" id="ex-debug" data-room="debug">
+        <a class="ex-poster" href="https://debugme-2m5k.onrender.com" target="_blank" rel="noopener"><img src="banner-debugme.jpg" alt="DebugMe" loading="lazy"></a>
+        <div class="ex-text">
+          <p class="ex-no">Exhibit 02 · Reflection</p>
+          <h2 class="ex-name">DebugMe</h2>
+          <p class="ex-lead">Listen.</p>
+          <p class="ex-tag">悩みを、ログに変換する</p>
+          <p class="ex-en">Organize your thoughts before fixing your problems.</p>
+          <p class="ex-desc">まず、聴く。あなたの詰まりを、たしかなログへ。</p>
+          <p class="ex-plate">個人開発 · 詰まりを言語化して整理する · SSEでAIの応答をストリーミング</p>
+          <p class="ex-tech">Ruby on Rails · Claude API · SSE · Hotwire</p>
+          <div class="ex-links">
+            <a href="https://debugme-2m5k.onrender.com" target="_blank" rel="noopener">Open Live →</a>
+            <a class="gh" href="https://github.com/mize1978/debugme" target="_blank" rel="noopener">GitHub →</a></div>
+        </div>
+      </article>
+
+      <article class="exhibit lens" id="ex-lens" data-room="lens">
+        <i class="fx-hall" aria-hidden="true"></i>
+        <a class="ex-poster" href="https://codelens-ai-vplg.onrender.com" target="_blank" rel="noopener"><img src="banner-codelensai.jpg" alt="CodeLensAI — 実在の人気OSS chalk/chalk をAIがレビューした画面" loading="lazy"></a>
+        <div class="ex-text">
+          <p class="ex-no">Exhibit 03 · Flagship</p>
+          <h2 class="ex-name">CodeLensAI</h2>
+          <p class="ex-lead">Read.</p>
+          <p class="ex-tag">コードレビューを、知性に変える</p>
+          <p class="ex-en">Transform code reviews into lasting knowledge.</p>
+          <p class="ex-desc">ソフトウェアを"読める"場所へ。差分に、意味を残す。</p>
+          <p class="ex-plate">個人開発 · 画面は実在の人気OSS「chalk」をAIがレビュー・採点した例 · Claude APIで差分解析 / Docker</p>
+          <p class="ex-tech">Laravel · Claude API · PostgreSQL · Docker</p>
+          <div class="ex-links">
+            <a href="https://codelens-ai-vplg.onrender.com" target="_blank" rel="noopener">Open Live →</a>
+            <a class="gh" href="https://github.com/mize1978/codelens-ai" target="_blank" rel="noopener">GitHub →</a></div>
+        </div>
+      </article>
+
+      <article class="exhibit frame" id="ex-frame" data-room="frame">
+        <i class="fx-blueprint" aria-hidden="true"></i>
+        <a class="ex-poster" href="https://mize1978.github.io/framelens/" target="_blank" rel="noopener"><img src="banner-framelens.jpg" alt="FrameLens" loading="lazy"></a>
+        <div class="ex-text">
+          <p class="ex-no">Exhibit 04 · Research</p>
+          <h2 class="ex-name">FrameLens</h2>
+          <p class="ex-lead">See.</p>
+          <p class="ex-tag">見えない構造を、見える化する</p>
+          <p class="ex-en">Make invisible structures visible.</p>
+          <p class="ex-desc">見えない構造を、目に見えるかたちへ。</p>
+          <p class="ex-plate">個人開発 · 見えない構造を可視化する · C++をWebAssembly化しブラウザで描画</p>
+          <p class="ex-tech">C++ · OpenGL · WebAssembly · WebGL2 · Emscripten</p>
+          <div class="ex-links">
+            <a href="https://mize1978.github.io/framelens/" target="_blank" rel="noopener">Open Live →</a>
+            <a class="gh" href="https://github.com/mize1978/FrameLens" target="_blank" rel="noopener">GitHub →</a></div>
+        </div>
+      </article>
+
+      <article class="exhibit bug" id="ex-bug" data-room="bug">
+        <i class="lab-beacon" aria-hidden="true"></i>
+        <i class="fx-pipes" aria-hidden="true"></i>
+        <a class="ex-poster" href="https://bug-generator-zt5t.onrender.com" target="_blank" rel="noopener"><img src="banner-buggenerator.jpg" alt="Bug Generator" loading="lazy"></a>
+        <div class="ex-text">
+          <p class="ex-no">Exhibit 05 · Experimental</p>
+          <h2 class="ex-name">Bug Generator</h2>
+          <p class="ex-lead">Play.</p>
+          <p class="ex-tag">バグを、遊びに変える</p>
+          <p class="ex-en">Learn through bugs. Create with curiosity.</p>
+          <p class="ex-desc">こわいエラーを、遊べるものに。開発者のいたずら箱。</p>
+          <p class="ex-plate">個人開発 · エラーを学びの"遊び"に変える · Rails+Stimulusで動的に生成</p>
+          <p class="ex-tech">Ruby on Rails · Hotwire · Stimulus</p>
+          <div class="ex-links">
+            <a href="https://bug-generator-zt5t.onrender.com" target="_blank" rel="noopener">Open Live →</a>
+            <a class="gh" href="https://github.com/mize1978/bug_generator" target="_blank" rel="noopener">GitHub →</a></div>
+        </div>
+      </article>
+
+    </section>
+
+    <!-- Exhibit 06 = Creator（作者展示）。中身が About / Skills / Contact -->
+    <section class="exhibit creator-exhibit" id="ex-creator" data-room="creator">
+      <div class="cx-lead">
+        <div class="ex-text">
+          <p class="ex-no">The Creator</p>
+          <h2 class="ex-name">Mize<span class="cs">✳</span></h2>
+          <p class="ex-lead">Create.</p>
+          <p class="ex-tag">アイデアを、かたちに。</p>
+          <p class="ex-en">Designing software people remember.</p>
+        </div>
+        <div class="creator-banner" id="about"><img src="banner-creator.jpg" alt="Creator Desk — アイデアを、価値あるプロダクトに。Web・AI・UIデザインまで一貫して行う開発者。" loading="lazy"></div>
+      </div>
+
+      <div class="cx-body">
+        <div class="pf skills">
+          <h3 class="pf-h">Skills</h3>
+          <div class="skillgrid">
+            <div class="skcat"><span class="skcat-l">Backend</span>
+              <div class="skitems"><span>Ruby</span><span>Rails</span><span>PHP</span><span>Laravel</span></div></div>
+            <div class="skcat"><span class="skcat-l">Frontend</span>
+              <div class="skitems"><span>JavaScript</span><span>TypeScript</span><span>React</span><span>Hotwire</span></div></div>
+            <div class="skcat"><span class="skcat-l">AI</span>
+              <div class="skitems"><span>Claude API</span><span>OpenAI API</span><span>Prompt Engineering</span></div></div>
+            <div class="skcat"><span class="skcat-l">Infrastructure</span>
+              <div class="skitems"><span>Docker</span><span>PostgreSQL</span><span>Render</span><span>GitHub Actions</span></div></div>
+            <div class="skcat wide"><span class="skcat-l">Graphics / Native</span>
+              <div class="skitems"><span>C++</span><span>OpenGL</span><span>WebGL2</span><span>WebAssembly</span><span>Emscripten</span></div></div>
+          </div>
+        </div>
+
+        <div class="pf contact">
+          <h3 class="pf-h">Contact</h3>
+          <p class="contact-lead">気軽に声をかけてください。お仕事のご相談も歓迎です。</p>
+          <div class="links">
+            <a href="https://github.com/mize1978" target="_blank" rel="noopener" aria-label="GitHub">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17 5.1 18 5.4 18 5.4c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.5-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z"/></svg>GitHub</a>
+            <a href="https://x.com/mizelategm66172" target="_blank" rel="noopener" aria-label="X">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.9 2H22l-7.5 8.6L23 22h-6.8l-5.3-6.9L4.8 22H1.7l8-9.2L1 2h6.9l4.8 6.3L18.9 2zm-1.2 18h1.9L7.1 4H5.1l12.6 16z"/></svg>X</a>
+            <a href="https://zenn.dev/mizel1978" target="_blank" rel="noopener" aria-label="Zenn">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M2 20h4.3L18 4.6c.2-.3 0-.6-.3-.6h-3.3c-.4 0-.8.2-1 .5L2 20zm14.4 0H20V9.9c0-.4-.5-.5-.7-.2L14.9 20z"/></svg>Zenn</a>
+            <a href="mailto:mizelate@gmail.com" aria-label="Email">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="2.5" y="4.5" width="19" height="15" rx="2"/><path d="M3 6l9 6 9-6"/></svg>Email</a>
+          </div>
+        </div>
+      </div>
+
+      <footer class="pf-foot">
+        <p class="closing">Thanks for visiting.<br>The museum closes. <em>Ideas never do.</em></p>
+        <p class="closing-2">The exhibition continues<br>through every project you build.</p>
+        <span class="laurel-in">Quiet Precision. Playfulness.</span>
+        <span class="sig">crafted by Mize<span class="st">✳</span></span>
+      </footer>
+    </section>
+
+    <!-- 記憶の一枚：館が暗転したあと、星だけが残る。触れると入口へ戻る（＝また巡れる） -->
+    <div class="afterglow">
+      <a class="star-final" href="#top" aria-label="入口へ戻る"><span class="sf-star">✳</span><span class="sf-hint">Again, from the beginning</span></a>
+    </div>
+  </div>
+</main>
+
+<script>
+(function(){
+  // 6ケースを並べて見せる（横スクロールなし）。入場だけ順に浮かび上がる。
+  if(!matchMedia('(prefers-reduced-motion: reduce)').matches){
+    var cs=document.querySelectorAll('.gallery .case'); cs.forEach(function(c,i){ c.classList.remove('in');
+      setTimeout(function(){ c.classList.add('in'); }, 160+i*110); });
+  }
+})();
+
+(function(){
+  // 展示品(ケース)クリック → 発光 → 一定速度で"吸い込まれる"スクロール → 到着でExhibitタイトルがフェードイン。
+  // 「展示室から展示解説室へ移動した」体験。派手にせず 0.5s強で。
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function ease(p){ return p<.5 ? 2*p*p : 1-Math.pow(-2*p+2,2)/2; }   // easeInOut＝吸い込まれる感
+  function scrollToY(y, dur){
+    var s=window.pageYOffset, d=y-s, t0=null;
+    (function step(ts){ if(t0===null)t0=ts; var p=Math.min(1,(ts-t0)/dur);
+      window.scrollTo(0, s + d*ease(p)); if(p<1) requestAnimationFrame(step); })(performance.now());
+  }
+  document.querySelectorAll('.gallery .case').forEach(function(c){
+    c.addEventListener('click', function(ev){
+      var href=c.getAttribute('href'); if(!href || href.charAt(0)!=='#') return;
+      var target=document.querySelector(href); if(!target) return;
+      ev.preventDefault();
+      if(reduce){ target.scrollIntoView(); return; }
+      c.classList.add('pulse');
+      var sc=document.createElement('span'); sc.className='scanline'; c.appendChild(sc);   // 高度解析の光の線
+      setTimeout(function(){ c.classList.remove('pulse'); sc.remove(); }, 480);
+      target.classList.remove('arrived'); void target.offsetWidth;   // 再クリックでも再生
+      setTimeout(function(){
+        var y=target.getBoundingClientRect().top + window.pageYOffset - 18;
+        scrollToY(y, 580);
+        target.classList.add('arrived');
+      }, 150);
+    });
+  });
+})();
+
+(function(){
+  // 館内照明：スクロールで中央に来た Exhibit の色へ、左右の壁の光が 1.2s で追従（＝館内を歩く感覚）。
+  var root=document.documentElement;
+  var C={default:'#8aa2c4',reward:'#ff9ec7',debug:'#b982ff',lens:'#54b6ff',frame:'#2fe0c0',bug:'#ff6a5a',creator:'#e8c98a'};
+  var zones=document.querySelectorAll('[data-room]');
+  if(!zones.length || !('IntersectionObserver' in window)) return;
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){ var c=C[e.target.getAttribute('data-room')]; if(c) root.style.setProperty('--room', c); }
+    });
+  }, {rootMargin:'-42% 0px -42% 0px', threshold:0});
+  zones.forEach(function(z){ io.observe(z); });
+})();
+</script>
+</body></html>
