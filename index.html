@@ -421,6 +421,7 @@ body{min-height:100%;background:var(--bg0);color:var(--ink);font-family:var(--jp
    linear-gradient(0deg, rgba(140,170,222,.15) 0%, rgba(140,170,222,.045) 5%, transparent 11%)}
 @media (max-width:760px){
   .works .exhibit{grid-template-columns:1fr;gap:20px}
+  .works .exhibit.reward{grid-template-columns:1fr;max-width:none}   /* RewardMe もモバイルは1カラム（.reward の詳細度上書きを解除） */
   .works .exhibit .ex-poster,.works .exhibit .ex-text{order:0 !important}
   .ex-desc{max-width:none}
   /* FLAGSHIPの余白を実機サイズへ（PCの神殿ほどは要らない） */
