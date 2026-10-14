@@ -1,0 +1,19 @@
+<!-- MizeLy 正式シンボル。2026-09-29 に差し替え。
+     27 グリッドに角丸の四角3つ。丸ではない。
+       大 17x17 @(1,1)  #7C3AED  角丸 7
+       中 17x17 @(9,9)  #22D3EE  角丸 7
+       小  6x6  @(21,0) #EC4899  真円
+     <img> で読むので blend に頼らず、重なりは screen 合成の結果 #8DDDFE を直接塗る。
+       screen(a,b) = 1 - (1-a)(1-b) → #7C3AED × #22D3EE = #8DDDFE
+     この3色はロゴ専用。サイト本体の配色（黒 / 白 / #FF5BA8）は変更していない。 -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 27 27" width="27" height="27" role="img" aria-label="MizeLy">
+  <defs>
+    <clipPath id="mz-a"><rect x="1" y="1" width="17" height="17" rx="7"/></clipPath>
+  </defs>
+  <rect x="1" y="1" width="17" height="17" rx="7" fill="#7C3AED"/>
+  <rect x="9" y="9" width="17" height="17" rx="7" fill="#22D3EE"/>
+  <g clip-path="url(#mz-a)">
+    <rect x="9" y="9" width="17" height="17" rx="7" fill="#8DDDFE"/>
+  </g>
+  <circle cx="24" cy="3" r="3" fill="#EC4899"/>
+</svg>
