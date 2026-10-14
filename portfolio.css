@@ -1,0 +1,109 @@
+:root{--bg:#141513;--surface:#1c1e1a;--ink:#e9e7dd;--soft:#aaa99e;--gold:#c1aa7b;--rule:#36382f;--sans:'DM Sans','Noto Sans JP',sans-serif;--serif:Georgia,'Times New Roman',serif}*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:30px}body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}body:before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9;opacity:.025;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Cpath fill='%23fff' filter='url(%23n)' d='M0 0h160v160H0z'/%3E%3C/svg%3E")}a{color:inherit;text-decoration:none}a:focus-visible,summary:focus-visible{outline:2px solid var(--gold);outline-offset:6px}img{max-width:100%;height:auto}h1,h2,h3,p{margin:0}::selection{background:var(--gold);color:var(--bg)}.skip{position:absolute;left:20px;top:-80px;padding:12px;background:var(--ink);color:var(--bg);z-index:20}.skip:focus{top:10px}.header,main,footer{max-width:1600px;margin:auto}.header{padding:30px 6%;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--rule)}.logo{font-family:var(--serif);font-size:32px;letter-spacing:-1px}.logo span{margin-left:8px;color:var(--gold);font-size:23px}.header nav{display:flex;gap:38px;font-size:13px;align-items:center}.header nav a:hover{color:var(--gold)}.contact-nav{border:1px solid #5c5c4e;padding:12px 20px;border-radius:30px}.contact-nav span{margin-left:25px}.hero{position:relative;padding:74px 6% 0;min-height:850px;display:grid;grid-template-columns:1.05fr 1fr;overflow:hidden}.eyebrow{font-size:10px;letter-spacing:2px;color:var(--gold);font-weight:500;line-height:1.8}.line{display:inline-block;width:27px;height:1px;background:var(--gold);vertical-align:middle;margin-right:12px}.hero h1{font-family:var(--serif);font-weight:400;font-size:clamp(72px,8.5vw,136px);line-height:.99;letter-spacing:-6px;margin:30px 0 27px}.hero em,h2 em{font-weight:400;color:var(--gold)}.gold{color:var(--gold)}.hero-ja{font-size:23px;letter-spacing:2px}.hero-note{font-size:13px;color:var(--soft);line-height:2;margin:20px 0 28px}.text-link{font-size:13px;display:inline-flex;align-items:center;gap:54px;padding:12px 0;border-bottom:1px solid #646451}.text-link span{font-size:20px;color:var(--gold)}.hero-art{position:relative;display:flex;align-items:center;justify-content:center;isolation:isolate;margin-top:-15px}.hero-art:before{content:'';position:absolute;inset:6%;background:radial-gradient(ellipse,#5c695533,transparent 65%);z-index:-1}.hero-art img{width:76%;max-height:570px;object-fit:contain;filter:drop-shadow(0 25px 35px #0006)}.orbit{position:absolute;border:1px solid #6c75652e;border-radius:50%;width:94%;aspect-ratio:1;transform:rotate(-25deg);z-index:-1}.o2{width:70%;transform:rotate(25deg)}.art-index{position:absolute;top:0;right:0;font-size:9px;letter-spacing:2px;color:var(--soft)}.art-caption{position:absolute;bottom:10%;right:0;font-family:var(--serif);font-size:19px;font-style:italic;line-height:1.4;color:var(--soft)}.hero-bottom{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--rule);font-size:9px;letter-spacing:1.7px;color:var(--soft);padding:24px 0;margin-top:40px}.intro{margin:0 6%;padding:100px 0;display:grid;grid-template-columns:.65fr 1.5fr 1fr;gap:30px;border-bottom:1px solid var(--rule);align-items:start}.intro h2{font-size:31px;line-height:1.75;letter-spacing:1px;font-weight:400}.intro h2 span{color:var(--soft)}.intro>p:last-child{font-size:12px;color:var(--soft);line-height:2.3;padding-top:8px}.works,.practice{padding:100px 6% 20px}.section-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:55px}.section-head h2{font-size:clamp(36px,4.5vw,65px);font-family:var(--serif);font-weight:400;letter-spacing:-2px;margin-top:12px}.section-head>p{font-size:12px;line-height:2;color:var(--soft)}.project{display:grid;grid-template-columns:1.12fr 1fr;gap:7%;padding:0 0 64px;margin-bottom:64px;border-bottom:1px solid var(--rule);align-items:center}.project-visual{height:495px;background:#20251f;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}.project-visual img{height:88%;width:80%;object-fit:contain;position:relative;z-index:1;transition:transform .6s}.project:hover .project-visual img{transform:translateY(-8px)}.project-visual:before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 35%,#fff1,transparent 65%)}.visual-number{position:absolute;left:24px;top:22px;font-size:10px;letter-spacing:2px;color:var(--soft)}.visual-word{position:absolute;bottom:10px;left:20px;font-family:var(--serif);font-size:clamp(40px,5vw,70px);color:#ffffff0d}.reward{background:#292225}.debug{background:#232029}.lens{background:#1d262b}.frame{background:#1b2a27}.bug{background:#29231d}.project-copy h3{font-size:39px;letter-spacing:-1.5px;font-weight:500;margin:12px 0 23px}.project-title{font-size:23px;line-height:1.8;font-weight:500}.project-desc{font-size:13px;color:var(--soft);line-height:2.2;max-width:36em;margin:18px 0}.tech{font-size:10px;color:var(--gold);line-height:2;letter-spacing:.5px}.project-links{display:flex;gap:26px;margin:28px 0}.project-links a{border-bottom:1px solid #666451;padding-bottom:9px;font-size:12px;min-width:100px;display:flex;justify-content:space-between;gap:24px}.project-links a:hover{color:var(--gold)}details{border-top:1px solid var(--rule);padding-top:13px}summary{cursor:pointer;font-size:11px;color:var(--soft);display:flex;justify-content:space-between;list-style:none}summary::-webkit-details-marker{display:none}details img{margin-top:20px;display:block}.practice{background:#1a1d18;padding-bottom:90px}.practice-grid{display:grid;grid-template-columns:1fr 1fr;gap:50px}.practice-grid article{border-top:1px solid #555846;padding-top:22px}.practice-grid h3{font-size:25px;line-height:1.7;font-weight:400;margin:25px 0 15px}.practice-grid article>p:not(.eyebrow):not(.tech){font-size:13px;line-height:2.2;color:var(--soft);max-width:38em;margin-bottom:16px}.status{display:inline-block;border:1px solid #505443;padding:5px 12px;font-size:10px;margin-top:20px;border-radius:20px;color:var(--soft)}.abstract-web,.abstract-video{height:240px;margin-top:28px;position:relative;background:#24291f;overflow:hidden}.abstract-web{padding:27px 35px;border:1px solid #444b36}.browser-dots{font-size:6px;letter-spacing:5px;color:var(--gold);padding-bottom:25px;border-bottom:1px solid #454b3c}.mock-line{margin:30px 0 20px;height:16px;width:55%;background:#989781}.mock-columns{display:flex;gap:20px}.mock-columns span{height:70px;flex:1;background:#30382b}.mock-columns span:last-child{background:repeating-linear-gradient(to bottom,#555c46 0 2px,transparent 2px 15px)}.abstract-video{background:radial-gradient(ellipse at 60% 50%,#806b4855,transparent 75%),#23251e;display:grid;place-items:center}.play{font-size:55px;color:var(--gold);font-weight:400}.timeline{position:absolute;left:8%;bottom:25px;width:84%;display:flex;gap:5px}.timeline i{height:14px;background:#565c43;flex:1}.timeline i:nth-child(2){background:#7e7558;flex:2}.timeline i:nth-child(3){background:#b9a27b}.about{padding:120px 6%;display:grid;grid-template-columns:1fr 1fr;gap:80px;border-bottom:1px solid var(--rule)}.about h2{font-family:var(--serif);font-size:clamp(70px,10vw,130px);font-weight:400;letter-spacing:-4px;margin-top:45px}.about h2 span{font-size:.5em;color:var(--gold);display:inline-block;vertical-align:top;margin:15px}.about-role{font-size:11px;color:var(--soft);margin-top:18px}.about-lead{font-size:27px;line-height:1.9;margin-bottom:30px}.about-copy>p:not(.about-lead){font-size:13px;line-height:2.2;color:var(--soft);margin-bottom:18px}.skills{margin:35px 0}.skills div{padding:17px 0;border-top:1px solid var(--rule);display:grid;grid-template-columns:1fr 1.5fr;gap:20px}.skills dt{font-size:9px;letter-spacing:1px;color:var(--gold)}.skills dd{margin:0;color:var(--soft);font-size:11px;line-height:1.9}.contact{padding:105px 6% 60px}.contact h2{font-family:var(--serif);font-size:clamp(64px,9vw,128px);font-weight:400;line-height:1.05;letter-spacing:-4px;margin:35px 0 45px;position:relative}.contact h2>span{position:absolute;right:5%;top:0;color:var(--gold);font-family:var(--sans);font-size:130px;font-weight:400}.contact-bottom{display:flex;justify-content:space-between;align-items:center}.contact-bottom p{font-size:12px;color:var(--soft)}.contact-bottom a{border-bottom:1px solid var(--gold);padding-bottom:10px;font-size:18px}footer{border-top:1px solid var(--rule);padding:30px 6%;display:flex;justify-content:space-between;align-items:center}footer p{font-size:10px;color:var(--soft)}footer div{display:flex;gap:25px;font-size:11px}
+@media(min-width:1600px){.hero h1{font-size:136px}}@media(max-width:1000px){.hero{min-height:730px}.hero h1{letter-spacing:-4px}.intro{grid-template-columns:1fr 2fr}.intro>p:last-child{grid-column:2}.project-visual{height:400px}.project-copy h3{font-size:32px}.project-title{font-size:19px}.about{gap:40px}.skills div{grid-template-columns:1fr}.art-caption{bottom:12%;font-size:15px}}@media(max-width:640px){.header{padding:22px 6%}.logo{font-size:27px}.header nav{gap:18px;font-size:11px}.header nav a:nth-child(2){display:none}.contact-nav{padding:0;border:0}.contact-nav span{margin-left:5px}.hero{padding-top:46px;grid-template-columns:1fr;min-height:0}.hero h1{font-size:clamp(50px,16vw,76px);letter-spacing:-2px;margin-top:25px}.hero-ja{font-size:19px}.hero-note{font-size:12px}.hero-art{height:405px;margin-top:22px}.hero-art img{height:95%;width:70%;max-height:none}.orbit{width:95%}.o2{width:73%}.art-index{top:5px;font-size:8px}.art-caption{bottom:10%;font-size:14px}.hero-bottom{font-size:8px;letter-spacing:1px;margin-top:20px;gap:20px;padding:20px 0}.hero-bottom>span:nth-child(2){display:none}.intro{padding:60px 0;grid-template-columns:1fr;gap:22px}.intro h2{font-size:25px}.intro>p:last-child{grid-column:auto}.works,.practice{padding-top:65px}.section-head{display:block;margin-bottom:35px}.section-head h2{font-size:40px;letter-spacing:-1px}.section-head>p{margin-top:20px}.project{grid-template-columns:1fr;gap:28px;margin-bottom:42px;padding-bottom:42px}.project-visual{height:380px}.project-copy h3{font-size:34px}.project-title{font-size:22px}.project-desc{font-size:13px}.practice-grid{grid-template-columns:1fr;gap:45px}.practice{padding-bottom:65px}.about{padding-top:70px;padding-bottom:70px;grid-template-columns:1fr;gap:40px}.about h2{font-size:96px;margin-top:20px}.about-lead{font-size:25px}.skills div{grid-template-columns:1fr 1.5fr}.contact{padding-top:65px}.contact h2{font-size:68px;letter-spacing:-2px}.contact h2>span{font-size:60px;right:0;top:10px}.contact-bottom{display:block}.contact-bottom a{display:inline-block;margin-top:25px;font-size:17px}footer{flex-wrap:wrap;gap:25px}footer p{order:3;flex-basis:100%}footer div{gap:20px}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+
+/* Original project artwork: preserve the supplied character and full composition. */
+.project-visual.original-banner{height:auto;aspect-ratio:1.65;padding:18px;background:#171817}.project-visual.original-banner img{width:100%;height:auto;max-height:100%;object-fit:contain}.original-banner .visual-number,.original-banner .visual-word{display:none}.project:hover .original-banner img{transform:none}@media(max-width:640px){.project-visual.original-banner{padding:0;aspect-ratio:auto}}
+
+/* Selected full-frame dome artwork, including its original backdrop. */
+.project-visual.selected-dome{background:#101010}.selected-dome img{width:100%;height:100%;object-fit:contain}.selected-dome .visual-number,.selected-dome .visual-word{display:none}.project:hover .selected-dome img{transform:none}
+
+/* The hero gallery: five works turning on a fan. 2026-10-14。
+
+   ■ ここに至るまで
+   円形リング（rotateY 72deg 刻み）→ ねじれる帯 → 散らし → **扇**。
+   帯は Mondragon の83枚を再現できたが、**ガラスドームが暗くて高彩度**なので
+   13枚重なると発光が飽和し、作品が光の塊になった。素材が合わなかった。
+   扇は5枚しか使わないので、1枚ずつ作品のまま読める。しかも WebGL が要らない。
+
+   ■ 仕組み
+   5枚を同じ位置に重ね、**上辺を軸に**回す。
+     transform-origin: top center       … 扇の骨の根元
+     rotateZ(90deg) してから rotateX    … Z で座標系を倒すので、X 回転が画面の縦軸まわりになる
+     animation-delay に**マイナス値**   … 負の遅延＝「もう進んだ状態で始まる」。待たずに最初から散る
+   表裏は img（表）と ::after（裏）。backface-visibility で、裏返った瞬間に入れ替わる。
+
+   姿勢と見る角度は .gallery-fan 一枚で決める。カード側は角度を持たない。 */
+.kinetic-gallery{
+    min-width:0;flex-direction:column;justify-content:center;
+    --cw:400px; --ch:225px;        /* カード寸法。バナーは横長なので比1.78 */
+    --radius:16px;                 /* バナーは端まで情報がある。カプセルにすると欠ける */
+    --dur:26s;                     /* 1周 */
+    --persp:1350px;
+    --camx:73deg; --camy:48deg; --camz:-67deg;
+    --ox:80px; --oy:54px;
+    --imgrot:-33deg;               /* 絵だけ傾ける。カードの枠は回さない */
+    /* 淡い縁。黒地のバナー（FrameLens / Bug Generator）は傾くと背景に溶けるので、
+       輪郭だけ残す。明るいバナーでは枠が勝たない濃さに留める。 */
+    --edge:rgba(233,231,221,.22);
+    --banner-brightness:.62;
+}
+.kinetic-gallery:before{inset:6% -24%;background:radial-gradient(ellipse,#45638222,transparent 68%)}
+/* 扇は 3D の重なりを持つので、ラベルは別レイヤーへ上げないとカードに潜る。 */
+.gallery-label{position:absolute;top:8px;right:0;font-size:9px;letter-spacing:2px;color:var(--soft);z-index:5;transform:translateZ(0)}
+.gallery-stage{width:100%;height:560px;display:grid;place-items:center;perspective:var(--persp)}
+.gallery-fan{
+    position:relative;width:var(--cw);height:var(--ch);
+    transform-style:preserve-3d;
+    transform:translate3d(var(--ox),var(--oy),0) rotateX(var(--camx)) rotateY(var(--camy)) rotateZ(var(--camz));
+}
+.gallery-card{
+    position:absolute;inset:0;display:block;
+    transform-style:preserve-3d;
+    transform-origin:top center;
+    will-change:transform;
+    animation:fan-turn var(--dur) linear infinite;
+}
+/* 表＝実物の img。リンクの中身なので、読み上げにもそのまま残る。 */
+.hero-art .gallery-card img{
+    position:absolute;inset:0;width:100%;height:100%;max-height:none;
+    object-fit:cover;filter:brightness(var(--banner-brightness));border-radius:var(--radius);
+    border:1px solid var(--edge);
+    transform:rotate(var(--imgrot));
+    backface-visibility:hidden;-webkit-backface-visibility:hidden;
+    box-shadow:0 18px 34px #0009;
+}
+/* 裏＝同じ絵を 180° 返したもの。--img は JS が img の src から入れる。 */
+.gallery-card::after{
+    content:'';position:absolute;inset:0;border-radius:var(--radius);
+    background:var(--img) center/cover no-repeat #101215;
+    filter:brightness(var(--banner-brightness));
+    border:1px solid var(--edge);
+    transform:rotateX(180deg) rotate(var(--imgrot));
+    backface-visibility:hidden;-webkit-backface-visibility:hidden;
+    box-shadow:0 18px 34px #0009;
+}
+@keyframes fan-turn{
+    from{transform:rotateZ(90deg) rotateX(1turn)}
+    to  {transform:rotateZ(90deg) rotateX(0turn)}
+}
+/* 触っている間は止める。見たい1枚が通り過ぎないように。 */
+.gallery-fan:hover .gallery-card,
+.gallery-fan:focus-within .gallery-card,
+.gallery-fan.is-paused .gallery-card{animation-play-state:paused}
+
+.gallery-card span{
+    position:absolute;bottom:0;left:0;right:0;padding:30px 10px 26px;text-align:center;
+    background:linear-gradient(transparent,#000c);font-size:10px;letter-spacing:1px;
+    border-radius:0 0 var(--radius) var(--radius);
+    opacity:0;transition:opacity .25s;backface-visibility:hidden;
+}
+.gallery-card:hover span,.gallery-card:focus-visible span{opacity:1}
+.gallery-card:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+
+.gallery-controls{width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:8px;letter-spacing:1.5px;color:var(--soft);position:relative;z-index:2}
+.gallery-controls button{font:inherit;letter-spacing:0;color:var(--ink);border:1px solid var(--rule);background:var(--surface);border-radius:24px;padding:10px 14px;cursor:pointer}
+
+@media(max-width:1000px){.kinetic-gallery{--cw:310px;--ch:174px;--oy:20px}.gallery-stage{height:440px}.gallery-controls>span{letter-spacing:.5px}}
+@media(max-width:640px){.kinetic-gallery{--cw:260px;--ch:146px;--ox:0px;--oy:0px;--persp:1000px;margin-top:40px}.gallery-stage{height:390px}.gallery-label{left:0;right:auto}}
+/* 動きを減らす設定では回さない。扇が開いた形で止める。 */
+@media(prefers-reduced-motion:reduce){
+    .gallery-card{animation:none;transform:rotateZ(90deg) rotateX(calc(var(--i) * -34deg))}
+    .gallery-controls button{display:none}
+}
+
+/* Highlight the selected banner while preserving the fan's 3D transforms. */
+.hero-art .gallery-card img,.gallery-card::after{transition:filter .3s ease}
+.gallery-card:hover,.gallery-card:focus-visible{--banner-brightness:1}
+@media(prefers-reduced-motion:reduce){.hero-art .gallery-card img,.gallery-card::after{transition:none}}
+
+
