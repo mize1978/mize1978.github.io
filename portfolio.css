@@ -174,3 +174,36 @@ footer p{font-size:11px}
 @media(max-width:1000px){.project-row{grid-template-columns:1fr 1fr;gap:42px 5%}}
 .project-row .project-title{font-size:20px}
 @media(max-width:640px){.project-row{grid-template-columns:1fr;gap:42px}.project-row .project-visual{height:380px}}
+
+/* ===== 円筒（Kai Marlow 型）試作 =====
+   1作品を縦に S 枚の短冊へ切り、円周に巻き付ける。作品の間に短冊1枚ぶんのすき間。
+   作品は1周に1回ずつ（5作品）。複製はしない。 */
+.kinetic-gallery{--r:270px;--ph:150px;--tilt:-13deg;--spin:36s}
+.cyl-stage{perspective:1500px;perspective-origin:50% 25%}
+.cyl-ring{--step:calc(360deg / var(--N));--sw:calc(2 * var(--r) * tan(var(--step) / 2));
+  position:relative;width:var(--sw);height:var(--ph);transform-style:preserve-3d;
+  transform:rotateX(var(--tilt)) rotateY(0deg);animation:cyl-spin var(--spin) linear infinite}
+@keyframes cyl-spin{to{transform:rotateX(var(--tilt)) rotateY(-360deg)}}
+.cyl-ring.is-paused,.cyl-ring:hover,.cyl-ring:focus-within{animation-play-state:paused}
+.cyl-work{position:absolute;inset:0;transform-style:preserve-3d;
+  transform:rotateY(calc(var(--w) * (var(--S) + 1) * var(--step)))}
+.cyl-work i{position:absolute;top:0;left:0;width:calc(var(--sw) + .6px);height:100%;
+  transform:rotateY(calc(var(--j) * var(--step))) translateZ(var(--r));
+  background:var(--img) no-repeat;background-size:calc(var(--sw) * var(--S)) 100%;
+  background-position:calc(var(--j) * var(--sw) * -1) 0;
+  backface-visibility:hidden;-webkit-backface-visibility:hidden}
+/* 裏側＝筒の内壁。暗い無地にして、手前の作品と混ざらないようにする */
+.cyl-work i::after{content:'';position:absolute;inset:0;background:linear-gradient(#141513b8,#141513d9),var(--img) no-repeat;background-size:100% 100%,calc(var(--sw) * var(--S)) 100%;background-position:0 0,calc((var(--S) - 1 - var(--j)) * var(--sw) * -1) 0;transform:rotateY(180deg);
+  backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.cyl-work i{transform-style:preserve-3d}
+.cyl-work span{position:absolute;left:0;top:calc(var(--ph) + 12px);font-size:10px;letter-spacing:1.5px;color:var(--soft);
+  white-space:nowrap;transform:rotateY(calc((var(--S) - 1) / 2 * var(--step))) translateZ(var(--r)) translateX(calc(var(--sw) / 2)) translateX(-50%);
+  backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.cyl-work:focus-visible{outline:none}
+.cyl-work:focus-visible i{box-shadow:inset 0 2px var(--gold),inset 0 -2px var(--gold)}
+.cyl-work:hover span,.cyl-work:focus-visible span{color:var(--gold)}
+@media(min-width:1700px){.kinetic-gallery{--r:320px;--ph:178px}}
+@media(max-width:1400px){.kinetic-gallery{--r:230px;--ph:128px}}
+@media(max-width:1000px){.kinetic-gallery{--r:175px;--ph:97px}}
+@media(max-width:640px){.kinetic-gallery{--r:150px;--ph:83px}.cyl-stage{perspective:1100px}}
+@media(prefers-reduced-motion:reduce){.cyl-ring{animation:none}}
