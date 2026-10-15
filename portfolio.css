@@ -207,3 +207,14 @@ footer p{font-size:11px}
 @media(max-width:1000px){.kinetic-gallery{--r:175px;--ph:97px}}
 @media(max-width:640px){.kinetic-gallery{--r:150px;--ph:83px}.cyl-stage{perspective:1100px}}
 @media(prefers-reduced-motion:reduce){.cyl-ring{animation:none}}
+/* ===== Practice: 業務DX（bid-evidence-engine）の抽象図 ===== */
+.abstract-evidence{height:240px;margin-top:28px;position:relative;background:#1f2420;border:1px solid #3c4537;padding:30px 28px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden}
+.ev-flow{display:flex;align-items:center;gap:10px}
+.ev-flow span{flex:1;border:1px solid #4d5642;padding:12px 10px;font-size:14px;color:var(--ink);text-align:center;line-height:1.5}
+.ev-flow small{display:block;font-size:10px;color:var(--soft);letter-spacing:.5px}
+.ev-flow b{color:var(--gold);font-weight:400}
+.ev-results{display:flex;gap:8px}
+.ev-results i{font-style:normal;font-size:11px;letter-spacing:1px;padding:5px 12px;border-radius:20px;border:1px solid #505443;color:var(--soft)}
+.ev-results .go{border-color:var(--gold);color:var(--gold)}
+.ev-trace{font-family:var(--serif);font-style:italic;font-size:14px;color:var(--soft)}
+@media(max-width:640px){.abstract-evidence{padding:22px 16px}.ev-flow{gap:6px}.ev-flow span{font-size:12px;padding:10px 4px}.ev-flow small{font-size:9px;letter-spacing:0;white-space:nowrap}}
