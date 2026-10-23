@@ -191,6 +191,7 @@ footer p{font-size:11px}
   transform:rotateY(calc(var(--j) * var(--step))) translateZ(var(--r));
   background:var(--img) no-repeat;background-size:calc(var(--sw) * var(--S)) 100%;
   background-position:calc(var(--j) * var(--sw) * -1) 0;
+  filter:brightness(.58) saturate(.88);transition:filter .32s ease;
   backface-visibility:hidden;-webkit-backface-visibility:hidden}
 /* 裏側＝筒の内壁。暗い無地にして、手前の作品と混ざらないようにする */
 .cyl-work i::after{content:'';position:absolute;inset:0;background:linear-gradient(#141513b8,#141513d9),var(--img) no-repeat;background-size:100% 100%,calc(var(--sw) * var(--S)) 100%;background-position:0 0,calc((var(--S) - 1 - var(--j)) * var(--sw) * -1) 0;transform:rotateY(180deg);
@@ -201,11 +202,13 @@ footer p{font-size:11px}
   backface-visibility:hidden;-webkit-backface-visibility:hidden}
 .cyl-work:focus-visible{outline:none}
 .cyl-work:focus-visible i{box-shadow:inset 0 2px var(--gold),inset 0 -2px var(--gold)}
+.cyl-work:hover i,.cyl-work:focus-visible i{filter:brightness(1) saturate(1)}
 .cyl-work:hover span,.cyl-work:focus-visible span{color:var(--gold)}
 @media(min-width:1700px){.kinetic-gallery{--r:320px;--ph:178px}}
 @media(max-width:1400px){.kinetic-gallery{--r:230px;--ph:128px}}
 @media(max-width:1000px){.kinetic-gallery{--r:175px;--ph:97px}}
 @media(max-width:640px){.kinetic-gallery{--r:150px;--ph:83px}.cyl-stage{perspective:1100px}}
+@media(hover:none){.cyl-work i{filter:brightness(.82) saturate(.95)}}
 @media(prefers-reduced-motion:reduce){.cyl-ring{animation:none}}
 /* ===== Practice: 業務DX（bid-evidence-engine）の抽象図 ===== */
 .abstract-evidence{height:240px;margin-top:28px;position:relative;background:#1f2420;border:1px solid #3c4537;padding:30px 28px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden}
