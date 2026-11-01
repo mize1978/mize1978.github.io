@@ -262,3 +262,7 @@ footer p{font-size:11px}
 .web-shot.bid-stage .bid-s1{filter:blur(3px)}
 .web-shot.bid-stage .bid-s2{filter:blur(2.2px)}
 .web-shot.bid-stage .bid-s3{filter:blur(1.3px)}
+/* カードの動画（音なしループ）。静止画と同じ収まり方 */
+.web-shot video{display:block;width:100%;height:100%;object-fit:cover;object-position:top;transition:transform .6s ease}
+.practice-grid article:hover .web-shot video{transform:scale(1.02)}
+@media(prefers-reduced-motion:reduce){.web-shot video{transition:none}.practice-grid article:hover .web-shot video{transform:none}}
