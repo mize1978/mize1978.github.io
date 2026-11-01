@@ -227,3 +227,38 @@ footer p{font-size:11px}
   border:1px solid #ffffff2e;box-shadow:0 18px 40px #000a;transform:rotate(-2.5deg);z-index:1}
 .web-shot.web-shot-stack::after{z-index:2}
 @media(max-width:640px){.web-shot.web-shot-stack .web-shot-layer{width:40%;right:2.5%;bottom:5%}}
+/* 02 Practice: 実画面スクショ */
+.practice-grid .web-shot{margin:28px 0 0}
+.practice-grid article:hover .web-shot::after{opacity:0}
+.practice-grid article:hover .web-shot img{transform:scale(1.02)}
+@media(prefers-reduced-motion:reduce){.practice-grid article:hover .web-shot img{transform:none}}
+/* 判定アプリ：画面3枚を舞台に浮かせる（中身は読ませない・信号を主役に） */
+.bid-stage{background:radial-gradient(ellipse at 72% 38%,#c1aa7b40,transparent 55%),radial-gradient(ellipse at 18% 85%,#2f6b5a55,transparent 60%),linear-gradient(135deg,#1d2a26,#151a17 60%,#231f18);perspective:1400px}
+.bid-stage::after{background:rgba(20,21,19,.18)}
+.web-shot.bid-stage .bid-s{position:absolute;width:56%;height:auto;aspect-ratio:1600/815;object-fit:cover;object-position:top left;border-radius:6px;border:1px solid #ffffff30;box-shadow:0 30px 60px #000c,0 0 0 1px #0004;transition:transform .6s ease}
+.web-shot.bid-stage .bid-s1{left:6%;top:9%;transform:rotateY(18deg) rotateX(6deg) rotateZ(-2deg);opacity:.75}
+.web-shot.bid-stage .bid-s2{left:24%;top:24%;transform:rotateY(12deg) rotateX(5deg) rotateZ(-1deg);opacity:.88}
+.web-shot.bid-stage .bid-s3{left:40%;top:38%;transform:rotateY(6deg) rotateX(4deg);box-shadow:0 40px 80px #000e,0 0 50px #c1aa7b33}
+.bid-signals{position:absolute;left:5%;bottom:9%;display:flex;flex-direction:column;gap:8px;z-index:3;transform:translateZ(1px);isolation:isolate}
+.bid-signals i{font-style:normal;background:#121412!important;font-size:12px;letter-spacing:1px;font-weight:600;padding:6px 14px 6px 28px;border-radius:20px;position:relative;background:#141513d9;border:1px solid currentColor;width:max-content}
+.bid-signals i::before{content:'';position:absolute;left:11px;top:50%;width:9px;height:9px;margin-top:-4.5px;border-radius:50%;background:currentColor;box-shadow:0 0 10px currentColor,0 0 18px currentColor}
+.sg-go{color:#7fd1a0}.sg-un{color:#f0c35a}.sg-no{color:#ef7a6a}
+.bid-trace{position:absolute;right:4%;top:7%;z-index:3;transform:translateZ(1px);font-family:var(--serif);font-style:italic;font-size:14px;color:var(--gold)}
+.practice-grid article:hover .web-shot.bid-stage .bid-s1{transform:rotateY(18deg) rotateX(6deg) rotateZ(-2deg)}.practice-grid article:hover .web-shot.bid-stage .bid-s2{transform:rotateY(12deg) rotateX(5deg) rotateZ(-1deg)}.practice-grid article:hover .web-shot.bid-stage .bid-s3{transform:rotateY(2deg) rotateX(2deg) translateY(-6px)}
+@media(max-width:640px){.bid-signals{gap:5px;left:4%;bottom:6%}.bid-signals i{font-size:9px;padding:3px 9px 3px 20px}.bid-signals i::before{left:7px;width:7px;height:7px;margin-top:-3.5px}.bid-trace{font-size:10px}}
+@media(prefers-reduced-motion:reduce){.web-shot.bid-stage .bid-s{transition:none}}
+/* Selected work：RewardMe と CodeLensAI を2列に */
+.project-row.project-row-2{grid-template-columns:repeat(2,minmax(0,1fr));gap:6%}
+.project-row-2 .project-visual{height:520px}
+.project-row-2 .project-copy h3{font-size:34px}
+@media(max-width:1000px){.project-row-2 .project-visual{height:440px}}
+@media(max-width:640px){.project-row.project-row-2{grid-template-columns:1fr}.project-row-2 .project-visual{height:380px}}
+/* 横並びカード：余った高さを画像の段に配らない（文章の書き出しを揃える） */
+.project-row .project{align-content:start}
+/* 画像は普段から明るく（暗いフィルターなし）。ホバーは拡大と傾きだけ */
+.web-shot::after,.web-shot.web-shot-stack::after,.bid-stage::after{opacity:0}
+@media(hover:none){.web-shot::after{opacity:0}}
+/* 判定アプリ：中身は読ませない。奥ほど強くぼかす（固定・アニメなし） */
+.web-shot.bid-stage .bid-s1{filter:blur(3px)}
+.web-shot.bid-stage .bid-s2{filter:blur(2.2px)}
+.web-shot.bid-stage .bid-s3{filter:blur(1.3px)}
